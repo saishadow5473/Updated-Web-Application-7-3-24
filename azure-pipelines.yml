@@ -68,14 +68,14 @@ stages:
 
     - task: CopyFilesOverSSH@0
       inputs:
-        sshEndpoint: 'awsnewtest'
+        sshEndpoint: 'web'
         sourceFolder: '$(System.ArtifactsDirectory)/extracted'
         contents: '**/*'
         targetFolder: '/home/ubuntu/'
 
     - task: SSH@0
       inputs:
-        sshEndpoint: 'awsnewtest'
+        sshEndpoint: 'web'
         runOptions: 'inline'
         inline: 'sudo mv /home/ubuntu/* /var/www/html/ && sudo systemctl restart apache2'
 
