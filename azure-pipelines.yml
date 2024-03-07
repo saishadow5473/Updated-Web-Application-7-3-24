@@ -1,0 +1,86 @@
+trigger:
+- none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: DeployStage
+  jobs:
+  - job: Virtualmachine
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '12.14.0'
+      displayName: 'Install Node.js'
+
+    - task: CmdLine@2
+      displayName: 'npm install and build'
+      inputs:
+        script: |
+          # npm install -g @angular/cli
+          npm install -g @angular/cli@12.2.18
+          npm audit fix --force
+          npm install
+          ng build
+
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist/superAdminPortal'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        replaceExistingArchive: true
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        ArtifactName: 'drop'
+
+  - job: Deploy
+    displayName: 'Deploy to VM'
+    dependsOn:
+    - Virtualmachine
+    steps:
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(Pipeline.Workspace)'
+        Contents: '**/*.zip'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifactName: 'drop'
+        targetPath: '$(System.ArtifactsDirectory)'
+
+    - powershell: |
+        Expand-Archive -Path $(System.ArtifactsDirectory)\$(Build.BuildId).zip -DestinationPath $(System.ArtifactsDirectory)\extracted
+      displayName: 'Extract artifact'
+
+    - powershell: Get-ChildItem -Path $(System.ArtifactsDirectory)/extracted -Recurse
+      displayName: 'List Extracted Files'
+
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(System.ArtifactsDirectory)/extracted'
+        Contents: '**/*'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+    - task: CopyFilesOverSSH@0
+      inputs:
+        sshEndpoint: 'awstest'
+        sourceFolder: '$(System.ArtifactsDirectory)/extracted'
+        contents: '**/*'
+        targetFolder: '/home/ubuntu/'
+
+    - task: SSH@0
+      inputs:
+        sshEndpoint: 'awstest'
+        runOptions: 'inline'
+        inline: 'sudo mv /home/ubuntu/* /var/www/html/ && sudo systemctl restart apache2'
+
+    # - script: |
+    #     python -m pip install requests
+    #     python -m pip install selenium
+    #     python test.py
+    #   displayName: 'Run Python Test'
