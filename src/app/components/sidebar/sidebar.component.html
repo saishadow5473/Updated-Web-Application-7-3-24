@@ -1,0 +1,109 @@
+<div class="sidebar showSideNav">
+  <div class="sidebar-items">
+    <a [routerLink]="['/dashboard']" class="back" (click)="generalConsultationFlow()"
+      routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+      true}" stepPosition="right" title="Dashboard" text="Check your vital data here." joyrideStep="dashboard_ui_walk"><span style="font-size: 18px;" matTooltip="See your health data in IHL Account" matTooltipPosition="right" class="fas fa-tachometer-alt glow back">
+        <div class="divMeasurement">Dashboard</div>
+      </span>
+    </a>
+
+    <!-- affiliated user -->
+    <a *ngIf="_constants.isAffiliatedUser" [routerLink]="['/affiliated-users']" class="back" matTooltip="Exclusive for an affiliated user" matTooltipPosition="right"
+    routerLinkActive="active" [ngClass]="{'active':_constants.teleconsultationFlowSelected == 'affiliate'}" [routerLinkActiveOptions]="{exact:
+    true}" stepPosition="right" title="Member Services" text="Exclusive for an affiliated user." joyrideStep="affiliated_ui_walk"><span style="font-size: 18px;" class="fas fa-building back">
+      <div class="divMeasurement">Member Services</div>
+    </span>
+   </a>
+
+   <span title={{_constants.notShowMetricsTitle}} [ngStyle]="displayMenu">
+      <a [class.disabledMetrics]="_constants.notShowMetrics" [class.enableMetrics]="!_constants.notShowMetrics" [routerLink]="['/metrices']" class="back" (click)="generalConsultationFlow()"  routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+        true}" matTooltip=" Connect with Health & wellness providers for Mind & Body" matTooltipPosition="right" stepPosition="right" title="Programs" text="Connect with health & wellness providers for mind & body." joyrideStep="programs_ui_walk">
+        <span style="font-size: 19px;" class="fas fa-dumbbell glow back" >
+          <div class="divMeasurement">Programs</div>
+        </span>
+      </a>
+    </span>
+
+    <!-- ihl tele consultation -->
+    <a [routerLink]="['/teleconsultation']" class="back" (click)="generalConsultationFlow()" matTooltip="Book Appointments, Direct calls, etc." matTooltipPosition="right"
+    routerLinkActive="active" [ngClass]="{'affiliateActive':_constants.teleconsultationFlowSelected == 'affiliate'}" [routerLinkActiveOptions]="{exact:
+    true}" stepPosition="right" title="Tele Consultation" text="You can connect with the consultant here, book your appointments and also you can view the past consultation history as well as upcoming appointments." joyrideStep="teleconsult_ui_walk"><span style="font-size: 18px;" class="fas fa-user-md back">
+      <div class="divMeasurement">Tele Consultation</div>
+    </span>
+   </a>
+
+   <!-- <a [routerLink]="['/fitnessPage']" class="back" matTooltip="Subscribe classes" matTooltipPosition="right"
+    routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+    true}"><span style="font-size: 29px;" class="fac fa-fitness back">
+      <div class="divMeasurement">Fitness Class</div>
+    </span>
+   </a> -->
+   <a [routerLink]="['/fitnessPage']" class="back" (click)="generalConsultationFlow()" matTooltip="Subscribe class, Join class, etc." matTooltipPosition="right"
+    routerLinkActive="active" [ngClass]="{'affiliateActive':_constants.teleconsultationFlowSelected == 'affiliate'}" [routerLinkActiveOptions]="{exact:
+    true}" stepPosition="right" title="Wellness Care E-Marketplace" text="Subscribe fitness classes, view your subscribed classes list and explore more related to yoga, diet and fitness classes here." joyrideStep="fitnessClass_ui_walk"><span style="font-size: 18px;" class="fas fa-walking back">
+      <div class="divMeasurement">Wellness Care E-Marketplace</div>
+    </span>
+   </a>
+
+<!-- doctorcare247 -->
+<!--   <a class="back" matTooltip="Tele consultation" matTooltipPosition="right" routerLinkActive="active" (click)="teleCall()" [routerLinkActiveOptions]="{exact:
+          true}">
+    <span style="font-size: 22px;" class="fas fa-user-md back">
+      <div class="divMeasurement">Tele-consult</div>
+    </span>
+  </a> -->
+
+  <!--<a [routerLink]="['/takesurvey']" class="back" title="Take Survey" routerLinkActive="active"
+    [routerLinkActiveOptions]="{exact:true}">
+    <span style="font-size: 19px;" class="fas fa-notes-medical glow back">
+      <div class="divMeasurement">Take Survey</div>
+    </span>
+  </a>-->
+
+  <!-- <a class="isDisabled back" matTooltip="Collect Points for participating in challenges and other health activities" matTooltipPosition="right" title="IHL Points feature coming soon" routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+      true}" stepPosition="right" title="IHL Points" text="Collect points for participating in challenges and other health related activities." joyrideStep="IHLPoints_ui_walk"><span style="
+      font-size: 20px;" class="fas fa-award glow">
+      <div class="divMeasurement">IHL Points</div>
+    </span></a> -->
+
+
+  <a [routerLink]="['/challenges']" class="back" (click)="generalConsultationFlow()" matTooltip="Participate in the Health challenges of your interest and achieve your health goal" matTooltipPosition="right" routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+      true}" stepPosition="right" title="Health Programs" text="Participate in the Health challenges of your interest and achieve your health goal, explore more health challenges related to BP management, diet, fitness, etc." joyrideStep="challenge_ui_walk">
+    <span style="font-size: 20px;" class="fas fa-campground back">
+      <div class="divMeasurement">Health Programs</div>
+    </span>
+  </a>
+
+  <!-- <a [routerLink]="['/our-blog']" class="back" (click)="generalConsultationFlow()" matTooltip="Read the interesting blogposts of facts about health elements, related diet and exercises." matTooltipPosition="right"
+  routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+  true}" stepPosition="right" title="Health Blogs" text="Read interesting facts about health elements, related diet and exercises." joyrideStep="healthblog_ui_walk"><span style="font-size: 18px;" class="fas fa-podcast back">
+    <div class="divMeasurement">Health Blogs</div>
+  </span>
+ </a> -->
+
+
+  <!-- <a class="isDisabled back" matTooltip="Participate in the Health challenges of your interest and achieve your health goal" matTooltipPosition="right" title="Challenges feature coming soon" routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+    true}">
+  <span style="font-size: 20px; cursor: not-allowed !important;" class="fas fa-campground back">
+    <div class="divMeasurement">Challenges</div>
+  </span>
+</a> -->
+
+  <!--<a [routerLink]="['/export']" class="back" matTooltip="Profile" matTooltipPosition="right"
+  routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+  true}"><span style="font-size: 18px;" class="fas fa-user glow back">
+    <div class="divMeasurement">Profile</div>
+  </span>
+ </a>-->
+
+
+
+  <!--<a [routerLink]="['/beepbop']" class = "back" title="Beep Bop" routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+        true}"><span style="
+        width: 100%;
+        height: 100%;
+        padding: 20%; font-size: 20px;" class="fas fa-robot glow back"><div style="	font-family: Quicksand, sans-serif;
+        font-size: 11px;margin-top: 10px;width: 65px; margin-left: -9px;">Beep Bop</div></span></a>
+        <a title="Video Conference" ><span style="color: #880000;"class="fas fa-headset glow"></span></a>-->
+</div>
+</div>

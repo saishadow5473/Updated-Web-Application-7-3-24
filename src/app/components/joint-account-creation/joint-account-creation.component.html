@@ -1,0 +1,177 @@
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+<app-side-navigation-bar></app-side-navigation-bar>
+<div class="bb-main-container">
+  <div class="col-12 row">
+    <h3 class="mb-4 text-wrap">Create An Account</h3>
+  </div>
+  <div id="back" class="fa fa-reply element tele-back-btn" (click)="onBack()">
+    <div style="font-size: 12px;padding-top: 2px;">Back</div>
+  </div>
+
+  <mat-card class="px-5">
+    <mat-card-title class="text-center mb-4" style="color: #4d4d4d;">
+      Create And Link Your Family User Account
+    </mat-card-title>
+
+    <mat-card-content>
+      <form #registrationForm="ngForm" (ngSubmit)="onSubmit(registrationForm)" novalidate>
+        <div class="form-row">
+          <mat-form-field class="col-md-6" appearance="outline">
+            <mat-label>First Name</mat-label>
+            <mat-icon matSuffix aria-hidden="false">person_outline</mat-icon>
+            <input matInput type="text" autocomplete="off" name="firstName" ngModel #firstName="ngModel" minlength="3"
+              required />
+            <mat-error *ngIf="!firstName.valid && firstName.touched">
+              <mat-hint *ngIf="firstName.errors?.required" class="text-danger">Firstname must be filled.</mat-hint>
+              <mat-hint *ngIf="firstName.errors?.minlength" class="text-danger">Minimum length must be
+                {{firstName.errors.minlength?.requiredLength}}</mat-hint>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-md-6" appearance="outline">
+            <mat-label>Last Name / Initial</mat-label>
+            <mat-icon matSuffix aria-hidden="false">person_outline</mat-icon>
+            <input matInput type="text" autocomplete="off" name="lastName" ngModel #lastName="ngModel" minlength="1"
+              required />
+            <mat-error *ngIf="!lastName.valid && lastName.touched">
+              <mat-hint *ngIf="lastName.errors?.required" class="text-danger">Lastname must be filled.</mat-hint>
+              <mat-hint *ngIf="lastName.errors?.minlength" class="text-danger">Minimum length must be
+                {{lastName.errors.minlength?.requiredLength}}</mat-hint>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row" style="display: none;">
+          <mat-form-field class="col-md-6" appearance="outline">
+            <mat-label>Email Id(Optional)</mat-label>
+            <mat-icon matSuffix aria-hidden="false">mail_outline</mat-icon>
+            <input matInput type="email" autocomplete="off" name="email" ngModel #email="ngModel" email
+              uniqueEmailValidator />
+            <mat-error *ngIf="!email.valid && email.touched">
+              <mat-hint *ngIf="email.errors?.emailTaken; else elB" class="text-danger"> Email already exists.</mat-hint>
+              <ng-template #elB>
+                <mat-hint class="text-danger">Email is not valid.</mat-hint>
+              </ng-template>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-md-6" appearance="outline">
+            <mat-label>Password</mat-label>
+            <mat-icon matSuffix aria-hidden="false" style="cursor: pointer;" on-click="passwordToggle()">
+              {{password_visibility}}</mat-icon>
+            <input matInput type="{{password_type}}" autocomplete="off" name="password" ngModel #password="ngModel"
+              placeholder="Must have numbers, Capital alphabet, Symbol(!, @, $, &, *) & minimum 8 character is required"
+              pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
+              [disabled]="isDisablePassword()" required />
+            <mat-error *ngIf="!password.valid && password.touched">
+              <mat-hint *ngIf="password.errors?.required" class="text-danger">Password is required.</mat-hint>
+              <mat-hint *ngIf="password.errors?.pattern" class="text-danger">Password is not Valid.</mat-hint>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field class="col-md-6" appearance="outline" style="display: none;">
+            <mat-label>Mobile Number(Optional)</mat-label>
+            <mat-icon matSuffix aria-hidden="false">phone</mat-icon>
+            <input matInput type="number" autocomplete="off" name="mobileNumber" ngModel #mobileNumber="ngModel"
+              pattern="[1-9]{1}[0-9]{9}" uniqueMobileValidator (input)="onMobileInput($event)" />
+            <mat-error *ngIf="!mobileNumber.valid && mobileNumber.touched">
+              <mat-hint *ngIf="mobileNumber.errors?.pattern" class="text-danger">Enter 10 digit valid mobile number.
+              </mat-hint>
+              <mat-hint *ngIf="mobileNumber.errors?.mobileTaken" class="text-danger">Mobile number already exists.
+              </mat-hint>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-12" appearance="outline">
+            <mat-label>Date Of Birth</mat-label>
+            <!-- <input matInput [matDatepicker]="picker" autocomplete="off" (focus)="picker.open()"
+              (keydown)="onDateKeyDown($event)" name="dateOfBirth" ngModel #dateOfBirth="ngModel" required
+              dateOfBirthValidator /> -->
+            <input matInput [matDatepicker]="picker" autocomplete="off" (focus)="picker.open()"
+              (keydown)="onDateKeyDown($event)" name="dateOfBirth" ngModel #dateOfBirth="ngModel" required/>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="!dateOfBirth.valid && dateOfBirth.touched">
+              <mat-hint *ngIf="dateOfBirth.errors?.required" class="text-danger">Date of birth is required.</mat-hint>
+              <!-- <mat-hint *ngIf="dateOfBirth.errors?.isDobInValid" class="text-danger">Minimum age requirement is 14
+                years.</mat-hint> -->
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field class="col-md-6" appearance="outline">
+            <mat-label>Weight(Kg)</mat-label>
+            <mat-icon matSuffix aria-hidden="false">line_weight</mat-icon>
+            <input matInput type="number" autocomplete="off" name="userInputWeightInKG" ngModel
+              #userInputWeightInKG="ngModel" required (input)="onWeightInput($event)" />
+            <mat-error *ngIf="!userInputWeightInKG.valid && userInputWeightInKG.touched">
+              <mat-hint *ngIf="userInputWeightInKG.errors?.required" class="text-danger">Weight is required.</mat-hint>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="col-md-6 space"
+            style="padding-bottom: 0px !important;margin-bottom: 0px !important;">
+            <mat-label>Height(cm/ft)</mat-label>
+            <input matInput type="number" autocomplete="off" name="heightMeters" ngModel #heightMeters="ngModel"
+              on-input="onHeightInput($event)" [heightValidator]="isEnableFeet" [heightValue]="heightValue"
+              (emittedHeightValue)="onHeightValueEmitted($event)" required />
+            <mat-slide-toggle style="position: absolute;right: 0px;top: 5px;" (change)="onHeightSliderToggle($event)">In
+              feet</mat-slide-toggle>
+            <mat-error *ngIf="!heightMeters.valid && heightMeters.touched">
+              <mat-hint *ngIf="heightMeters.errors?.required" class="text-danger">Height is required.</mat-hint>
+              <mat-hint *ngIf="heightMeters.errors?.isHeightNotValid" class="text-danger">Height is not valid.
+              </mat-hint>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <section class="col-md-6" style="margin-bottom: 0.25em;">
+            <mat-label class="mr-2">Gender: </mat-label>
+            <mat-radio-group name="gender" ngModel #gender="ngModel" required>
+              <mat-radio-button value="m" class="mr-3" style="position: relative;top: 4px;">Male</mat-radio-button>
+              <mat-radio-button value="f" class="mr-3" style="position: relative;top: 4px;">Female</mat-radio-button>
+            </mat-radio-group>
+            <mat-error *ngIf="!gender.valid && gender.touched">
+              <mat-hint *ngIf="gender.errors?.required" class="text-danger">Gender is required.</mat-hint>
+            </mat-error>
+          </section>
+          <section class="col-md-6" style="margin-bottom: 0.25em;">
+            <p style="position: relative;top: 4px;">
+              <mat-checkbox class="d-inline mr-1" style="position: relative;top: 2px;" name="terms_policy" ngModel
+                #terms_policy="ngModel" required></mat-checkbox>I accept the <a
+                class="text-decoration-none text-primary d-inline" style="cursor: pointer;"
+                on-click="onTermsConditionsCheck()">Terms, Conditions & Privacy Policy.</a>
+            </p>
+            <mat-error *ngIf="!terms_policy.valid && terms_policy.touched">
+              <mat-hint *ngIf="terms_policy.errors?.required" class="text-danger">Terms and conditions must be agreed.
+              </mat-hint>
+            </mat-error>
+          </section>
+        </div>
+
+        <div class="form-row gx-4 justify-content-md-between">
+          <div></div>
+          <div class="blink_me p-3">
+            <p style="position: relative;top: 4px;">
+              If you already have an Account
+              <a class="text-decoration-none text-primary d-inline" style="cursor: pointer;" [routerLink]="['/link-acc']">
+                Click the Link
+              </a>
+            
+            </p>
+          </div>
+          <div class="p-3">
+            <button mat-raised-button color="primary" class="bg-c" type="submit" [disabled]="!registrationForm.valid"
+              *ngIf="!_isSubmitButtonClicked"
+            >
+              Register
+            </button>
+            <mat-spinner matSuffix [diameter]="30" *ngIf="_isSubmitButtonClicked"></mat-spinner>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+<app-footer></app-footer>

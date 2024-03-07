@@ -1,0 +1,320 @@
+[
+    {
+      "q_id":"A1",
+      "showStatus":false,
+      "name": "Do you have any heart related problems?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-heartbeat",
+      "option": [ {"status":"Don't know", "range": "", "value": "dont_know", "score":23}, {"status":"Yes", "range": "", "value": "yes", "score":18}, {"status":"No", "range": "", "value": "no", "score":28}],
+      "yes":{
+        "showStatus":false,
+        "option": []
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"A2",
+      "showStatus":false,
+      "name": "Do you have diabetes?",
+      "type": "radio",
+      "icon":"fas fa-tint",
+      "option": [ {"status":"Don't know", "range": "", "value": "dont_know", "score":23}, {"status":"Yes", "range": "", "value": "yes"}, {"status":"No", "range": "", "value": "no", "score":28}],
+      "yes":{
+        "q_id":"A2Yes",
+        "name": "Please indicate the status of your health below:",
+        "showStatus":false,
+        "type": "radio",
+        "option": [ {"status": "Hypoglyceamia", "range": "(Random: < 70 mg/dl)", "value":"hypoglyceamia", "score":23}, {"status": "Normal", "range": "(Random: < 140 mg/dl)", "value":"normal", "score":28}, {"status": "Pre-diabetic", "range": "(Random: 140-199 mg/dl)", "value":"pre_diabetic", "score":18},{"status": "Diabetic", "range": "(Random: > 200 mg/dl)", "value":"diabetic", "score":13}, {"status":"Don't know", "range": "", "value": "dont_know", "score":8}],
+        "answer": ""
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"A3",
+      "showStatus":false,
+      "name": "Do you have high blood pressure?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-hand-holding-heart",
+      "option": [ {"status":"Don't know", "range": "", "value": "dont_know", "score":23}, {"status":"Yes", "range": "", "value": "yes"}, {"status":"No", "range": "", "value": "no", "score":28}],
+      "yes":{
+        "q_id":"A3Yes",
+        "name": "Please indicate the status of your health below:",
+        "showStatus":false,
+        "type": "radio",
+        "option": [ {"status": "Low", "range": "(Sys: < 90, Dia: < 60)", "value": "low", "score":23}, {"status": "Normal", "range": "(Sys: < 120, Dia: < 80)", "value": "normal", "score":28}, {"status": "Acceptable", "range": "(Sys: 120-129, Dia: <= 80)", "value": "acceptable", "score":23}, {"status": "High", "range": "(Sys: > 130, Dia: > 80)", "value": "high", "score":18}, {"status":"Don't know", "range": "", "value": "dont_know", "score":13}],
+        "answer": ""
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"A4",
+      "showStatus":false,
+      "name": "What is your BMI range?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-weight",
+      "option": [ {"status": "Underweight", "range": "(BMI: < 18.5)", "value":"underweight", "score":"23-L"}, {"status": "Normal", "range": "(BMI: 18.5 - 22.99)", "value":"normal", "score":28}, {"status": "Overweight", "range": "(BMI: 23 - 27.5)", "value":"overweight", "score":"23 -H"}, {"status": "Obese", "range": "(BMI: > 27.5)", "value":"obese", "score":18},{"status":"Don't know", "range": "", "value": "dont_know", "score":13}],
+      "yes":{
+        "showStatus":false,
+        "option": []
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"A5",
+      "showStatus":false,
+      "name": "What is your BMC range (Fat Composition) ?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-child",
+      "option": [ {"status": "Normal", "range": "", "value":"normal", "score": 28}, {"status": "Acceptable", "range": "", "value":"acceptable", "score": 23}, {"status": "High", "range": "", "value":"high", "score": 18}, {"status":"Don't know", "range": "", "value": "dont_know", "score": 8}],
+      "yes":{
+        "showStatus":false,
+        "option": []
+      },
+      "answer": ""
+    },
+    {
+        "q_id":"A6",
+        "showStatus":false,
+      "name": "Do you have Thyroid Problem?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-diagnoses",
+      "option": [ {"status":"Yes", "range": "", "value": "yes"}, {"status":"No", "range": "", "value": "no"}],
+      "yes":{
+        "q_id":"A6Yes",
+        "name": "Please indicate the status of your health below:",
+        "showStatus":false,
+        "type": "radio",
+        "option": [ {"status": "Normal", "range": "", "value": "normal", "score":28}, {"status": "Hyperthyroid", "range": "", "value": "hyperthyroid", "score":23}, {"status": "Hypothyroid", "range": "", "value": "hypothyroid", "score":23}, {"status":"Don't know", "range": "", "value": "dont_know", "score":18}],
+        "answer": ""
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"A7",
+      "showStatus":false,
+      "name": "Do you have high cholesterol level?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-tachometer-alt",
+      "option": [ {"status":"Don't know", "range": "", "value": "dont_know", "score":23}, {"status":"Yes", "range": "", "value": "yes"}, {"status":"No", "range": "", "value": "no", "score":28}],
+      "yes":{
+        "q_id":"A7Yes",
+        "name": "Please indicate the status of your health below:",
+        "showStatus":false,
+        "type": "radio",
+        "option": [ {"status": "Lower side", "range": "(less than 120 mg/dl)", "value": "lower_side", "score":23}, {"status": "Normal", "range": "(Between 121-200 mg/dl)", "value": "normal", "score":28}, {"status": "Border line", "range": "(between 201-240 mg/dl)", "value": "border_line", "score":"23 -H"}, {"status": "High", "range": "(above 241 mg/dl)", "value": "high", "score":13}, {"status":"Don't know", "range": "", "value": "dont_know", "score":8}],
+        "answer": ""
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"A8",
+      "showStatus":false,
+      "name": "What is your Pulse rate?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-heartbeat",
+      "option": [ {"status": "Low", "range": "(less than 60)", "value":"low", "score":23}, {"status": "Normal", "range": "(between 61-99)", "value":"normal", "score":28}, {"status": "High", "range": "(above 100)", "value":"high", "score":23}, {"status":"Don't know", "range": "", "value": "dont_know", "score":18}],
+      "yes":{
+        "showStatus":false,
+        "option": []
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"B1",
+      "showStatus":false,
+      "name": "How often do you indulge yourself in physical activity?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-running",
+      "option": [ {"status": "5 hours or more a week", "range": "", "value":"5_or_more", "score":28}, {"status": "3-4 hours a week", "range": "", "value":"3_to_4", "score":21}, {"status": "1-2 hours a week", "range": "", "value":"1_to_2", "score":14}, {"status":"Never", "range": "", "value": "never", "score":7}],
+      "yes":{
+        "showStatus":false,
+        "option": []
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"B2",
+      "showStatus":false,
+      "name": "How often do you Consume alcohol?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-wine-bottle",
+      "option": [ {"status": "Never", "range": "", "value":"never", "score":28}, {"status": "Occasionally", "range": "", "value":"occasionally", "score":21}, {"status": "1-2 times a week", "range": "", "value":"1_2_times", "score":14}, {"status":"Daily", "range": "", "value": "daily", "score":7}],
+      "yes":{
+        "showStatus":false,
+        "option": []
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"B3",
+      "showStatus":false,
+      "name": "How often do you Consume tobacco?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-smoking",
+      "option": [ {"status": "Never", "range": "", "value":"never", "score":28}, {"status": "Occasionally", "range": "", "value":"occasionally", "score":21}, {"status": "1-2 times a week", "range": "", "value":"1_2_times", "score":14}, {"status":"Daily", "range": "", "value": "daily", "score":7}],
+      "yes":{
+        "showStatus":false,
+        "option": []
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"B4",
+      "showStatus":false,
+      "name": "How often do you feel stressed?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-brain",
+      "option": [ {"status": "Never", "range": "", "value":"never", "score":28}, {"status": "Sometime", "range": "", "value":"sometimes", "score":18}, {"status": "Frequently", "range": "", "value":"frequently", "score":8}],
+      "yes":{
+        "showStatus":false,
+        "option": []
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"C1",
+      "showStatus":false,
+      "name": "How often do you consume Fried/ Processed Food?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-pizza-slice",
+      "option": [ {"status": "Never", "range": "", "value":"never", "score":22}, {"status": "2-3 times a week", "range": "", "value":"2_to_3_times", "score":15}, {"status": "Daily", "range": "", "value":"daily", "score":8}],
+      "yes":{
+        "showStatus":false,
+        "option": []
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"C2",
+      "showStatus":false,
+      "name": "How often do you consume Green salad?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-carrot",
+      "option": [ {"status": "Never", "range": "", "value":"never", "score":8}, {"status": "2-3 times a week", "range": "", "value":"2_to_3_times", "score":15}, {"status": "Daily", "range": "", "value":"daily", "score":22}],
+      "yes":{
+        "showStatus":false,
+        "option": []
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"C3",
+      "showStatus":false,
+      "name": "How often do you Consume fruits?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-apple-alt",
+      "option": [ {"status": "Never", "range": "", "value":"never", "score":8}, {"status": "2-3 times a week", "range": "", "value":"2_to_3_times", "score":15}, {"status": "Daily", "range": "", "value":"daily", "score":22}],
+      "yes":{
+        "showStatus":false,
+        "option": []
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"C4",
+      "showStatus":false,
+      "name": "How often do you consume your breakfast?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-coffee",
+      "option": [ {"status": "Never", "range": "", "value":"never", "score":8}, {"status": "2-3 times a week", "range": "", "value":"2_to_3_times", "score":15}, {"status": "Daily", "range": "", "value":"daily", "score":22}],
+      "yes":{
+        "showStatus":false,
+        "option": []
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"C5",
+      "showStatus":false,
+      "name": "How do you enjoy your meal?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-utensils",
+      "option": [ {"status": "With Family", "range": "", "value":"with_family", "score":22}, {"status": "While watching Television", "range": "", "value":"watching_television", "score":17}, {"status": "While Working", "range": "", "value":"while_working", "score":12}, {"status": "Eating alone", "range": "", "value":"alone", "score":7}, {"status": "Eating at Resaturant", "range": "", "value":"restaurant", "score":2}],
+      "yes":{
+        "showStatus":false,
+        "option": []
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"D1",
+      "showStatus":false,
+      "name": "Are you aware about your health?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-hand-holding-heart",
+      "option": [{"status":"Yes", "range": "", "value": "yes", "score":19}, {"status":"No", "range": "", "value": "no", "score":9}],
+      "yes":{
+        "showStatus":false,
+        "option": []
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"D2",
+      "showStatus":false,
+      "name": " What type of family do you live in?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-house-user",
+      "option": [ {"status":"Joint", "range": "", "value": "joint", "score":19}, {"status":"Nuclear", "range": "", "value": "nuclear", "score":14}, {"status":"Alone", "range": "", "value": "alone", "score":9}],
+      "yes":{
+        "showStatus":false,
+        "option": []
+      },
+      "answer": ""
+    },
+    {
+      "q_id":"D3",
+      "showStatus":false,
+      "name": " Do you have any genetic/ family history of diseases?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-dna",
+      "option": [{"status":"Yes", "range": "", "value": "yes"}, {"status":"No", "range": "", "value": "no", "score":19}],
+      "yes":{
+        "q_id":"D3Yes",
+        "name": "Please indicate if any member of your family has:",
+        "showStatus":false,
+        "type": "checkbox",
+        "option": [ 
+          {"status": "Diabetes", "range": "", "value": "diabetes", "check": false, "score":16}, 
+          {"status": "Thyroid", "range": "", "value": "thyroid", "check": false, "score":13}, 
+          {"status": "Heart problems", "range": "", "value": "heart_problems", "check": false, "score":10}, 
+          {"status": "High Cholesterol level", "range": "", "value": "high_cholesterol_level", "check": false, "score":7}, 
+          {"status": "High blood pressure level", "range": "", "value": "high_blood_pressure_level", "check": false, "score":4}],
+        "answer": ""
+      },
+      "answer": ""
+    },
+    {
+        "q_id":"D4",
+        "showStatus":false,
+      "name": "To which zone do you belong?",
+      "type": "radio",
+      "multi_questions":[],
+      "icon":"fas fa-map-marker-alt",
+      "option": [{"status":"South", "range": "", "value": "south", "score":19}, {"status":"East", "range": "", "value": "east", "score":14}, {"status":"West", "range": "", "value": "west", "score":9}, {"status":"North", "range": "", "value": "north", "score":4}],
+      "yes":{
+        "showStatus":false,
+        "option": []
+      },
+      "answer": ""
+    }
+  ]

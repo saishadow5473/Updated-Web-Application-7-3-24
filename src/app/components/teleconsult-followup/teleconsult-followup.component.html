@@ -1,0 +1,187 @@
+<app-side-navigation-bar></app-side-navigation-bar>
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+
+<div class="teleconsult-main-container">
+ 
+  <h3 class="mb-4">Followup Calls</h3>
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 mb-4">
+      <div class = "teleconsult_fllw_history_card">
+        <h4 class="teleconsult_fllw_history_title mb-3">Past History</h4>
+        <div  class="teleconsult_fllw_history_scroll">
+          <div class="teleconsult_fllw_history_content" *ngFor = "let teleconsultHistory of consultationHistory; let i = index">
+            <table>
+              <tr (click)="consultationDetails(i)" style="cursor: pointer;">
+              
+                <td>
+                  <i class="fas fa-1x fa-video video_icon" style="color: #F782AC;"></i>
+                  <!-- <i class="fas fa-1x fa-video video_icon" style="color: #ff4081a6;" style="visibility: hidden;"></i> -->
+                </td>
+                
+                <td>
+                  <div class="teleconsult_meh_title_color">{{teleconsultHistory.consultant_details.consultant_name}}</div>
+                  <div class="teleconsult_li_color">{{teleconsultHistory.consultant_details.specality}}</div>
+                </td>
+
+                <td>
+                  <div class="teleconsult_meh_title_color">{{extractDate(teleconsultHistory.call_details.call_started_at)}}</div>
+                  <div class="teleconsult_li_color">{{extractTime(teleconsultHistory.call_details.call_started_at)}}</div>
+                </td>
+                
+                <td>
+                  <div class="teleconsult_li_color" style="padding-top: 1px;font-size: 12px;">{{getDuration(teleconsultHistory.call_details.call_started_at,teleconsultHistory.call_details.call_ended_at)}}</div>
+                  <div class="teleconsult_meh_title_color" style="visibility:hidden;">{{getDuration(teleconsultHistory.call_details.call_started_at,teleconsultHistory.call_details.call_ended_at)}}</div>
+                </td>
+                
+              </tr>
+            </table>
+            
+            <div class ="teleconsult_history_line">
+              <span class="dot"></span>
+              <div class="horizontal-rule"></div> 
+              <span class="dot"></span>
+            </div>
+          </div>
+
+          <div class="teleconsult_fllw_history_content_mobile" *ngFor = "let teleconsultHistory of consultationHistory">
+            <table>
+              <tr>
+              
+                <td>
+                  <i class="fas fa-1x fa-video video_icon_mobile" style="color: #ff4081a6;"></i>
+                  <!-- <i class="fas fa-1x fa-video video_icon" style="color: #ff4081a6;" style="visibility: hidden;"></i> -->
+                </td>
+                
+                <td>
+                  <div class="teleconsult_meh_title_color_mobile">{{teleconsultHistory.consultant_details.consultant_name}}</div>
+                  <div class="teleconsult_li_color_mobile"> {{teleconsultHistory.consultant_details.specality}}</div>
+                  <div class="teleconsult_li_descrip_mobile">
+                    <span class="dot_padding_1" style="padding-right: 5px;">{{extractDate(teleconsultHistory.call_details.call_started_at)}}</span>
+                    <span class="dots" style="padding-right: 5px;"></span>
+                    <span class="dot_padding" style="padding-right: 5px;padding-left: 5px;">{{extractTime(teleconsultHistory.call_details.call_started_at)}}</span>
+                    <span class="dots" style="padding-right: 5px;"></span>
+                    <span class="dot_padding" style="padding-right: 5px;padding-left: 5px;">{{getDuration(teleconsultHistory.call_details.call_started_at,teleconsultHistory.call_details.call_ended_at)}}</span>
+                  </div>
+                </td>
+                
+              </tr>
+            </table>
+            
+            <div class ="teleconsult_history_line_mobile">
+              <span class="dot"></span>
+              <div class="horizontal-rule"></div> 
+              <span class="dot"></span>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div  class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 mb-4">
+      <div class = "teleconsult_appointment_card">
+        <h4 class="teleconsult_appointment_title mb-3">Followup Appointments</h4>
+
+        <div  class="teleconsult_appointment_scroll">
+          <div class="teleconsult_appointment_content" *ngFor = "let consultationFollowUp of consultationFollowUps">
+            <table>
+              <tr>
+              
+                <td>
+                  <i class="fas fa-1x fa-video appointment_video_icon" style="color: #F782AC;"></i>
+                  <!-- <i class="fas fa-1x fa-video appointment_video_icon" style="color: #ff4081a6;" style="visibility: hidden;"></i> -->
+                </td>
+                
+                <td>
+                  <div class="teleconsult_apmt_title_color">{{consultationFollowUp.consultant_name}}</div>
+                  <div [class.req_text_color] = "consultationFollowUp.apointment_status !== 'Appointment request pending'" class="teleconsult_apmt_li_color">{{consultationFollowUp.apointment_status}}</div>
+                </td>
+
+                <td>
+                  <div class="teleconsult_apmt_title_color">{{extractDate(consultationFollowUp.appointment_start_time)}}</div>
+                  <div class="teleconsult_apmt_li_color" style="visibility:hidden;">0</div>
+                </td>
+                
+                <td>
+                  <div class="teleconsult_apmt_title_color">{{extractTime(consultationFollowUp.appointment_start_time)}}</div>
+                  <div class="teleconsult_apmt_li_color" style="visibility:hidden;">0</div>
+                </td>
+
+                <td style="text-align: center;">
+
+                  <button [class.visiblebutton] = "consultationFollowUp.apointment_status !== 'Appointment request pending'" mat-raised-button class="myapmt_call_button" (click) = "followUp()">Book <i class="fas fa-phone-alt" style = "padding-left: 5px;margin-top: -3px;"></i></button>
+                  
+                </td>
+
+              </tr>
+            </table>
+            <div class ="teleconsult_apmt_line">
+              <span class="apmt_dot"></span>
+              <div class="apmt_horizontal-rule"></div> 
+              <span class="apmt_dot"></span>
+            </div>
+          </div>
+
+          <div class="teleconsult_appointment_content_mobile" *ngFor = "let consultationFollowUp of consultationFollowUps">
+            <table>
+              <tr>
+              
+                <td>
+                  <i class="fas fa-1x fa-video appointment_video_icon_mobile" style="color: #ff4081a6;"></i>
+                  <!-- <i class="fas fa-1x fa-video appointment_video_icon" style="color: #ff4081a6;" style="visibility: hidden;"></i> -->
+                </td>
+                
+                <td>
+                  <div class="teleconsult_apmt_title_color_mobile">{{consultationFollowUp.consultant_name}}</div>
+                  <div class="teleconsult_apmt_li_descrip_mobile">
+                    <span class="apmt_dot_padding_1" style="padding-right: 5px;">{{extractDate(consultationFollowUp.appointment_start_time)}}</span>
+                    <span class="apmt_dots" style="padding-right: 5px;"></span>
+                    <span class="apmt_dot_padding" style="padding-right: 5px;padding-left: 5px;">{{extractTime(consultationFollowUp.appointment_start_time)}}</span>
+                  </div>
+                  <div [class.req_text_color] = "consultationFollowUp.apointment_status !== 'Appointment request pending'" class="teleconsult_apmt_li_color">{{consultationFollowUp.apointment_status}}</div>
+                </td>
+
+                <td style="text-align: center;" class = "mob_screen_hide">
+
+                  <button [class.visiblebutton] = "consultationFollowUp.apointment_status !== 'Appointment request pending'" mat-raised-button class="myapmt_call_button" (click) = "followUp()">Book <i class="fas fa-phone-alt" style = "padding-left: 5px;margin-top: -3px;"></i></button>
+                  
+                </td>
+                
+              </tr>
+            </table>
+
+            <button [class.displaybutton] = "consultationFollowUp.apointment_status !== 'Appointment request pending'" mat-raised-button class="myapmt_mob_call_button" (click) = "followUp()">Book <i class="fas fa-phone-alt" style = "padding-left: 5px;margin-top: -3px;"></i></button>
+
+            <div class ="teleconsult_apmt_line_mobile">
+              <span class="apmt_dot"></span>
+              <div class="apmt_horizontal-rule"></div> 
+              <span class="apmt_dot"></span>
+            </div>
+          </div>
+          
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<app-footer></app-footer>
+
+<!-- 
+  <i class="fas fa-5x fa-heartbeat" style="color: #F53F00;"></i>
+  <i class="fas fa-5x fa-pills" style="color: #2895F0;"></i>
+  <i class="fas fa-5x fa-lungs-virus" style="color: #BE4BDC;"></i>
+  <i class="fas fa-5x fa-brain" style="color: #FD7E15;"></i>
+  <i class="fas fa-5x fa-medkit" style="color: #65BC87;"></i>
+  <i class="fas fa-5x fa-bone" style="color: #F782AC;"></i>
+
+  <i class="fas fa-info"></i>
+  <i class="fas fa-phone-alt"></i>
+  <i class="far fa-calendar-alt"></i>
+-->

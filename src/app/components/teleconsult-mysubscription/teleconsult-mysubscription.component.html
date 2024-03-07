@@ -1,0 +1,267 @@
+<app-side-navigation-bar></app-side-navigation-bar>
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+
+<div class="teleconsult-main-container p-md-5 p-2 m-2 m-md-5">
+
+  <h3 class="mb-4">My Subscriptions</h3>
+
+  <div *ngIf="isLoading  == true && userDataReceived == false" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></div>
+  <div id="back" *ngIf="isLoading == false && userDataReceived == true" class="fa fa-reply element tele-back-btn" (click)="showTeleDashboard()">
+      <div style="font-size: 12px;
+      padding-top: 2px;">Back</div>
+  </div>
+
+  <div class="row" *ngIf="isLoading == false && userDataReceived == true">
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 mb-4">
+      <div class="teleconsult-mysubscription-card-container">
+        <div class="teleconsult-mysubscription-card-title ">Past Expired Subscriptions</div>
+        <div class="teleconsult-mysubscription-sub-container">
+          <div *ngIf="consultationHistory.length > 0">
+          <div class="fluid-container" *ngFor="let course of consultationHistory">
+
+            <div class="row">
+
+              <div class="col-lg-1 col-2">
+                <i class="fas fa-1x fa-video video_icon" style="color: #F782AC;"></i>
+              </div>
+
+              <div class="col-lg-8 col-10">
+                <span class="teleconsult-mysubscription-heading">{{course.title}}</span>
+                <br>
+                <span  class="teleconsult-mysubscription-sub-heading" style="color: #4d4d4d;">{{course.consultant_name}}</span>
+              </div>
+
+              <div *ngIf = "course.approval_status !== 'Cancelled' && course.approval_status !== 'cancelled' && course.approval_status !== 'Rejected' && course.approval_status !== 'rejected'"
+              class="col-lg-2 col-12 mobile-view"
+              style="font-size:13px; font-weight: 500;cursor:pointer"
+              (click)="renewCourse(course)">
+                Renew
+              </div>
+
+              <div *ngIf = "course.approval_status === 'Cancelled' || course.approval_status === 'cancelled' || course.approval_status === 'Rejected' || course.approval_status === 'rejected'"
+              class="col-lg-2 col-12 mobile-view"
+              style="font-size:13px; font-weight: 500;cursor:pointer">
+                {{course.approval_status}}
+              </div>
+            </div>
+            <div style="margin: 5px;" *ngIf="course?.course_fees && course?.course_fees > 0">
+              <button class="print_bill_button" (click) = "printBill(course)">Print Invoice</button>
+            </div>
+
+            <div class ="teleconsult-line-container">
+              <span class="left-dot"></span>
+              <div class="teleconsult-line"></div>
+              <span class="right-dot"></span>
+            </div>
+
+          </div>
+          </div>
+          <div *ngIf="consultationHistory.length == 0" style="text-align: center; margin-top: 100px;">
+            <p> No expired subscription </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div  class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 mb-4">
+      <div class="teleconsult-mysubscription-card-container">
+        <div class="teleconsult-mysubscription-card-title">My Active Subscriptions</div>
+        <div class="teleconsult-mysubscription-sub-container">
+          <div *ngIf="consultationActiveSubscriptions.length > 0">
+          <div class="fluid-container" *ngFor="let course of consultationActiveSubscriptions">
+              <div class="row">
+                  <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1 col-xl-1 screen1"><i class="fas fa-1x fa-video video_icon" style="color: #F782AC;"></i></div>
+                  <div class="col-xs-10 col-sm-10 col-md-4 col-lg-4 col-xl-4 screen2">
+                      <span class="teleconsult-mysubscription-heading">{{course.title}}</span>
+                    <br>
+                    <span class="teleconsult-mysubscription-sub-heading" style="color:#4d4d4d;">{{course.consultant_name}}</span>
+                    <br>
+                    <span class="teleconsult-mysubscription-sub-heading" [ngStyle]="{'color': (course.approval_status == 'Accepted' || course.approval_status == 'accepted') ? 'green' : 'red'}">{{course.approval_status}}</span>
+                  </div>
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 mobile-screen">
+                  <span class="teleconsult-mysubscription-contents">{{'Duration: '}}{{course.course_duration}}</span>
+                  <br>
+                  <span class="teleconsult-mysubscription-contents">{{'Time: '}}{{course.course_time}}</span>
+                  <br>
+                  <span *ngIf="course.course_on.length > 1" class="teleconsult-mysubscription-contents">{{'Days: '}}
+                    <ng-container *ngFor="let class of course.course_on;let last = last">
+                      {{class | slice:0:3}}
+                      <span *ngIf="!last">, </span>
+                      <!-- {{(class[] class.length-1 != 0) : (class + ', ' | slice:0:3) : (class | slice:0:3)}} -->
+                    </ng-container>
+                  </span>
+                  <span *ngIf="course.course_on.length == 1" class="teleconsult-mysubscription-contents">{{'Day: '}}
+                    <ng-container *ngFor="let class of course.course_on">
+                      {{class | slice:0:3}}
+                    </ng-container>
+                  </span>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 mt-3 mobile-view">
+                  <!-- <ng-template #courseLiveBlock> -->
+                    <div *ngIf="joinCallBtnClassLoad" class="joinCall_loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></div>
+                    <div *ngIf="isCourseLive(course) && !joinCallBtnClassLoad" [matTooltip]="'Enabled During class'" [matTooltipDisabled]="trainerStatusMapping[course.consultant_id] == 'Online' || trainerStatusMapping[course.consultant_id] == 'Busy' && joinClassButtonShowMapping[course.subscription_id] == true" style="text-align: center;">
+                    <button
+                    [disabled]="trainerStatusMapping[course.consultant_id] != 'Busy' && trainerStatusMapping[course.consultant_id] != 'Online' && joinClassButtonShowMapping[course.subscription_id] != true"
+                    mat-raised-button class="join-call-button"  (click) = "joinCall(course)">Join Class <i class="fas fa-phone-alt" style = "padding-left: 5px;margin-top: -3px;"></i></button>
+                    </div>
+                    <div style="text-align: center;font-size: 12px;color: #4d4d4d;" *ngIf="joinClassButtonShowMapping[course.subscription_id] == true && isCourseLive(course) && !joinCallBtnClassLoad" class="text-center lead" [ngClass]="{'text-success':trainerStatusMapping[course.consultant_id] == 'Busy', 'text-muted':trainerStatusMapping[course.consultant_id] == 'Offline', 'text-success':trainerStatusMapping[course.consultant_id] == 'Online'}">
+                      Trainer is {{trainerStatusMapping[course.consultant_id]}}
+                    </div>
+                    <br>
+                    <div *ngIf="isCourseLive(course) == true" style="text-align: center;">
+                      <button mat-raised-button (click)="cancelCourseWithReason(course)" style="cursor: pointer;box-shadow: none;color: #4885ed;font-size: 16px;outline: none !important;width: 110px;border-radius: 20px; margin: 5px;">Cancel >></button>
+                    </div>
+                    <div *ngIf="isCourseLive(course) == false" style="text-align: center;">
+                      <button mat-raised-button (click)="cancelCourseWithoutReason(course)" style="cursor: pointer;box-shadow: none;color: #4885ed;font-size: 16px;outline: none !important;width: 110px;border-radius: 20px; margin: 5px;">Cancel >></button>
+                    </div>
+
+                    <!--
+                    <span class="join-call-button" (click)="joinCall(course)" disabled="true">
+                      Join Call <i class="fas fa-phone-alt"></i>
+                    </span> -->
+                  <!-- </ng-template> -->
+                </div>
+              </div>
+
+              <div class ="teleconsult-line-container">
+                <span class="left-dot"></span>
+                <div class="teleconsult-line"></div>
+                <span class="right-dot"></span>
+              </div>
+
+          </div>
+        </div>
+        <div *ngIf="consultationActiveSubscriptions.length == 0 && !noActiveSubscription" style="text-align: center; margin-top: 100px;">
+          <p> Please wait data is loading... </p>
+        </div>
+        <div *ngIf="noActiveSubscription" style="text-align: center; margin-top: 100px;">
+          <p> No active subscriptions </p>
+        </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row" *ngIf="isLoading == false && userDataReceived == false">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-4" style="color: red;text-align: center;margin: auto;">
+      There is a problem with connecting to the server.<br>Please try after sometime.
+    </div>
+  </div>
+
+</div>
+
+<app-footer></app-footer>
+
+
+
+<!----------------------------------------------Print Bill------------------------->
+<div class="text-dark" id=print-content style="color: black">
+  <div class="row">
+    <div class="col-2 text-right">
+      <img src="./assets/img/ihl-plus.png" class="h-100">
+    </div>
+    <div class="col-3" style="border-left:1px solid lightgrey">
+      <span style="color:rgb(40, 149, 240);">INDIA</span>
+      <br>
+      <span style="color:gray;">HEALTH</span>
+      <br>
+      <span style="color:rgb(40, 149, 240);">LINK</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12" >
+      <span style="float: right;">
+        Contact : +91 80-47485152
+        <br>
+        Email : info@indiahealthlink.com
+        <br>
+        Web : indiahealthlink.com
+        <br>
+        Address : SCO #394, New Gain Market
+        <br>
+        Haryana, India.
+      </span>
+    </div>
+  </div>
+
+  <div class="row my-2">
+    <div class="col-4"></div>
+    <div class="col-4 text-center" style="font-weight: bold;"><b> Payment Receipt</b></div>
+  </div>
+  <hr class="col-12">
+  <div class="row my-30">
+    <div class="col-6">
+      <span>
+        <b>Name:</b> {{userName}}
+        <br>
+        <b>Phone Number:</b> {{userMobNumber}}
+        <br>
+        <b>Email:</b> {{userMail}}
+      </span>
+    </div>
+    <div  class="col-6" style="float:right;">
+      <span>
+        <b>Duration:</b> {{course_duration}}
+        <br>
+        <b>GST Number:</b> {{'06AADCI2816A1Z7'}}
+        <br>
+        <b>Organization:</b> {{provider}}
+      </span>
+    </div>
+  </div>
+  <hr class="col-12">
+  <div  class="row">
+    <span class="col-6"><b>Item Description</b></span>
+    <span class="col-3"><b>Payment Method</b></span>
+    <span class="col-3"><b>Amount</b></span>
+  </div>
+  <hr class="col-12">
+  <div  class="row">
+    <span class="col-6">
+      "{{title}}"  Online class is subscribed
+      <br>
+      Couse duration {{ course_duration}}
+    </span>
+    <span class="col-3">UPI / Card / Net Banking</span>
+    <span class="col-3">{{deductedIgstAmt}}</span>
+  </div>
+  <hr class="col-12">
+  <div  class="row" *ngIf="state != 'haryana'">
+    <span class="col-6">
+      {{' '}}
+    </span>
+    <span class="col-3">IGST@ 18%</span>
+    <span class="col-3"><span>&#x20B9;</span> {{igstAmt}}</span>
+  <hr class="col-12">
+  </div>
+  <div  class="row" *ngIf="state == 'haryana'">
+    <span class="col-6">
+      {{' '}}
+    </span>
+    <span class="col-3">SGST@ 9%</span>
+    <span class="col-3"><span >&#x20B9;</span> {{sgstAmt}}</span>
+  <hr class="col-12">
+  </div>
+  <div  class="row" *ngIf="state == 'haryana'">
+    <span class="col-6">
+      {{' '}}
+    </span>
+    <span class="col-3">CGST@ 9%</span>
+    <span class="col-3"><span >&#x20B9;</span> {{sgstAmt}}</span>
+  <hr class="col-12">
+  </div>
+  <div  class="row">
+    <span class="col-6">
+      {{' '}}
+    </span>
+    <span class="col-3">Total</span>
+    <span class="col-3">&#x20B9; {{course_fees+' (incl. of all taxes)'}}</span>
+  </div>
+  <hr class="col-12">
+  <div  class="row">
+    <span class="col-12">
+      Note- This is an electronic receipt
+    </span>
+  </div>
+</div>

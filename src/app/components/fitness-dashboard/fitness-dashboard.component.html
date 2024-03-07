@@ -1,0 +1,54 @@
+<app-side-navigation-bar></app-side-navigation-bar>
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+
+<div class="teleconsult-main-container">
+ 
+  <div class="col-12 row">
+    <span id="affiliate_image" *ngIf="brand_image_url_exist"><img [src]="brand_image_url"/></span>
+    <h3 class="mb-4">{{headerName}}</h3>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></div>
+  <div *ngIf="!isLoading">
+    <div class="row" *ngIf = "isUserAndConsultantDataRetrived == false">
+      <ng-container *ngIf="_constantsService.fitnessDashboardObj !== undefined && _constantsService.fitnessDashboardObj !== null && _constantsService.fitnessDashboardObj.length > 0">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-3" (click) = "selectSpeciality('Fitness Class')">
+          <div class = "teleconsult_main_dashboard_card" >
+            <span class= "col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 teleconsult_span_dashboard_card">
+              <i class="fac fa-3x fa-fitness teleconsult_icon_dashboard_card" style="color: rgb(106, 191, 100);"></i>
+              <h4 class="teleconsult_header_dashboard_card" style="font-size:24px;"> Fitness Class </h4>
+            </span>
+          </div>
+        </div>
+      </ng-container>
+
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-3" (click) = "MySubscriptions()">
+        <div class = "teleconsult_main_dashboard_card" >
+          <span class= "col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 teleconsult_span_dashboard_card">
+            <i class="fas fa-3x fa-bell teleconsult_icon_dashboard_card" style="color: #a5a23f"></i>
+            <h4 class="teleconsult_header_dashboard_card" style="font-size:24px;">My Subscriptions</h4>
+          </span>
+        </div>
+      </div>
+
+      <div *ngIf="this._constantsService.teleconsultationFlowSelected == 'affiliate'" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-3" (click) = "selectKtAndFunSpeciality()">
+        <div class = "teleconsult_main_dashboard_card" >
+          <span class= "col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 teleconsult_span_dashboard_card">
+            <i class="fas fa-3x fas fa-book-open teleconsult_icon_dashboard_card" style="color: #3f8da5"></i>
+            <h4 class="teleconsult_header_dashboard_card" style="font-size:24px;">My Events</h4>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="isUserAndConsultantDataRetrived == true">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-4" style="color: red;text-align: center;margin: auto;">
+        There is a problem with connecting to the server.<br>Please try after sometime.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<app-footer></app-footer>

@@ -1,0 +1,50 @@
+<section id="lab_social_icon_footer">
+  <div class="container">
+    <div class="text-center center-block">
+      <a target="_blank" href="https://www.facebook.com/indiahealthlink/">
+        <span class="fa-stack" style="vertical-align: top;">
+          <i class="far fa-circle fa-stack-2x"></i>
+          <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+        </span>
+      </a>
+      <a target="_blank" href="https://twitter.com/IHLcom">
+        <span class="fa-stack" style="vertical-align: top;">
+          <i class="far fa-circle fa-stack-2x"></i>
+          <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+      </a>
+      <a target="_blank" href="https://www.instagram.com/indiahealthlink/">
+        <span class="fa-stack" style="vertical-align: top;">
+          <i class="far fa-circle fa-stack-2x"></i>
+          <i class="fab fa-instagram fa-stack-1x fa-inverse"></i>
+        </span>
+      </a>
+      <a target="_blank" href="https://www.youtube.com/channel/UCAWhz_h5tDiubf63xbhNHIQ">
+        <span class="fa-stack" style="vertical-align: top;">
+          <i class="far fa-circle fa-stack-2x"></i>
+          <i class="fab fa-youtube fa-stack-1x fa-inverse"></i>
+        </span>
+      </a>
+      <a target="_blank" href="https://www.linkedin.com/company/india-health-link/">
+        <span class="fa-stack" style="vertical-align: top;">
+          <i class="far fa-circle fa-stack-2x"></i>
+          <i class="fab fa-linkedin-in fa-stack-1x fa-inverse"></i>
+        </span>
+      </a>
+    </div>
+    <div class="text-center center-block copy-right">
+        <ul class="list-inline">
+            <li><a (click)="routeToDisclaimer()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" id="left">Disclaimer</a></li>
+            <li><a (click)="routeToGrievance()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" id="right">Grievance</a></li>
+            <li><a (click)="routeToTerms()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" id="front">Terms</a></li>
+            <li><a (click)="routeToPrivacy()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" id="back">Privacy</a></li>
+            <li><a (click)="routeToRefund()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" id="back">Refund Policy</a></li>              
+        </ul>
+    </div>
+      <div>        
+        <p style="text-align: center;" class="copyright-info">
+          Copyright © {{currentYear +' India Health Link - All Rights Reserved. '}}
+          </p>
+      </div>
+  </div>
+  </section>

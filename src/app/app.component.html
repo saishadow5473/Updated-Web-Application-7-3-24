@@ -1,0 +1,50 @@
+<router-outlet (activate)="changeOfRoutes()"></router-outlet>
+
+<div *ngIf="_constant.videoWindow && _constant.videoCallStart" id="teleConsultationVideoCallFrame" style="position: fixed;top:0px; width:100vw; height:100vh;background-color: rgba(0,0,0,0.5);z-index: 9;">
+    <!-- <div id="teleConsultationVideoCallFrameMessage" style="text-align:center;position: absolute;padding:5px 10px; width:70%; margin:auto;background-color: white; border-radius: 10px;top:50%;left:50%; transform:translate(-50%,-50%)">
+        <div class="teleconsultationVideoCallFrameMessageLoading">
+        </div>
+        Connecting Call ...
+    </div> -->
+    <!-- <ng-container>
+      <small style="color: red;font-size: 85%;">Note: Added New Button</small>
+    </ng-container> -->
+    <div id="teleConsultationVideoCallFrameMessage">
+        <div class="loading-modal-container-one">
+            <div style="font-weight: bold;font-size: 15px;color: #656565;">
+              <div class="col-12">
+                <img src="./assets/img/ihl-plus.png" width="30px" height="30px"><span> Tele Consultation</span>
+              </div>
+              <hr class="col-12">
+              Connecting Call ...
+              <br>
+              <ng-container *ngIf="screenWidth < 768">
+                <small style="color: red;font-size: 85%;">Note: Enable desktop site for video call</small>
+              </ng-container>
+            </div>
+            <div class="loading-modal-spinner"></div>
+        </div>
+    </div>
+    <app-medical-doc></app-medical-doc>
+</div>
+
+<div *ngIf="showSessionPopup" class="loading-modal-container-internet-modal">
+  <div class="loading-modal-container-session-modal">
+    <div style="font-weight: bold;font-size: 15px;color: #656565;">
+      <div class="col-12" style="text-align: center;">
+        <img src="./assets/img/ihl-plus.png" width="30px" height="30px" style="margin-right: 10px"><span>You Have Been Idle!</span>
+      </div>
+      <hr class="col-12">
+      <span style="margin-left: 30px;">{{idleState}}</span>
+    </div>
+    <div class="row mrgbtm">
+      <div class="col-md-6" style="margin-left: 30px; margin-top: 15px;">
+          <button type="button" (click)="logout()" class="btn btn-danger">Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <ng-container *ngIf = "_constant.genixIframeOpened">
+    <app-genix-tele-consultation></app-genix-tele-consultation>
+</ng-container> -->

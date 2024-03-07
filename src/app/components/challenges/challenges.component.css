@@ -1,0 +1,338 @@
+.challenges-main-container {
+    min-height: 100vh;
+    padding: 30px;
+    color: #000000;
+    text-align: justify;
+    line-height: 1.5em;
+    max-width: -webkit-fill-available;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.challenge-name-header {
+    color: rgb(40,149,240);
+    text-align: left;
+}
+
+.challenge-name-header .backBtn {
+    cursor: pointer;
+    float: right;
+    /*position: relative;*/
+    /*padding: 10px;*/
+}
+
+h3 {
+     color: rgb(40,149,240) !important;
+}
+
+.loading-screen {
+    color: rgb(40,149,240);
+    text-align: center; 
+    font-size: 3em; 
+    position: relative; 
+    margin-top:50px;
+}
+
+.form-loading-screen {
+    color: rgb(40,149,240);
+    text-align: center; 
+    font-size: 1em;  
+    margin: auto;
+}
+
+.challenges-card mat-card {
+    padding: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+    font-family: 'Quicksand', sans-serif;
+    
+}
+
+.card-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    color: rgb(40,149,240);
+}
+
+mat-card-content {
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.icon {
+    font-size: 50px;
+    color: dimgray;
+    padding: 10px;
+    overflow: hidden;
+    text-align: center;
+}
+
+._hover:hover .icon {
+    color: rgb(40,149,240);
+}
+
+
+mat-card .challenge-description {
+    text-align: center;
+    color: #2cb039;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+mat-card .days-count {
+    color: dimgrey;
+    text-align: center;
+}
+
+mat-expansion-panel div {
+    width: 95%;
+    margin: auto;
+    padding: 10px;
+    /*text-align: left !important;*/
+    font-family: 'Quicksand', sans-serif !important;
+}
+
+.card-unlocked {
+    color: #2cb039;
+}
+
+.rating-star {
+    color: #2895F0 !important;
+    outline: none;
+    font-weight: bold;
+}
+
+ngb-rating {
+    font-size: 30px;
+}
+
+.challenges-main-container mat-card button, .submitBtn {
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    color: #fff;
+    background-color: rgb(40,149,240);
+    font-weight: normal;
+    cursor: pointer;
+    letter-spacing: 2px;
+    word-spacing: 10px;
+}
+
+.submit {
+    text-align: center !important;
+}
+
+.panel-headers-align .mat-expansion-panel-header-title,
+.panel-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+  text-align: left;
+}
+
+.panel-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-headers-align .mat-form-field + .mat-form-field {
+  margin-left: 8px;
+}
+
+.mat-expansion-panel-header {
+    padding: 35px 24px;
+}
+
+.panel-action-buttons button {
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    color: #000;
+    background-color: #fff;
+    padding: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-right:10px;
+}
+
+.panel-action-buttons .progress {
+    color: rgb(40,149,240);
+    float: right;
+}
+
+.mat-panel-title {
+    text-align: left;
+}
+
+mat-expansion-panel {
+    margin: -2px 0 -2px 0 !important;
+    cursor: pointer;
+}
+
+.progress {
+    text-align: center !important;
+    color: rgb(40,149,240) !important;
+    background: none !important;
+}
+
+.instruction {
+    text-align: left;
+    padding: 25px;
+    font-family: 'Quicksand', sans-serif;
+    list-style: circle;
+    list-style-position: inside;
+}
+
+.instruction > h4 {
+    color: rgb(40,149,240);
+    text-align: center;
+}
+
+.comments > mat-card {
+    padding: 20px;
+    text-align: left;
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.09);*/
+}
+
+mat-error {
+    font-size: 12px !important;
+}
+
+.feedback-submitted {
+    text-align: center; 
+    font-size: 20px; 
+    color: #2cb039; 
+    font-family: 'Quicksand', sans-serif;
+    padding: 20px;
+    margin: 10px auto 10px auto;
+}
+
+.share {
+    text-align: center;
+}
+
+.share mat-card-title {
+    padding: 20px 20px 0 20px;
+}
+
+.share i {
+    padding: 20px;
+    color: rgb(40,149,240) !important;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.share i:hover {
+    color: #747474 !important;
+}
+
+.adjust-header-padding { 
+    /*padding: 10px; */
+}
+
+@media only screen and (max-width: 500px) {
+    .challenges-main-container { 
+        padding: 0 15px;
+    }
+    .adjust-header-padding { 
+        padding: 5px 10px; 
+    }
+}
+
+@media only screen and (min-width: 501px) {
+    .challenges-main-container {
+        margin-left: 72px;
+        margin-top: 80px;
+        padding: 28px 24px;
+        min-height: 540px;
+    }
+}
+
+@media only screen and (max-width: 428px) {
+    mat-expansion-panel-header {
+        font-size: 13px !important;
+    }
+}
+
+@media only screen and (max-width: 790px) {
+    mat-expansion-panel div {
+        width: 100%;
+        overflow-x: auto !important;
+        font-size: 13px;
+    }
+
+    /* width */
+    /*::-webkit-scrollbar {
+        width: 5px;
+    }*/
+
+    /* Track */
+    /*::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px gray !important; 
+        border-radius: 5px;
+    }*/
+ 
+    /* Handle */
+    /*::-webkit-scrollbar-thumb {
+        background: rgb(40, 149, 240) !important;
+        border-radius: 5px;
+    }*/
+
+    /* Handle on hover */
+    /*::-webkit-scrollbar-thumb:hover {
+        background: rgb(28, 67, 95) !important; 
+    }*/
+
+}
+
+/*---------------------------Daily Challenge List Dynamic Content------------------*/
+#challenge-container table, tr, td, th {
+    padding: 5px;
+    letter-spacing: 1px;
+    border: 1px solid #000;
+}
+
+#challenge-container th {
+    text-align: center;
+    text-transform: uppercase;
+    color: rgb(40,149,240);
+}
+
+#challenge-container p {
+    margin-bottom: 10px;
+}
+
+#challenge-container table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left; 
+    margin: 10px auto;
+    text-transform: capitalize;
+    overflow: auto !important;
+}
+
+#challenge-container hr {
+    width: 95%;
+    margin: auto;
+}
+
+#challenge-container strong {
+    text-transform: uppercase;
+    color: rgb(40,149,240);
+}
+
+#challenge-container ul,li {
+    padding: 5px;
+    letter-spacing: 1px;
+}
+
+/*--------------banner-----------------*/
+.banner {
+    width: 100%;
+    background-size: contain;
+}
+.text_banner {
+    width: 30%;
+    margin-top: 4%;
+    padding-left: 10px;
+}

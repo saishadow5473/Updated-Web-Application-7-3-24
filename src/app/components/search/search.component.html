@@ -1,0 +1,13 @@
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+
+<div class="bb-main-container">
+    <div class="dp" [class.male]="user.gender === 'male'"></div>
+    <h2 style="text-align: center" class="mb-3" *ngIf="user.fullname">{{user.fullname}}</h2>
+    <h3 class="mb-4">Awards</h3>
+  <div class="row">
+    <div *ngFor="let award of badges" style="margin-bottom: 64px;" class="col-md-3 col-sm-12">
+        <app-award-card [title]="award.title" [desc]="award.description" [awardId]="award.badgeId" [color]="award.color"></app-award-card>
+    </div>
+  </div>
+</div>

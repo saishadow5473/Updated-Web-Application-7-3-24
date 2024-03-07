@@ -1,0 +1,76 @@
+.teleconsult-main-container{
+    margin-left: 72px;
+    margin-top: 80px;
+    padding: 28px 24px;
+    min-height: 540px;
+}
+
+.teleconsult-main-container h2{
+    font-weight: 500;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+.example-additional-selection {
+  opacity: 0.75;
+  font-size: 0.75em;
+}
+.loading-screen {
+  color: rgb(40, 149, 240);
+  text-align: center;
+  font-size: 3em;
+  position: relative;
+  margin-top: 50px;
+}
+
+
+@media (max-width: 500px){
+    .teleconsult-main-container{
+        margin-left: 1px;
+        margin-top: 0px;
+        padding: 28px 24px;
+    }
+}
+
+*::-webkit-scrollbar {
+    width: 5px;
+  }
+
+*::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 20px;
+  background: #d7d7d7;  
+}
+
+*{
+  scrollbar-width: thin;
+  scrollbar-color:  #d7d7d7 transparent;
+}
+
+.teleconsult_main_card{
+    font-family: 'Quicksand', sans-serif;
+    padding: 5px 12px;
+    background: #fff;
+    color: #4885ed;
+    border-radius: 7px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+    transition: 0.2s;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: transparent;
+}
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background, .mat-accent .mat-pseudo-checkbox-checked, .mat-accent .mat-pseudo-checkbox-indeterminate, .mat-pseudo-checkbox-checked, .mat-pseudo-checkbox-indeterminate {
+  background-color:  #4885ec !important; /* Red background for example */
+}
+
+#invoicePdf {
+  width: 800px;
+  /* height: 700px; */
+  font-size: 15px;
+  color: black;
+  margin: 25px;
+}

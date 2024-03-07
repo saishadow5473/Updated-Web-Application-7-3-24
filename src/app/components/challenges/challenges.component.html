@@ -1,0 +1,124 @@
+<app-side-navigation-bar></app-side-navigation-bar>
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+<div class="challenges-main-container">
+  <div class="row challenge-name-header" *ngIf="isCardOpened">
+    <div class="col">
+      <h3>Health Programs</h3>
+    </div>
+    <div class="col adjust-header-padding">
+      <span class="fa fa-reply backBtn" (click)="backtoMain()">
+        <div style="font-size: 16px; padding-top: 2px; font-family: 'Quicksand', sans-serif;">Back</div>
+      </span>
+    </div>
+    <div class="col-12" class="banner" *ngIf="isChallengeAccepted">
+      <img src="{{api_banner_image}}" width="100%" height="auto"> 
+    </div>
+  </div>
+  <div *ngIf="!isCardOpened">
+    <div class="row">
+      <div class="col-8">
+        <h3 class="mb-4">Health Programs</h3>
+      </div>
+    </div>
+    <div class="row challenges-card" *ngIf="!isProgramListLoading">
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-4" *ngFor="let challenge of challengesList">
+        <mat-card class="_hover" (click)="openChallengeCards(challenge.program_id)">
+          <div class="icon"><i class="{{challenge.program_icon}}" aria-hidden="true"></i></div>
+          <div class="mb-2 card-title">{{challenge.program_name}}</div>
+          <div class="challenge-description mb-2">{{challenge.program_short_description}}</div>
+          <div class="days-count mb-2">Duration: {{challenge.number_of_days}} Days</div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isLoading && isCardOpened || isProgramListLoading" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></div>
+  <div *ngIf="!isLoading">
+    <div class="col-12 mr-auto ml-auto mb-4" *ngIf="isCardOpened && !isChallengeAccepted">
+      <mat-card class="instruction">
+        <h4 class="mb-4">Are You Ready?</h4>
+        <!-- <div class="icon"><i class="{{selectedProgram.program_icon}}" aria-hidden="true"></i></div> -->
+        <p class="days-count">Duration: {{selectedProgram.number_of_days}} Days</p>
+        <p class="mb-4" [innerHTML]="selectedProgram.program_detailed_description | apiHtml"></p>
+        <div style="text-align: center;">
+          <button mat-raised-button class="mb-4" (click)="startChallenge(selectedProgram.program_id)">Accept Challenge</button>
+        </div>
+      </mat-card>
+    </div>
+    <div class="challenges-list-container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-4" *ngIf="isCardOpened && isChallengeAccepted">
+      <div class="panel-action-buttons mb-4">
+        <button mat-raised-button (click)="accordion.openAll()">Expand All <i class="fa fa-angle-down" aria-hidden="true"></i></button>
+        <button mat-raised-button (click)="accordion.closeAll()">Collapse All <i class="fa fa-angle-up" aria-hidden="true"></i></button>
+      </div>
+      <div class="card-title" *ngIf="isChallengeAccepted">{{programInfo}} {{challengeEndDate}}</div>
+      <div class="col-12 mb-4 mt-4" *ngIf="isChallengeAccepted">
+        <mat-accordion class="panel-headers-align" multi>
+          <mat-expansion-panel *ngFor="let dailyChallenge of dailyChallengeList" [disabled]="dailyChallenge.isDayLocked" [expanded]="dailyChallenge.temp_date === 'Today'">
+            <mat-expansion-panel-header>
+              <mat-panel-title [ngClass]="{'card-unlocked':(dailyChallenge.isDayLocked == false)}">{{dailyChallenge.temp_date}}</mat-panel-title>
+              <mat-panel-description [ngClass]="{'card-unlocked':(dailyChallenge.isDayLocked == false)}">
+                {{dailyChallenge.title | uppercase}}
+                <mat-icon>{{dailyChallenge.icon}}</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div id="challenge-container" [innerHTML]="dailyChallenge.instruction | apiHtml"></div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+      <div class="col-12 mb-4 comments">
+        <mat-card>
+          <div *ngIf="isChallengeCompleted">
+            <div *ngIf="!isFormSubmitted && !isFormLoading">
+            <div class="card-title">Leave Your Feedback</div>
+            <hr />
+            <form (ngSubmit)="submitFeedback()">
+              <div class="form-group mb-4">
+                <label>How much do you like this challenge?</label>
+                <ngb-rating [formControl]="user_ratings" class="rating-star ml-4" [max]="5" [readonly]="false"></ngb-rating>
+                <mat-error *ngIf="user_ratings.hasError('required')">Please give your<strong> ratings </strong>for this challenge.</mat-error>
+              </div>
+              <div class="mb-4">
+                <label>Do you want to share this on social media?</label>
+                <mat-radio-group class="ml-4" [formControl]="likely_to_share" required>
+                  <mat-radio-button value="yes">Yes</mat-radio-button>
+                  <mat-radio-button class="ml-4" value="no">No</mat-radio-button>
+                </mat-radio-group>
+                <mat-error *ngIf="likely_to_share.hasError('required')">This field is <strong>required.</strong></mat-error>
+              </div>
+              <!-- <div class="mb-4">
+                        <label>Did you complete all the challenges in the list?</label>
+                        <mat-radio-group class="ml-4" [formControl]="completed_all_challenges" required>
+                          <mat-radio-button value="yes">Yes</mat-radio-button>
+                          <mat-radio-button class="ml-4" value="no">No</mat-radio-button>
+                        </mat-radio-group>
+                        <mat-error *ngIf="completed_all_challenges.hasError('required')">This field is <strong>required.</strong></mat-error>
+                        </div> -->
+              <div class="mb-4">
+                <mat-form-field class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" appearance="outline">
+                  <mat-label>Share Your Experience</mat-label>
+                  <textarea matInput [formControl]="feedback_message" required></textarea>
+                  <mat-error *ngIf="feedback_message.hasError('required')">Please leave your <strong>Message!</strong></mat-error>
+                </mat-form-field>
+              </div>
+              <div class="submit mb-4">
+                <button mat-raised-button class="submitBtn" type="submit">Submit Feedback</button>
+              </div>
+            </form>
+          </div>
+          <div class="form-loading-screen" *ngIf="isFormLoading"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></div>
+          </div>
+          <div class="share">
+            <div class="card-title">Share with your Friends</div>
+            <hr />
+            <span>
+              <a (click)="shareBtn('facebook')"><i class="fab fa-facebook-square" aria-hidden="true"></i></a>
+              <a (click)="shareBtn('twitter')"><i class="fab fa-twitter-square" aria-hidden="true"></i></a>
+              <a (click)="shareBtn('linkedin')"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+            </span>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer *ngIf="!isLoading && !isProgramListLoading"></app-footer>

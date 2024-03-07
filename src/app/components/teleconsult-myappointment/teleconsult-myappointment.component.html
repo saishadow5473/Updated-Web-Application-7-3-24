@@ -1,0 +1,441 @@
+<app-side-navigation-bar></app-side-navigation-bar>
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+
+<div class="teleconsult-main-container" id="not-print">
+  
+  <h3 class="mb-4 mobViewTitle">My Appointments</h3>
+  <div *ngIf="isLoading  == true && userDataReceived == false" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></div>
+  <div  *ngIf="isLoading == false && userDataReceived == true">
+  <div id="back" class="fa fa-reply element tele-back-btn" (click)="showTeleDashboard()">
+      <div style="font-size: 12px;
+      padding-top: 2px;">Back</div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 mb-4">
+      <div class = "teleconsult_history_card">
+        <h4 class="teleconsult_history_title mb-3">Past History</h4>
+        <div  class="teleconsult_history_scroll">
+          <div *ngIf = "consultationHistory.length > 0">
+          <div class="teleconsult_history_content" *ngFor = "let teleconsultHistory of consultationHistory; let i = index;">
+            <table>
+              <tr style="cursor: default;">
+              
+                <td style="width: 10px;">
+                  <i class="fas fa-1x fa-video video_icon" style="color: #F782AC;"></i>
+                  <!-- <i class="fas fa-1x fa-video video_icon" style="color: #ff4081a6;" style="visibility: hidden;"></i> -->
+                </td>
+                
+                <td style="width: 160px;word-break: break-word;">
+                  <div class="teleconsult_meh_title_color">{{teleconsultHistory.consultant_name}}</div>
+                  <div class="teleconsult_li_color">{{'Consultant'}}</div>
+                  <div class="teleconsult_li_color" style="font-size: 11px;">Appointment: 
+                    {{(teleconsultHistory.appointment_status !== undefined && teleconsultHistory.appointment_status !== null && teleconsultHistory.appointment_status.length > 0) ? ((teleconsultHistory.appointment_status.toLowerCase() == 'canceled') ? 'Cancelled' : teleconsultHistory.appointment_status) : 'NA'}}
+                  </div>
+                </td>
+
+                <td style="width: 150px;word-break: break-word;">
+                  <div class="teleconsult_meh_title_color">{{extractDate(teleconsultHistory.appointment_start_time)}}</div>
+                  <div class="teleconsult_li_color">{{extractTime(teleconsultHistory.appointment_start_time)}} - {{teleconsultHistory.appointment_duration}}</div>
+                  <div class="teleconsult_li_color" style="font-size: 11px;">Call status: 
+                    {{(teleconsultHistory.call_status !== undefined && teleconsultHistory.call_status !== null && teleconsultHistory.call_status.length > 0) ? teleconsultHistory.call_status : 'NA'}}
+                  </div>
+                </td>
+                
+                <td style="display: none;">
+                  <div class="teleconsult_li_color" style="padding-top: 1px;font-size: 12px;">{{teleconsultHistory.appointment_duration}}</div>
+                  <div class="teleconsult_meh_title_color" style="visibility:hidden;">0</div>
+                </td>
+                
+              </tr>
+              <tr>
+                <td colspan="12">
+                  <ng-container *ngIf = "teleconsultHistory.consultation_fees != '0' && teleconsultHistory.call_status && teleconsultHistory.call_status.toLowerCase() === 'completed'">
+                    <button class="print_bill_button" (click) = "printBill(teleconsultHistory)">Print&nbsp;Invoice</button>
+                  </ng-container>
+                  <button class="refund_button" (click)="showRefundModelbox(teleconsultHistory)" *ngIf="refundBtnShow(teleconsultHistory)">Request&nbsp;Refund</button>
+                </td>
+              </tr>
+            </table>
+            
+            <div class ="teleconsult_history_line">
+              <span class="dot"></span>
+              <div class="horizontal-rule"></div> 
+              <span class="dot"></span>
+            </div>
+          </div>
+
+          <div class="teleconsult_history_content_mobile" *ngFor = "let teleconsultHistory of consultationHistory">
+            <table>
+              <tr>
+              
+                <td>
+                  <i class="fas fa-1x fa-video video_icon_mobile" style="color: #ff4081a6;"></i>
+                  <!-- <i class="fas fa-1x fa-video video_icon" style="color: #ff4081a6;" style="visibility: hidden;"></i> -->
+                </td>
+                
+                <td>
+                  <div class="teleconsult_meh_title_color_mobile" style="word-break: break-word;width: -webkit-fill-available;width: -moz-available;width: stretch;">{{teleconsultHistory.consultant_name}}</div>
+                  <div class="teleconsult_li_color_mobile" style="word-break: break-word;width: -webkit-fill-available;width: -moz-available;width: stretch;">{{'Consultant'}}</div>
+                  <div class="teleconsult_li_color_mobile" style="color: grey;">
+                    Appointment: 
+                    {{(teleconsultHistory.appointment_status !== undefined && teleconsultHistory.appointment_status !== null && teleconsultHistory.appointment_status.length > 0) ? ((teleconsultHistory.appointment_status.toLowerCase() == 'canceled') ? 'Cancelled' : teleconsultHistory.appointment_status) : 'NA'}}
+                  </div>
+                  <div class="teleconsult_li_color_mobile" style="color: grey;">Call status: 
+                    {{(teleconsultHistory.call_status !== undefined && teleconsultHistory.call_status !== null && teleconsultHistory.call_status.length > 0) ? teleconsultHistory.call_status : 'NA'}}
+                  </div>
+                  <div class="teleconsult_li_descrip_mobile" style="color: grey;word-break: break-word;width: -webkit-fill-available;width: -moz-available;width: stretch;">
+                    <span class="dot_padding_1" style="padding-right: 5px;">{{extractDate(teleconsultHistory.appointment_start_time)}}</span>
+                    <span class="dots" style="padding-right: 5px;"></span>
+                    <span class="dot_padding" style="padding-right: 5px;padding-left: 5px;">{{extractTime(teleconsultHistory.appointment_start_time)}}</span>
+                    <span class="dots" style="padding-right: 5px;"></span>
+                    <span class="dot_padding" style="padding-right: 5px;padding-left: 5px;">{{teleconsultHistory.appointment_duration}}</span>
+                  </div>
+                </td>
+                
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <ng-container *ngIf = "teleconsultHistory.consultation_fees != '0' && teleconsultHistory.call_status && teleconsultHistory.call_status.toLowerCase() === 'completed'">
+                    <button class="print_bill_button" (click) = "printBill(teleconsultHistory)">Print Invoice</button>
+                  </ng-container>
+                  <button class="refund_button" (click)="showRefundModelbox(teleconsultHistory)" *ngIf="refundBtnShow(teleconsultHistory)">Request&nbsp;Refund</button>
+                </td>
+              </tr>
+            </table>
+            
+            <div class ="teleconsult_history_line_mobile">
+              <span class="dot"></span>
+              <div class="horizontal-rule"></div> 
+              <span class="dot"></span>
+            </div>
+          </div>
+          </div>
+          <div *ngIf = "consultationHistory.length == 0" style="text-align: center; margin-top: 100px;">
+            <p> No past history appointments </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div  class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 mb-4">
+      <div class = "teleconsult_appointment_card">
+        <h4 class="teleconsult_appointment_title mb-3">Upcoming Appointments</h4>
+
+        <div  class="teleconsult_appointment_scroll">
+          <ng-container *ngIf ="consultationAppointments.length > 0; else noAppointment">
+          <div class="teleconsult_appointment_content" *ngFor = "let consultationAppointment of consultationAppointments">
+            <!-- <ng-container *ngIf= "consultationAppointment.appointment_status === 'Requested' || consultationAppointment.appointment_status === 'Approved' || consultationAppointment.call_status === 'on_going'"> -->
+            <ng-container *ngIf= "consultationAppointment.appointment_status != 'Rejected' && consultationAppointment.appointment_status != 'rejected' && consultationAppointment.appointment_status != 'Canceled' && consultationAppointment.appointment_status != 'canceled'  && consultationAppointment.call_status != 'completed' && consultationAppointment.call_status != 'Completed'">
+            <table>
+              <tr>
+              
+                <td>
+                  <i class="fas fa-1x fa-video appointment_video_icon" style="color: #F782AC;"></i>
+                  <!-- <i class="fas fa-1x fa-video appointment_video_icon" style="color: #ff4081a6;" style="visibility: hidden;"></i> -->
+                </td>
+                
+                <td style="width: 220px;word-break: break-word;">
+                  <div class="teleconsult_apmt_title_color">{{consultationAppointment.consultant_name}}</div>
+                  <div [class.req_text_color] = "consultationAppointment.appointment_status !== 'Requested'" class="teleconsult_apmt_li_color">{{consultationAppointment.appointment_status}}</div>
+                </td>
+
+                <td>
+                  <div class="teleconsult_apmt_title_color">{{extractDate(consultationAppointment.appointment_start_time)}}</div>
+                  <div class="teleconsult_apmt_li_color" style="visibility:hidden;">0</div>
+                </td>
+                
+                <td>
+                  <div class="teleconsult_apmt_title_color">{{extractTime(consultationAppointment.appointment_start_time)}}</div>
+                  <div class="teleconsult_apmt_li_color" style="visibility:hidden;">0</div>
+                </td>
+
+                <td>
+                  <div *ngIf="joinCallBtnLoad" class="joinCall_loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></div>
+                  <ng-container *ngIf="consultationAppointment.appointment_status !== 'requested' && consultationAppointment.appointment_status !== 'Requested' && !joinCallBtnLoad">                    
+                    <span [matTooltip]="'Enabled 5 min before call'" [matTooltipDisabled]="consultantStatusMapping[consultationAppointment.ihl_consultant_id] == 'Online' && appointmentJoinCallButtonStatusMapping[consultationAppointment.appointment_id] == true">
+                      <button style="width: 110px; margin: 3px 5px;"
+                      [disabled]="consultantStatusMapping[consultationAppointment.ihl_consultant_id] != 'Online' || appointmentJoinCallButtonStatusMapping[consultationAppointment.appointment_id] != true"
+                      mat-raised-button class="myapmt_call_button visiblebutton" (click) = "joinCall(consultationAppointment.appointment_id, consultationAppointment.ihl_consultant_id,consultationAppointment)">Join call <i class="fas fa-phone-alt" style = "padding-left: 0px;margin-top: -3px;"></i></button>
+                    </span>
+
+                    <div style="float:left; font-size: 12px;color: #4d4d4d;position: absolute;" *ngIf="appointmentJoinCallButtonStatusMapping[consultationAppointment.appointment_id] == true" class="text-center lead" [ngClass]="{'text-danger':consultantStatusMapping[consultationAppointment.ihl_consultant_id] == 'Busy', 'text-muted':consultantStatusMapping[consultationAppointment.ihl_consultant_id] == 'Offline', 'text-success':consultantStatusMapping[consultationAppointment.ihl_consultant_id] == 'Online'}">
+                      Consultant is {{consultantStatusMapping[consultationAppointment.ihl_consultant_id]}}
+                    </div>
+                  </ng-container>
+                </td>
+                <td>
+                  <button [disabled]="cancelButton" [class.cancelvisible] = "consultationAppointment.appointment_status == 'Requested' || consultationAppointment.appointment_status == 'requested' || consultationAppointment.appointment_status == 'Approved'" mat-raised-button class="cancelButton cancelAppointBtn" (click) = "showCancelandRefundModelBox(consultationAppointment.appointment_id, consultationAppointment)">Cancel</button>
+                </td>
+                <td>
+                  <button mat-raised-button class="updateDocButton updateDocAppointBtn" (click) = "showMedicalFiles(consultationAppointment)">Update Document</button>
+                </td>
+
+              </tr>
+            </table>
+            <button *ngIf="consultationAppointment.consultation_fees != '0'" mat-raised-button class="printInvoiceBtn" (click) = "printBill(consultationAppointment)">Print Invoice</button>
+            <div class ="teleconsult_apmt_line">
+              <span class="apmt_dot"></span>
+              <div class="apmt_horizontal-rule"></div> 
+              <span class="apmt_dot"></span>
+            </div>
+            </ng-container>
+          </div>
+
+          <div class="teleconsult_appointment_content_mobile" *ngFor = "let consultationAppointment of consultationAppointments">
+            <!-- <ng-container *ngIf= "consultationAppointment.appointment_status === 'Requested' || consultationAppointment.appointment_status === 'Approved' || consultationAppointment.call_status === 'on_going'"> -->
+              <ng-container *ngIf= "consultationAppointment.appointment_status != 'Rejected' && consultationAppointment.appointment_status != 'rejected' && consultationAppointment.appointment_status != 'Canceled' && consultationAppointment.appointment_status != 'canceled'  && consultationAppointment.call_status != 'completed' && consultationAppointment.call_status != 'Completed'">
+            <table>
+              <tr>
+              
+                <td>
+                  <i class="fas fa-1x fa-video appointment_video_icon_mobile" style="color: #ff4081a6;"></i>
+                  <!-- <i class="fas fa-1x fa-video appointment_video_icon" style="color: #ff4081a6;" style="visibility: hidden;"></i> -->
+                </td>
+                
+                <td style="width: 230px;word-break: break-word;float: left;">
+                  <div class="teleconsult_apmt_title_color_mobile">{{consultationAppointment.consultant_name}}</div>
+                  <div class="teleconsult_apmt_li_descrip_mobile">
+                    <span class="apmt_dot_padding_1" style="padding-right: 5px;">{{extractDate(consultationAppointment.appointment_start_time)}}</span>
+                    <span class="apmt_dots" style="padding-right: 5px;"></span>
+                    <span class="apmt_dot_padding" style="padding-right: 5px;padding-left: 5px;">{{extractTime(consultationAppointment.appointment_start_time)}}</span>
+                  </div>
+                  <div [class.req_text_color] = "consultationAppointment.appointment_status !== 'Requested'" class="teleconsult_apmt_li_color">{{consultationAppointment.appointment_status}}</div>
+                </td>
+
+                <td class = "mob_screen_hide">
+                  <ng-container *ngIf="consultationAppointment.appointment_status !== 'requested' && consultationAppointment.appointment_status !== 'Requested'">
+                    <span [matTooltip]="'Enabled 5 min before call'" [matTooltipDisabled]="consultantStatusMapping[consultationAppointment.ihl_consultant_id] == 'Online' && appointmentJoinCallButtonStatusMapping[consultationAppointment.appointment_id] == true">
+                      <button style="width: 110px;"
+                      [disabled]="consultantStatusMapping[consultationAppointment.ihl_consultant_id] != 'Online' || appointmentJoinCallButtonStatusMapping[consultationAppointment.appointment_id] != true"
+                      mat-raised-button class="myapmt_call_button visiblebutton" (click) = "joinCall(consultationAppointment.appointment_id, consultationAppointment.ihl_consultant_id,consultationAppointment)">Join call <i class="fas fa-phone-alt" style = "padding-left: 0px;margin-top: -3px;"></i></button>
+                    </span>
+                    <div style="float:left; font-size: 12px;color: #4d4d4d;" *ngIf="appointmentJoinCallButtonStatusMapping[consultationAppointment.appointment_id] == true" class="text-center lead" [ngClass]="{'text-danger':consultantStatusMapping[consultationAppointment.ihl_consultant_id] == 'Busy', 'text-muted':consultantStatusMapping[consultationAppointment.ihl_consultant_id] == 'Offline', 'text-success':consultantStatusMapping[consultationAppointment.ihl_consultant_id] == 'Online'}">
+                      Consultant is {{consultantStatusMapping[consultationAppointment.ihl_consultant_id]}}
+                    </div>
+                  </ng-container>    
+                  <button [disabled]="cancelButton" [class.cancelvisible] = "consultationAppointment.appointment_status == 'Requested' || consultationAppointment.appointment_status == 'requested' || consultationAppointment.appointment_status == 'Approved'" mat-raised-button class="cancelButton cancelAppointBtn" (click) = "showCancelandRefundModelBox(consultationAppointment.appointment_id, consultationAppointment)" >Cancel</button>
+                  <button mat-raised-button class="updateDocAppointBtn" (click) = "showMedicalFiles(consultationAppointment.appointment_id)">Update Document</button>              
+                </td>
+                <!-- <td class = "mob_screen_hide">
+                  <button [class.cancelvisible] = "consultationAppointment.appointment_status == 'Requested' || consultationAppointment.appointment_status == 'requested' || consultationAppointment.appointment_status == 'Approved'" mat-raised-button class="cancelButton cancelAppointBtn" (click) = "showCancelandRefundModelBox(consultationAppointment.appointment_id, consultationAppointment)" >Cancel</button>
+                </td> -->
+              </tr>
+            </table>
+
+            <ng-container *ngIf="consultationAppointment.appointment_status !== 'requested' && consultationAppointment.appointment_status !== 'Requested'">
+              <span [matTooltip]="'Enabled 5 min before call'" [matTooltipDisabled]="consultantStatusMapping[consultationAppointment.ihl_consultant_id] == 'Online' && appointmentJoinCallButtonStatusMapping[consultationAppointment.appointment_id] == true">
+                <button 
+                [disabled]="consultantStatusMapping[consultationAppointment.ihl_consultant_id] != 'Online' || appointmentJoinCallButtonStatusMapping[consultationAppointment.appointment_id] != true"
+                mat-raised-button class="myapmt_mob_call_button displaybutton" (click) = "joinCall(consultationAppointment.appointment_id, consultationAppointment.ihl_consultant_id,consultationAppointment)">Join call <i class="fas fa-phone-alt" style = "padding-left: 5px;margin-top: -3px;"></i></button>
+              </span>
+              <div style="text-align: center;font-size: 12px;color: #4d4d4d;" *ngIf="appointmentJoinCallButtonStatusMapping[consultationAppointment.appointment_id] == true"  class="displaybutton text-center lead" [ngClass]="{'text-danger':consultantStatusMapping[consultationAppointment.ihl_consultant_id] == 'Busy', 'text-muted':consultantStatusMapping[consultationAppointment.ihl_consultant_id] == 'Offline', 'text-success':consultantStatusMapping[consultationAppointment.ihl_consultant_id] == 'Online'}"> 
+                Consultant is {{consultantStatusMapping[consultationAppointment.ihl_consultant_id]}}
+              </div>
+            </ng-container>           
+            <button [disabled]="cancelButton" style="margin-top: 5px;margin: auto;" [class.displayCancelbutton] = "consultationAppointment.appointment_status == 'Requested' || consultationAppointment.appointment_status == 'requested' || consultationAppointment.appointment_status == 'Approved'" mat-raised-button class="cancelButton cancelAppointBtn" (click) = "showCancelandRefundModelBox(consultationAppointment.appointment_id, consultationAppointment)">Cancel</button>
+
+            <div class ="teleconsult_apmt_line_mobile">
+              <span class="apmt_dot"></span>
+              <div class="apmt_horizontal-rule"></div> 
+              <span class="apmt_dot"></span>
+            </div>
+            </ng-container>
+          </div>
+          </ng-container>
+          <ng-template #noAppointment>
+            <p style="text-align: center; margin-top: 100px;"> No upcoming appointments </p>
+          </ng-template>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+  <div class="row" *ngIf="isLoading == false && userDataReceived == false">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-4" style="color: red;text-align: center;margin: auto;">
+      There is a problem with connecting to the server.<br>Please try after sometime.
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
+
+<!-- 
+  <i class="fas fa-5x fa-heartbeat" style="color: #F53F00;"></i>
+  <i class="fas fa-5x fa-pills" style="color: #2895F0;"></i>
+  <i class="fas fa-5x fa-lungs-virus" style="color: #BE4BDC;"></i>
+  <i class="fas fa-5x fa-brain" style="color: #FD7E15;"></i>
+  <i class="fas fa-5x fa-medkit" style="color: #65BC87;"></i>
+  <i class="fas fa-5x fa-bone" style="color: #F782AC;"></i>
+
+  <i class="fas fa-info"></i>
+  <i class="fas fa-phone-alt"></i>
+  <i class="far fa-calendar-alt"></i>
+-->
+
+<!----------------------------------------------Print Bill------------------------->
+<div class="text-dark" id=print-content style="color: black">
+  <!-- <div class="row">
+    <div class="col-2 text-right">
+      <img src="./assets/img/ihl-plus.png" class="h-100">
+    </div>
+    <div class="col-3" style="border-left:1px solid lightgrey">
+      <span style="color:rgb(40, 149, 240);">INDIA</span>
+      <br>
+      <span style="color:gray;">HEALTH</span>
+      <br>
+      <span style="color:rgb(40, 149, 240);">LINK</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12" >
+      <span style="float: right;">
+        Contact : +91 80-47485152
+        <br>
+        Email : info@indiahealthlink.com
+        <br>
+        Web : indiahealthlink.com
+        <br>
+        Address : SCO #394, New Gain Market
+        <br>
+        Haryana, India.
+      </span>
+    </div>
+  </div> -->
+  <div class="row">
+    <div class="col-2 text-right" style="font-size: 10px;">
+      <img src="./assets/img/ihl-plus.png" class="h-100" style="width: 120px; max-height: 60%;">
+    </div>
+    <div class="col-4 border-left"> 
+      <span style="color:rgb(40, 149, 240);">INDIA</span>
+      <br>
+      <span style="color:gray;">HEALTH</span>
+      <br>
+      <span style="color:rgb(40, 149, 240);">LINK</span>
+    </div>
+    <div class="col-6">
+      <div style="float: right;">
+        Contact: +91 80-47485152
+        <br>
+        Email: info@indiahealthlink.com
+        <br>
+        Web: indiahealthlink.com
+        <br>
+        Address: SCO #394, New Gain Market
+        <br>
+        Haryana, India.
+      </div>
+    </div>
+  </div>
+
+  <div class="row my-2">
+    <div class="col-4"></div>
+    <div class="col-4 text-center" style="font-weight: bold;">Payment Receipt</div>
+  </div>
+  <hr class="col-12">
+  <div class="row my-30">
+    <div class="col-6">
+      <span>
+        <b>Name:</b> {{userName}}
+        <br>
+        <b>Phone Number:</b> {{userMobNumber}}
+        <br>
+        <b>Email:</b> {{userMail}}
+        <br>
+        <b>Address:</b> <span [innerHTML]="userAddress"></span>
+      </span>
+    </div>
+    <div  class="col-6" style="float:right;">
+      <span>
+        <b>Date:</b> {{appoinmentDate}}
+        <br>
+        <b>GST Number:</b> {{'06AADCI2816A1Z7'}}
+        <br>
+        <b>Invoice Number:</b> {{printInvoiceNumber}}
+        <br>
+        <b>Doctor Name:</b> {{doctorName}}
+      </span>
+    </div>
+  </div>
+  <hr>
+  <div  class="row">
+    <span class="col-6"><b>Item Description</b></span>
+    <span class="col-3"><b>Payment Method</b></span>
+    <span class="col-3"><b>Amount (Rs)</b></span>
+  </div>
+  <hr>
+  <div *ngIf="couponDiscount > 0" class="row">
+    <span class="col-6">
+      {{' '}}
+    </span>
+    <span class="col-3">Doctor Fees</span>
+    <!-- <span class="col-3"><span>&#x20B9;</span> {{ consultationFees }}</span> -->
+    <div class="col-3" style="text-align: right; right: 100px"> {{consultationFees}} </div>
+  </div>
+  <div *ngIf="couponDiscount > 0" class="row">
+    <span class="col-6">
+      {{' '}}
+    </span>
+    <span class="col-3">Coupon</span>
+    <!-- <span class="col-3"> - <span>&#x20B9;</span> {{ couponDiscount }}</span> -->
+    <div class="col-3" style="text-align: right; right: 100px"> {{couponDiscount}} </div>
+  </div>
+  <div  class="row">
+    <span class="col-6">
+      Video Consultation Fees 
+      <br>
+      Appointment on {{ appoinmentDate +', '+ appointmentOn}}
+    </span>
+    <span class="col-3">Net Amount</span>
+    <!-- <span class="col-3"><span >&#x20B9;</span> {{deductedIgstAmt}}</span> -->
+    <!-- <div class="col-3" style="text-align: right; right: 100px"> <img src="./assets/img/Indian_Rupee_symbol.png" style="width:10px; height: 10px;"> {{deductedIgstAmt}} </div> -->
+    <div class="col-3" style="text-align: right; right: 100px"> {{deductedIgstAmt}} </div>
+  <!-- <hr class="col-12"> -->
+  </div>
+  <div  class="row" *ngIf="state != 'haryana'">
+    <span class="col-6">
+      {{' '}}
+    </span>
+    <span class="col-3">Tax: IGST@ 18%</span>
+    <!-- <span class="col-3"><span *ngIf="consultationFees != 'Free Call'">&#x20B9;</span> {{igstAmt}}</span> -->
+    <div class="col-3" style="text-align: right; right: 100px"> {{igstAmt}} </div>
+  <!-- <hr class="col-12"> -->
+  </div>
+  <div  class="row" *ngIf="state == 'haryana'">
+    <span class="col-6">
+      {{' '}}
+    </span>
+    <span class="col-3">Tax: SGST@ 9%</span>
+    <!-- <span class="col-3"><span *ngIf="consultationFees != 'Free Call'">&#x20B9;</span> {{sgstAmt}}</span> -->
+    <div class="col-3" style="text-align: right; right: 100px"> {{sgstAmt}}  </div>
+  <!-- <hr class="col-12"> -->
+  </div>
+  <div  class="row" *ngIf="state == 'haryana'">
+    <span class="col-6">
+      {{' '}}
+    </span>
+    <span class="col-3">Tax: CGST@ 9%</span>
+    <!-- <span class="col-3"><span *ngIf="consultationFees != 'Free Call'">&#x20B9;</span> {{sgstAmt}}</span> -->
+    <div class="col-3" style="text-align: right; right: 100px"> {{sgstAmt}}  </div>
+  <!-- <hr class="col-12"> -->
+  </div>
+  <div  class="row">
+    <span class="col-6">
+      {{' '}}
+    </span>
+    <span class="col-3">Total (Incl. of all taxes)</span>
+    <!-- <span class="col-3"><span *ngIf="consultationFees != 'Free Call'">&#x20B9;</span> {{totalAmount}}</span> -->
+    <div class="col-3" style="text-align: right; right: 100px"> {{totalAmount}}  </div>
+  <!-- <hr class="col-12"> -->
+  </div>
+  <hr>
+  <div  class="row">
+    <span class="col-12">
+      Note- This is an electronic receipt (Rupees in INR)
+    </span>
+  </div>
+</div>

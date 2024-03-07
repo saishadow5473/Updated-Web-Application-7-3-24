@@ -1,0 +1,235 @@
+<div class="container-fluid"> 
+  <div class="row no-gutter"> 
+    <div class="col-md-8 d-none d-md-flex bg-image">
+    </div> 
+    <div class="col-md-4 bg-light"> 
+      <div class="login d-flex py-5"> 
+        <div class="container"> 
+          <div class="row"> 
+            <div class="col-lg-7 col-xl-12" *ngIf="!ssoRegistrationFlow">
+              <div class="login-logo"> </div>
+              <button style="width: 189px;box-shadow:none;pointer-events: none;" (click)="viewMode ='tab1';" class="btn" [class.activebtn]="viewMode == 'tab1'" rel="tab1">Login</button>
+              <!-- <div class="tab" style="margin-bottom: 10px;"> code works fyn commented based on requirement
+                <button style="width: 189px;box-shadow:none;" (click)="viewMode ='tab1';" class="btn" [class.activebtn]="viewMode == 'tab1'" rel="tab1">Login</button>
+                <button style="width: 200px;box-shadow:none;" (click)="viewMode ='tab2';" class="btn" [class.activebtn]="viewMode == 'tab2'" rel="TAB2">Single Sign On</button>
+              </div> -->
+              <div [ngSwitch]="viewMode" style="margin-top:20px">
+                <div id="tab1" *ngSwitchCase="'tab1'">
+                  <form class="form" #loginForm="ngForm" (ngSubmit)="loginForm.form.valid && onLoginSubmit()" novalidate>
+                    <div class="form-group" *ngIf="invalidLogin">
+                      <span class="text-danger">Invalid login</span>
+                    </div>
+                    <div class="form-group" *ngIf="loginCountExceeded">
+                      <span class="text-danger">Login count exceeded, try after 24 hours</span>
+                    </div>
+                    <div class="form-group">
+                      <input type="text" class="form-control" [(ngModel)]="userModal.email" name="email" #email="ngModel" placeholder="Email, Mobile or Aadhaar" (ngModelChange)="validEmailType($event)" required>
+                      <span class="text-danger"
+                          *ngIf="(email.touched || loginForm.submitted) && email.errors?.required">
+                          Email is required
+                      </span>
+                      <!-- <span class="text-danger"
+                          *ngIf="loginForm.submitted && email.errors?.required">
+                          Email is required
+                      </span> -->
+                      <span class="text-danger" *ngIf="emailValid && !email.errors?.required">
+                          Enter a valid email address
+                      </span>
+                      <span class="text-danger" *ngIf="mobileAadharValid && !email.errors?.required">
+                        Enter a valid Mobile or Aadhaar
+                      </span>
+                    </div>
+                    <div class="form-group">
+                      <input type="password" class="form-control" [(ngModel)]="userModal.password" name="password"
+                          #password="ngModel" placeholder="Password" required>
+                      <span class="text-danger"
+                          *ngIf="(password.touched || loginForm.submitted) && password.errors?.required">
+                          Password is required
+                      </span>
+                    </div>
+                    <div class="form-group">
+                      <button [disabled]="loginBtnDisabled" class="btn btn-primary" type="submit">Login <span *ngIf="isLoading" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></span></button>
+                    </div>
+                    <hr>
+
+                    <div class="demo-credential" *ngIf="demoCredential">
+                      <div class="credential-header">
+                          <span class="credential-title">Demo Credential</span>
+                      </div>
+                      <div class="credential-info">
+                          <span><strong>Email:</strong> demouser@indiahealthlink.com</span><br>
+                          <span><strong>Password:</strong> Test@123</span>
+                      </div>
+                    </div>
+                    
+                    <!-- <div style="text-align: center;" >
+                      <a on-click="ssoFromLogin()" [routerLink]="['/sso-login']"><span> Sign in with your organization account >></span></a>
+                    </div> -->
+                    <div class="div-options" style="margin-top: 12px;">
+                      <a [routerLink]="['/forgot-password']"><span style="float:left;">Forgot password?</span></a>
+                      <a [routerLink]="['/register']"><span style="float: right">Register</span></a>
+                    </div>
+                  </form>
+                  <div class="corporate-login" *ngIf="!vaptEnabled && !demoCredential">
+                    <div class="star-wrapper">
+                      <div class="horizontal-line"></div>
+                      <div class="star">&#9733;</div>
+                      <div class="horizontal-line"></div>
+                    </div>
+                    <span style="color: black; margin-left: 70px;" *ngIf="isSsoLoggedIn()">You have currently signed in.. <a [routerLink]="['/']" (click)="ssoLogout()"><span> Sign out</span></a></span>
+                    <div class="form-group">
+                      <button style="background-color: #dee2e6; color: #000;" class="btn btn-primary" (click)="ssoLogin(true)" [disabled]="ssoLoading"><img src="./assets/img/microsoft.png" alt="Image" style="width: 25px;height: 25px;"><a style="margin-left:17px"> Corporate Login <span *ngIf="ssoLoading" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></span></a></button>
+                    </div>
+                  </div>
+                </div>
+                <div id="tab2" *ngSwitchCase="'tab2'">
+                  <!-- <form class="form" #orgForm="ngForm"> -->
+                    <div *ngIf="ssoOrganizationSearch"> <!--This is for *ngIf-->
+                      <span style="font-weight: 500;color: black;">Search Organization</span>
+                      <div class="form-group has-search" style="margin-top:20px;padding-bottom:20px">
+                        <span class="fa fa-search form-control-feedback"></span>
+                        <input type="text" class="form-control form-group" placeholder="Search" (ngModelChange)="ssoOrganization($event)" [matAutocomplete] = "auto" [formControl] = "orgControl">
+                        <mat-autocomplete #auto="matAutocomplete" >
+                          <mat-option *ngFor="let org_data of orgName" [value]="org_data.company_name" (click)="onSsoOptionSelected(org_data.affiliation_unique_name, org_data.sign_in_option)">
+                            <ng-container *ngIf="org_data.sign_in_option === 'microsoft'">
+                              <img style="width: 25px;height: 15px;padding-right: 10px;" src="./assets/img/microsoft.png" alt="Microsoft Image">
+                            </ng-container>
+                            <ng-container *ngIf="org_data.sign_in_option === 'google'">
+                              <img style="width: 25px;height: 15px;padding-right: 10px;" src="./assets/img/google.png" alt="Google Image">
+                            </ng-container>
+                            <ng-container *ngIf="!org_data.sign_in_option">
+                              <img style="width: 25px;height: 15px;padding-right: 10px;" src="./assets/img/noImage.png" alt="No Image">
+                            </ng-container>
+                            <span>{{org_data.company_name}}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                      </div>
+                      <span style="color: black;margin-left:87px" *ngIf="!isSsoLoggedIn() && ssoLoginButton">You are not currently signed in</span>
+                      <span style="color: black;margin-left:87px" *ngIf="isSsoLoggedIn()">You have currently signed in.. <a [routerLink]="['/']" (click)="ssoLogout()"><span> Sign out</span></a></span>
+                      <div class="form-group" style="padding-left: 62px;" *ngIf="ssoLoginButton">
+                        <button style="background-color: #1483d7d4;font-weight: bold;border-radius: 10px;width: 272px;" class="btn btn-primary" (click)="ssoLogin()" [disabled]="ssoLoading"><img src="./assets/img/microsoft.png" alt="Image" style="width: 30px;height: 30px;"><a style="margin-left:17px">Sign in using microsoft <span *ngIf="ssoLoading" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></span></a></button>
+                      </div>
+                      <span style="color: black;margin-left:87px" *ngIf="!isGoogleLoggedIn() && ssoGoogleLoginBtn">You are not currently signed in</span>
+                      <span style="color: black;margin-left:87px" *ngIf="isGoogleLoggedIn()">You have currently signed in.. <a [routerLink]="['/']" (click)="signOutWithGoogle()"><span> Sign out</span></a></span>
+                      <div class="form-group" style="padding-left: 62px;" *ngIf="ssoGoogleLoginBtn">
+                        <button style="background-color: #1483d7d4;font-weight: bold;border-radius: 10px;width: 272px;" class="btn btn-primary" (click)="signInWithGoogle()" [disabled]="ssoLoading"><img src="./assets/img/microsoft.png" alt="Image" style="width: 30px;height: 30px;"><a style="margin-left:17px">Sign in using google <span *ngIf="ssoLoading" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></span></a></button>
+                      </div>
+                    </div>
+                    <div *ngIf="ssoAlternativeEmailSection"> <!--This is for *ngIf-->
+                      <div class="form-group">
+                        <input type="text" class="form-control" [(ngModel)]="ssoAlternativeEmail" name="alternativeEmail" #alternativeEmail="ngModel"  placeholder="Alternative Email" (ngModelChange)="validateAlternativeEmail($event)" required>
+                      </div>
+                      <span class="text-danger" *ngIf="emailValid && !alternativeEmail.errors?.required">
+                        Enter a valid email address
+                      </span>
+                      <span class="text-danger"
+                        *ngIf="(alternativeEmail.touched) && alternativeEmail.errors?.required || ssoAlternativeEmailErr">
+                        Email is required
+                      </span>
+                      <span class="text-danger" *ngIf="domainNameExistInEmail">
+                        Please enter your personal email
+                      </span>
+                      <span class="text-danger" *ngIf="!ssoAlternativeEmailExist">
+                        Your email doesn't exist with our IHL Account.
+                      </span>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <button class="btn btn-primary" type="button" (click)="submitAlternativeEmail()" [disabled]="isEmailLoading || emailValid">Submit <span *ngIf="isEmailLoading" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></span></button>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <button class="btn btn-primary" type="button" (click)="returnSsoLogin()">Back</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="ssoOTPSection"> <!--This is for *ngIf-->
+                      <span style="font-weight: 500;color: black;padding-bottom: 10px;">Please enter the OTP sent to your alternative email</span>
+                      <div class="form-group" style="padding-left: 21px;padding-top: 25px;">
+                        <ng-otp-input #ngOtpInput (onInputChange)="onAlternativeEmailOTPChange($event)" *ngIf="showOtpComponent" [config]="config" ></ng-otp-input>
+                      </div>
+                      <span class="text-danger" *ngIf="ssoAlternativeEmailInvalidOTP">
+                        {{ssoAlternativeEmailOTPMsg}}
+                      </span>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <button class="btn btn-primary" type="submit" (click)="validateAlternativeEmailOTP()">Verify OTP <span *ngIf="ssoAlternativeEmailOTPLoading" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></span></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="setPasswordSection">
+                      <form [formGroup]="passwordForm" (ngSubmit)="ssoUserSetPassword()">
+                        <div class="form-group" *ngIf="isConvertSSoToIHLSuccess">
+                          <p class="alert alert-success">
+                            <strong>Your IHL Account switch over succesfully.Please login to continue.</strong>
+                          </p>
+                        </div>
+                        <div class="form-group">
+                          <!-- <label for="newPassword">New Password:</label> -->
+                          <input
+                            type="password"
+                            class="form-control"
+                            id="newPassword"
+                            formControlName="newPassword"
+                            placeholder="New Password"
+                          />
+                          <span class="text-danger"
+                            *ngIf="passwordForm.get('newPassword').hasError('required')">
+                            New password is required.
+                          </span>
+                          <span class="text-danger"
+                            *ngIf="passwordForm.get('newPassword').hasError('minlength')">
+                            Password must be at least 8 characters long.
+                          </span>
+                        </div>
+                        <div class="form-group">
+                          <!-- <label for="confirmPassword">Confirm Password:</label> -->
+                          <input
+                            type="password"
+                            class="form-control"
+                            id="confirmPassword"
+                            formControlName="confirmPassword"
+                            placeholder="Confirm Password"
+                          />
+                          <span class="text-danger"
+                            *ngIf="passwordForm.hasError('passwordMismatch')">
+                            Passwords do not match.
+                          </span>
+                        </div>
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-primary" [disabled]="passwordForm.invalid || passwordLoading">Set Password <span *ngIf="passwordLoading" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></span></button>
+                        </div>
+                      </form>  
+                    </div>
+                  <!-- </form> -->
+                </div>
+              </div>
+            </div> 
+
+            <!-- Registration Flow -->
+            <div class="col-lg-7 col-xl-12" *ngIf="ssoRegistrationFlow">
+              <div class="login-logo"></div>
+              <div class="hcare-info-container">
+                <p class="hcare-info1">Don't have an account?</p>
+                <p class="hcare-info2">Look's like your profile is not completed yet!!</p>
+                <p class="hcare-info3">Please complete your profile now by downloading our hCare application</p>
+              </div>
+              <div class="hcare-instruction">
+                <img src="./assets/img/hCare-instruction.png">
+              </div>
+              <div class="hcare-qrcode">
+                <img class="hcare-qrcode-img" src="./assets/img/hCare-QRCode.png">
+                <span class="hcare-qrcode-txt">Scan here to download and use <span style="color: blue;">hCare</span> application.</span>
+              </div>
+              <a [routerLink]="['/']" (click)="showLogin()"><span class="hcare-next-btn"> Next</span></a>
+            </div>
+          </div> 
+        </div> 
+      </div> 
+    </div> 
+  </div>
+</div>

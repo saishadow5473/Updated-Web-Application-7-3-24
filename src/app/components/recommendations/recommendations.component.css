@@ -1,0 +1,8 @@
+.recommendation-box{
+    border-left: 2px solid transparent;
+    padding-left: 16px;
+}
+
+.recommendation-box p {
+    color: black !important;
+}

@@ -1,0 +1,295 @@
+<div>
+
+  <div class="row">
+    <div *ngIf="min_history" style="color: rgb(72, 133, 237);font-weight: bold;font-size: 14px; text-align: center; padding: 15px; width: 100%; margin: auto; margin-top: 230px;">
+      No measurement history found..! 
+    </div>
+  </div>
+
+  <div *ngIf="weightbool">
+    <h5 [ngStyle]="titleStyles">Weight History</h5>
+  </div>
+  <div *ngIf="spo2bool">
+      <h5 [ngStyle]="titleStyles">SpO2 History</h5>
+  </div>
+  <div *ngIf="bmibool">
+    <h5 [ngStyle]="titleStyles">BMI History</h5>
+  </div>
+  <div *ngIf="fatratiobool">
+    <h5 [ngStyle]="titleStyles">Fat Ratio History</h5>
+  </div>
+  <div *ngIf="pulsebool">
+    <h5 [ngStyle]="titleStyles">Pulse History</h5>
+  </div>
+  <div *ngIf="tempbool">
+    <h5 [ngStyle]="titleStyles">Temperature History</h5>
+  </div>
+  <div *ngIf="ecgbool">
+    <h5 [ngStyle]="titleStyles">ECG History</h5>
+  </div>
+  <div *ngIf="bpbool">
+    <h5 [ngStyle]="titleStyles">Blood Pressure History</h5>
+  </div>
+  <div *ngIf="pbfbool">
+    <h5 [ngStyle]="titleStyles">Percent Body Fat History</h5>
+  </div>
+  <div *ngIf="bcmbool">
+    <h5 [ngStyle]="titleStyles">Body Cell Mass History</h5>
+  </div>
+  <div *ngIf="bmctbool">
+    <h5 [ngStyle]="titleStyles">Bone Mineral History</h5>
+  </div>
+  <div *ngIf="ecwbool">
+    <h5 [ngStyle]="titleStyles">Extra Cellular Water History</h5>
+  </div>
+  <div *ngIf="icwbool">
+    <h5 [ngStyle]="titleStyles">Intra Cellular Water History</h5>
+  </div>
+  <div *ngIf="bfmbool">
+    <h5 [ngStyle]="titleStyles">Body Fat Mass History</h5>
+  </div>
+  <div *ngIf="smmbool">
+    <h5 [ngStyle]="titleStyles">Skeletal Muscle Mass History</h5>
+  </div>
+  <div *ngIf="mineralbool">
+    <h5 [ngStyle]="titleStyles">Minerals History</h5>
+  </div>
+  <div *ngIf="proteinbool">
+    <h5 [ngStyle]="titleStyles">Protein History</h5>
+  </div>
+  <div *ngIf="whtrbool">
+    <h5 [ngStyle]="titleStyles">Waist/Height Ratio History</h5>
+  </div>
+  <div *ngIf="whprbool">
+    <h5 [ngStyle]="titleStyles">Waist/Hip Ratio History</h5>
+  </div>
+  <div *ngIf="vfbool">
+    <h5 [ngStyle]="titleStyles">Visceral Fat History</h5>
+  </div>
+  <div *ngIf="bmrbool">
+    <h5 [ngStyle]="titleStyles">Basal Metabolic Rate History</h5>
+  </div>
+  <div>
+    <div class="ui_scroll">
+    
+      <div class="left_border">
+
+        <div *ngIf="weightbool">
+          <div *ngFor="let vital of WeightHistory" class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Weight</span><br>
+            <span class="li_color">{{vital[0].w}} Kgs</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="spo2bool">
+          <div *ngFor="let vital of Spo2History"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Spo2</span><br>
+            <span class="li_color">{{vital[0].w}} %</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="bmibool">
+          <div *ngFor="let vital of BMIHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">BMI</span><br>
+            <span class="li_color">{{vital[0].w}}</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="fatratiobool">
+          <div *ngFor="let vital of FatRatioHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Fat Ratio</span><br>
+            <span class="li_color">{{vital[0].w}} %</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="pulsebool">
+          <div *ngFor="let vital of PulseHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Pulse</span><br>
+            <span class="li_color">{{vital[0].w}} bpm</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="tempbool">
+          <div *ngFor="let vital of TempHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Temperature</span><br>
+            <span class="li_color">{{vital[0].w}} &#8457;</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="ecgbool">
+          <div *ngFor="let vital of ECGHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">ECG</span><br>
+            <span class="li_color">{{vital[0].w}} bpm</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="bpbool">
+          <div *ngFor="let vital of BPHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Blood Pressure</span><br>
+            <span class="li_color">{{vital[0].w}}/{{vital[0].v}} mmHg</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="pbfbool">
+          <div *ngFor="let vital of pbfHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Percent Body Fat {{vital[0].w }}</span><br>
+            <span class="li_color">{{vital[0].w}} Kg</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="bcmbool">
+          <div *ngFor="let vital of bcmHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Body Cell Mass</span><br>
+            <span class="li_color">{{vital[0].w}} Kg</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="bmctbool">
+          <div *ngFor="let vital of bmctHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Bone Mineral</span><br>
+            <span class="li_color">{{vital[0].w}} Kg</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="ecwbool">
+          <div *ngFor="let vital of ecwHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Extra Cellular Water</span><br>
+            <span class="li_color">{{vital[0].w}} Ltr</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="icwbool">
+          <div *ngFor="let vital of icwHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Intra Cellular Water</span><br>
+            <span class="li_color">{{vital[0].w}} Ltr</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="bfmbool">
+          <div *ngFor="let vital of bfmHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Body Fat Mass</span><br>
+            <span class="li_color">{{vital[0].w}} Kg</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="smmbool">
+          <div *ngFor="let vital of smmHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Skeletal Muscle Mass</span><br>
+            <span class="li_color">{{vital[0].w}} Kg</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="mineralbool">
+          <div *ngFor="let vital of mineralHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Minerals</span><br>
+            <span class="li_color">{{vital[0].w}} Kg</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="proteinbool">
+          <div *ngFor="let vital of proteinHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Protein</span><br>
+            <span class="li_color">{{vital[0].w}} Kg</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="whtrbool">
+          <div *ngFor="let vital of whtrHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Waist/Height Ratio</span><br>
+            <span class="li_color">{{vital[0].w}}</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="whprbool">
+          <div *ngFor="let vital of whprHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Waist/Hip Ratio</span><br>
+            <span class="li_color">{{vital[0].w}}</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="vfbool">
+          <div *ngFor="let vital of vfHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Visceral Fat</span><br>
+            <span class="li_color">{{vital[0].w}} cm.sq</span><br>
+            <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br>
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+        <div *ngIf="bmrbool">
+          <div *ngFor="let vital of bmrHistory"  class="li_pos">
+            <span class="dot"></span>
+            <span class="title_color">Basal Metabolic Rate</span><br>
+            <span class="li_color">{{vital[0].w}} Kcal</span><br>
+            <!--Flow works fyn bmr status hided as per requirement-->
+            <!-- <span [style.color]="vital[0].color" class="li_color">{{vital[0].x | titlecase}}</span><br> -->
+            <span class="li_activity_color">{{vital[0].y | date:'medium'}}</span><br>
+            <span class="li_activity_location_color">{{vital[0].z | titlecase}}</span>
+          </div>
+        </div>
+
+
+      </div>
+    
+    </div>
+  </div>
+</div>
+

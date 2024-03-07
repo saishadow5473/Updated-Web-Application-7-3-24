@@ -1,0 +1,173 @@
+<ng-container *ngIf="router && router.url === '/medical'; else elseBlock">
+  <app-side-navigation-bar></app-side-navigation-bar>
+  <app-sidebar></app-sidebar>
+  <app-headbar></app-headbar>
+
+  <div class="teleconsult-main-container">
+
+    <div class="col-12 row">
+      <h3 class="mb-4 text-wrap">My Medical Files</h3>
+    </div>
+    <div id="back" class="fa fa-reply element tele-back-btn global_back_button_container" (click)="showTeleDashboard()">
+      <div class="global_back_button">Back</div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 col-lg-8 col-xl-8 ">
+        <ng-container *ngIf="isDeleteProgress">
+          <mat-progress-bar mode="indeterminate"  class="progress_bar" style="height: 4px;z-index: 100;"></mat-progress-bar>
+        </ng-container>
+        <div [ngClass]="{'selected-files': true, 'disable-container': isDeleteProgress}" >
+          <div class = "teleconsult_doctor_list_common_header" >
+            <h5 class="list_files_header">Select a file
+              <ng-container *ngIf="enableMenuOptions">
+                <button type="button" class="close" (click)="onDeleteClick()" aria-label="Close" class="list_files_header_options">
+                  <!-- <i class="fas fa-ellipsis-v"></i> -->
+                  <i class="far fa-trash-alt"></i>
+                </button>
+                <button type="button" class="close" (click)="onViewClick()" aria-label="Close" class="list_files_header_options">
+                  <!-- <i class="fas fa-ellipsis-v"></i> -->
+                  <i class="far fa-eye"></i>
+                </button>
+              </ng-container>
+            </h5>
+          </div>
+          <div class="file-list border" >
+            <div  class="file_list_container">
+              <ng-container *ngIf="_constant.medicalDocumentsList.length > 0; else noFilesBlock">
+                <span *ngFor="let documnt of _constant.medicalDocumentsList; let i= index; trackBy: trackByFn;" (click)="onDocumentSelectionClick(documnt, i)" [ngClass]="{'file_list_span': true, 'activeClass': (this.activeDocumentId == documnt.document_id)}" >
+                  <img class="pic" src="{{getImageSrc(documnt)}}" alt="icon" style="width: 50px;" ><br>
+                  <small [innerHtml] = "documnt.document_name"></small>
+                </span>
+              </ng-container>
+              <ng-template #noFilesBlock>
+                <p class ="no_files" *ngIf="isViewAllDocumentsResponseReceived">Documents not available</p>
+                <p class ="no_files" *ngIf="!isViewAllDocumentsResponseReceived" style="top: 150px;">
+                  <mat-spinner matSuffix [diameter]="30" style="margin: auto;display: block;"> </mat-spinner>
+                  Loading documents.Please wait...
+                </p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+      </div> 
+
+      <div class="col-md-6 col-lg-4 col-xl-4 ">
+        <div class="dropZone" appDnd (onFileDropped)="uploadFile($event)" *ngIf="!uploadStarted; else uploadingBlock">
+          <input hidden type="file" accept="image/png, image/jpeg, image/jpg, .pdf" #fileDropRef id="fileDropRef" (change)="uploadFile($event.target.files)" enctype="multipart/form-data">
+          <span (click)="fileDropRef.click()" class="background_img"></span>
+        </div>
+        <ng-template #uploadingBlock>
+          <div class="progress_bar_container" >
+            <section class="progress_bar_section">
+              <mat-progress-bar mode="determinate" [value]="percentValue" class="progress_bar"></mat-progress-bar>
+              <p class="progress_bar_text">{{percentDone}}</p>
+            </section>
+          </div>
+        </ng-template>
+        
+      </div>
+
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+
+  <div class="document_preview_container" *ngIf="showPreview">
+    <!-- <div style="top: 50%;left: 50%;transform: translate(-50%, -50%);position: absolute;">
+      <mat-spinner matSuffix [diameter]="40"> </mat-spinner>
+    </div> -->
+    <ng-container *ngIf="!isPreviewPdf">
+      <div class="document_preview_img_header_container">
+        <h5 class="document_preview_title" [innerHtml] = "documentSelected.document_name"></h5>
+        <button class="document_preview_close_button" on-click="onClosePreviewClick()" title="Close Preview">
+          <i class="fas fa-times" style="font-size: 26px;"></i>
+        </button>
+      </div>
+      <div style="height: 100%;">
+        <img style = "max-width: 100%;height: inherit;width: auto\9;" class="img_preview" src="{{documentSelected.document_link}}">
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="isPreviewPdf">
+      <button class="document_preview_pdf_close_button" on-click="onClosePreviewClick()" title="Close Preview">
+        <i class="fas fa-times" style="font-size: 26px;"></i>
+      </button>
+      <iframe width="100%" height="100%" frameBorder="0" [src]="urlSafe"></iframe>
+    </ng-container>
+  </div>
+</ng-container>
+
+<ng-template #elseBlock>
+  <div class="teleconsult_main_card mb-4">
+    <div class="" style="padding: 10px;height:145px;">
+      Upload if any files to share
+      <div appDnd (onFileDropped)="uploadFile($event)" *ngIf="!uploadStarted; else uploadingBlock2">
+        <label class="d-block text-center my-2 " for="uploadFile" style="color:grey;cursor: pointer;font-size: 14px;" (click)="fileDropRef2.click()">
+          <i class="fa fa-upload w-100 my-2" style="font-size: 40px"></i>
+          Drag and Drop a file here or click
+        </label>
+        <input hidden type="file" accept="image/png, image/jpeg, image/jpg, .pdf" #fileDropRef2 id="fileDropRef2" (change)="uploadFile($event.target.files)" enctype="multipart/form-data">
+      </div>
+      <ng-template #uploadingBlock2>
+        <div class="progress_bar_container_2" >
+          <section class="progress_bar_section_2" >
+            <mat-progress-bar mode="determinate" [value]="percentValue" class="progress_bar_2"></mat-progress-bar>
+            <p class="progress_bar_text">{{percentDone}}</p>
+          </section>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="teleconsult_main_card mb-4">
+    <div class="" style="padding: 10px;height: 235px">
+      Select the files to share
+      <div class="p-1 my-4 " style="height: 23vh;overflow-y: auto;">
+        <ng-container *ngIf="_constant.medicalDocumentsList.length > 0; else noFilesBlock2"> 
+          <div *ngFor="let documnt of _constant.medicalDocumentsList; let i= index; trackBy: trackByFn;" class="row m-0 mb-1 p-2" style="border-bottom: 1px solid lightgrey">
+            <div class="col-2">
+              <i class='fas {{getFontAwesomeIcon(documnt)}} align-middle' style="font-size:30px;"></i>
+            </div>
+            <div class="col-8 text-dark" style="word-wrap: break-word;" [innerHtml] = "documnt.document_name">
+            </div>
+            <div class="col-2"><mat-checkbox color="primary"  [ngModel]='documnt.document_name == uploadedFileName' (ngModelChange)="onSelectDocument(documnt.document_id)" ></mat-checkbox></div>
+          </div>
+        </ng-container>
+        <ng-template #noFilesBlock2>
+          <p class ="no_files" *ngIf="isViewAllDocumentsResponseReceived" style="text-align: center; top: 50px !important;">Documents not available</p>
+          <p class ="no_files" *ngIf="!isViewAllDocumentsResponseReceived" style="top: 40px !important;text-align: center;">
+            <mat-spinner matSuffix [diameter]="30" style="margin: auto;display: block;"> </mat-spinner>
+            Loading documents.Please wait...
+          </p>
+        </ng-template>
+          
+        <!-- <div class="row m-0 mb-1 p-2" style="border-bottom: 1px solid lightgrey">
+          <div class="col-2">
+            <i class="fa fa-file align-middle" style="font-size:30px;"></i>
+          </div>
+          <div class="col-8 text-dark">
+            My Blood Report.pdf
+            <br>
+            <span class="" style="color:grey">1.2MB</span>
+          </div>
+          <div class="col-2" style=""><mat-checkbox color="primary"></mat-checkbox></div>
+        </div>
+          
+        <div class="row m-0 mb-1 p-2" style="border-bottom: 1px solid lightgrey">
+          <div class="col-2">
+            <i class="fa fa-file align-middle" style="font-size:30px;"></i>
+          </div>
+          <div class="col-8 text-dark">
+            My Xray Report.pdf
+            <br>
+            <span class="" style="color:grey">1.2MB</span>
+          </div>
+          <div class="col-2" style=""><mat-checkbox color="primary"></mat-checkbox></div>
+        </div> -->
+
+      </div>
+    </div>
+  </div>
+</ng-template>

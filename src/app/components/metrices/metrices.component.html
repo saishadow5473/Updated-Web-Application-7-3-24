@@ -1,0 +1,256 @@
+<app-side-navigation-bar></app-side-navigation-bar>
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+
+<div class="metrices-top-container" [ngSwitch] = "containerShow">
+
+  <div *ngSwitchCase="'program'">
+   <div class="row" >
+     <div class="row">
+       <h2 class="col-xs-11 col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-4" style="margin-left: 13px; white-space: nowrap;">Choose your program</h2>
+     </div>
+    </div>
+
+    <div class="row overall-info-list">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-4" *ngFor = "let program of program; let i = index">
+        <mat-card class="program-background">
+          <div id={{program}} (click) = "programSelectFunction(program,i)">
+            <div id="myDiv{{i}}" class="indicate_arrow_top" [class.indicate_arrow_top1]="selectedIndex === i"></div>
+            <div class="program-name-background{{i+1}}">{{program}}</div>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="'metrice'">
+    <div class="row mb-4 metrice_program ">
+      <h2 class="col-xs-6 col-sm-6 col-md-6 col-lg-9 col-xl-9 mb-4" style="white-space: nowrap;">Metrices</h2>
+        <span class="tab_menu col-xs-2 col-sm-2 col-md-2 col-lg-1 col-xl-1 mb-4" [class.tab_underline_1]="metrics" (click) = "metricsInput()">
+          <a><i class="fas fa-2x fa-clipboard-list"></i><br>Metrics</a>
+          <!-- <div class="tab_underline" [class.tab_underline_1]="metrics"></div> -->
+        </span>
+        <span class="tab_menu col-xs-2 col-sm-2 col-md-2 col-lg-1 col-xl-1 mb-4" [class.tab_underline_1]="userProgram" (click) = "userProgramInput()">
+          <a><i class="fas fa-2x fa-crown"></i><br>Program</a>
+          <!-- <div class="tab_underline" [class.tab_underline_1]="userProgram"></div> -->
+        </span>
+        <span class="tab_menu col-xs-2 col-sm-2 col-md-2 col-lg-1 col-xl-1 mb-4" [class.tab_underline_1]="home" (click) = "homeInput()">
+          <a><i class="fas fa-2x  fa-chart-line"></i><br>Charts</a>
+          <!-- <div class="tab_underline" [class.tab_underline_1]="home"></div> -->
+        </span>
+    </div>
+
+    <div *ngIf ="home">
+      <!-- <div class="row" *ngIf="affiliateLastcheckinData?.length !== 0 && metricsDashboardSection">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-4" *ngFor = "let metricsvital of affiliateLastcheckinData" (click)="metricsGraphFunction(metricsvital.Title,metricsvital.Value)">
+          <div class = "metrics_main_dashboard_card">
+            <div class = "metrics_dashboard_number">{{metricsvital.Value}}
+               <span style="font-size: 15px;"></span>
+            </div>
+            <p class = "metrics_dashboard_title">{{metricsvital.Title}}</p>
+            <span class="metrics_dashboard_icon fas fas fa-male"></span>
+          </div>
+        </div>
+      </div> -->
+
+      <div class="row" *ngIf="homeTotalMetricesInput?.length !== 0 && metricsDashboardSection">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-4" *ngFor = "let metricsvital of homeTotalMetricesInput[0].dashBoard_Metrices_list; let j = index" (click)="metricsGraphFunction(metricsvital,homeTotalMetricesInput[0].dashBoard_metrices_value[j],homeTotalMetricesInput[0].dashBoard_Metrices_unit[j],homeTotalMetricesInput[0].dashBoard_metrices_color[j])">
+          <div class = "metrics_main_dashboard_card" [style.color] = homeTotalMetricesInput[0].dashBoard_metrices_color[j]>
+            <div class = "metrics_dashboard_number">{{homeTotalMetricesInput[0].dashBoard_metrices_value[j]}}
+               <span style="font-size: 15px;">{{homeTotalMetricesInput[0].dashBoard_Metrices_unit[j]}}</span>
+            </div>
+            <p class = "metrics_main_dashboard_title">{{metricsvital}}</p>
+            <span class="metrics_dashboard_icon fas fas fa-male"></span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf = "metricsGraphSection">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 mb-4">
+            <mat-card class = "metrics_dashboard_card  mb-4" [style.color] = graphCardColor (click)="homeInput()">
+              <div class = "metrics_dashboard_number">{{graphCardValue}}
+                <span style="font-size: 15px;">{{graphCardUnit}}</span>
+              </div>
+              <p class = "metrics_dashboard_title">{{graphCardTitle}}</p>
+              <span class="metrics_dashboard_icon fas fas fa-male"></span>
+            </mat-card>
+
+            <mat-card class="metrics_measurement_history_card">
+              <h5 class="metrics_measurement_history_title">{{graphCardTitle}} history</h5>
+              <div  class="metrics_scroll" *ngIf= "metricsAllMeasure?.length !== 0">
+                <div class="metrics_left_border">
+                  <div *ngFor="let metricsMeasure of metricsAllMeasure" class="metrics_li_pos">
+                    <span class="metrics_dot"></span>
+                    <span class="metrics_meh_title_color">{{graphCardTitle}}</span><br>
+                    <span class="metrics_li_color">{{metricsMeasure.Value_history}} {{graphCardUnitHistory}}</span><br>
+                    <!-- <span  class="metrics_li_color">none</span><br> -->
+                    <span class="metrics_li_activity_color">{{metricsMeasure.dateTime_history}}</span><br>
+                    <!-- <span class="metrics_li_activity_location_color">hi</span> -->
+                  </div>
+                </div>
+              </div>
+              <div  *ngIf= "metricsAllMeasure?.length == 0">
+                <p class="min-test-his">No measurement history's found!</p>
+              </div>
+            </mat-card>
+          </div>
+
+          <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 mb-4">
+            <mat-card class="graphMatCard mb-4">
+              <ul class="nav justify-content-end ul-settings mobile_view">
+                <li id="" class="nav-item" [class.chart_border] = "chartAllDays" (click) = "graphAllDays()">
+                  <a style="color: #4885ed; font-weight: bold;" class="nav-link">All</a>
+                </li>
+                <li id="" class="nav-item"  [class.chart_border] = "chart90Days" (click) = "graph90Days()">
+                  <a style="color: #4885ed; font-weight: bold;" class="nav-link">90 Days</a>
+                </li>
+                <li id="" class="nav-item"  [class.chart_border] = "chart30Days" (click) = "graph30Days()">
+                  <a style="color: #4885ed; font-weight: bold;" class="nav-link">30 Days</a>
+                </li>
+                <li id="" class="nav-item"  [class.chart_border] = "chart7Days" (click) = "graph7Days()">
+                  <a style="color: #4885ed; font-weight: bold;" class="nav-link">7 Days</a>
+                </li>
+              </ul>
+
+              <div id="chartforAllDays"></div>
+              <div id="chartfor90Days"></div>
+              <div id="chartfor30Days"></div>
+              <div id="chartfor7Days"></div>
+              
+             
+              <p *ngIf="noMinimumpoints" class="min-test-error">Minimum Two tests required to show your graph..!</p>
+             
+            </mat-card>
+
+            <mat-card class="metrics_min_max_history_card">
+              <h5 class="metrics_measurement_history_title">Last 30 days Stats</h5>
+
+              <div class="row" style="margin: 15px 15px 10px 10px;">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4" style="text-align: center;">
+                  <i class="fas fa-2x fa-sort-amount-up met_highicon"></i><br>
+                  <span class="met_avg_vital_val">{{maximumMetricsValue}} {{graphCardUnitMinMax}}</span>
+                  <p class="met_text_high">Highest</p>
+                  <p class="vertical_line"></p>
+                </div>
+                <div  class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4" style="text-align: center;">
+                  <i class="fas fa-2x fa-sort-amount-down met_lowicon"></i><br>
+                  <span class="met_avg_vital_val">{{minimumMetricsValue}} {{graphCardUnitMinMax}}</span>
+                  <p class="met_text_high">Lowest</p>
+                  <p class="vertical_line"></p>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4" style="text-align: center;">
+                  <i class="fas fa-2x fa-arrows-alt-v met_avgicon"></i><br>
+                  <span class="met_avg_vital_val">{{averageMetricsValue}} {{graphCardUnitMinMax}}</span>
+                  <p class="met_text_high">Average</p>
+                </div>
+              </div>
+            </mat-card>
+
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf ="noMetricsDashboard">
+        <p style="margin: auto;margin-top: 100px;text-align: center;font-size: 21px;">Fill-up your metrics form to see metrics Dashboard</p>
+      </div>
+    </div>
+
+    <div *ngIf ="metrics" >
+      <div class="row" *ngIf="totalMetricesNumberInput?.length > 1">
+        <div class="multiple_metrice col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" *ngFor = "let totalMetricesNumberInput of totalMetricesNumberInput; let tmi = index;">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>{{totalMetricesNumberInput.Metrices_Display_Name}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <form #metriceForm="ngForm" >
+               <!-- {{ metriceForm.value | json}} -->
+               
+                <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" *ngFor= "let inputField of totalMetricesNumberInput.Metrices_list; let ei = index;">
+                  <mat-label style="text-transform: capitalize;">{{inputField}}</mat-label>
+                  <input matInput #term name="{{inputField}}" (change)="change(inputField,term)"  ngModel/>		
+                  <!-- <mat-hint class="errormessagehide" [class.errormessageshow]="errorIndex === ei && totalMetricsIndex === tmi">{{errorMessage}}</mat-hint> -->
+                  <mat-hint *ngIf="term.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Numbers only allowed</mat-hint>
+                </mat-form-field>
+                
+              </form>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <button mat-raised-button #metbutton class="metrice_input_button" (click)="onMetricsSubmit()">Submit</button>
+      </div>
+
+      <div  *ngIf="totalMetricesNumberInput?.length == 1">
+        <div class="row">
+          <div class="single_metrice col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" *ngFor = "let totalMetricesNumberInput of totalMetricesNumberInput">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>{{totalMetricesNumberInput.Metrices_Display_Name}}</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <form #metriceForm="ngForm" >
+                  <!-- {{ metriceForm.value | json}} -->
+                  
+                   <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" *ngFor= "let inputField of totalMetricesNumberInput.Metrices_list; let ei = index;">
+                     <mat-label style="text-transform: capitalize;">{{inputField}}</mat-label>
+                     <input matInput #term name="{{inputField}}" (change)="change(inputField,term)"  ngModel/>		
+                     <!-- <mat-hint class="errormessagehide" [class.errormessageshow]="errorIndex === ei && totalMetricsIndex === tmi">{{errorMessage}}</mat-hint> -->
+                     <mat-hint *ngIf="term.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Numbers only allowed</mat-hint>
+                   </mat-form-field>
+                   
+                 </form>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <button mat-raised-button #metbutton class="metrice_input_button" (click)="onMetricsSubmit()">Submit</button>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="totalMetricesNumberInput?.length == 0">
+        <p class="nometrices_text">Currently no metrices are available..!</p>
+      </div>
+
+      <div *ngIf="inputNotWorking" class="text-center" style="margin: auto;">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf ="userProgram">
+      <div class="row">
+        <div class = "col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-4"  *ngFor = "let program of loginUserProgram; let i = index">
+          <mat-card class="programs-background">
+            <div id={{program}} (click) = "userProgramSelectFunction(program,i)">
+              <div id="myDiv{{i}}" class="program_arrow_top" [class.program_arrow_top1]="_constant.userChangedProgram === i || _constant.userSelectedOldProgram === program"></div>
+              <div class="programs-name-background{{i+1}}">{{program}}</div>
+            </div>
+          </mat-card>
+        </div>
+
+        <div *ngIf="notWorking" class="text-center" style="margin: auto;">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="'empty'" style="margin: auto;margin-top: 100px;text-align: center;font-size: 21px;">
+    You are not affiliated to any organisation
+  </div>
+
+  <div *ngSwitchDefault class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+
+</div>
+
+<app-footer></app-footer>

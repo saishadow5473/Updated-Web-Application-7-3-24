@@ -1,0 +1,102 @@
+<app-side-navigation-bar></app-side-navigation-bar>
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+
+<div class="teleconsult-main-container">
+  <div class="col-12 row">
+    <span id="affiliate_image" *ngIf="brand_image_url_exist"><img [src]="brand_image_url"/></span>
+    <h3 class="mb-4 text-wrap">Select Speciality</h3>
+  </div>
+  <div id="back" class="fa fa-reply element tele-back-btn" (click)="showTeleCT()">
+    <div style="font-size: 12px; padding-top: 2px;">Back</div>
+  </div>
+  
+  <div class="row" >
+    
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-4 d-flex" *ngFor="let specality of specalityList; let i = index;" (click) = "navigateToNextPage(specality)">
+      <div class = "teleconsult_speciality_main_dashboard_card" style="width:100%">
+        <div class = "teleconsult_speciality_card text-wrap">
+          <i *ngIf="specality.speciality_image_url != null || specality.speciality_image_url != undefined" class="{{specality.speciality_image_url}}" style="font-size: 50px;" [style.color]="consultSpecialityColor[i]"></i>
+          <i *ngIf="(specality.speciality_image_url == '' || specality.speciality_image_url == undefined) && _constantsService.teleConsultType == 'Medical Consultation'" class="fas fa-medkit" style="font-size: 50px;" [style.color]="consultSpecialityColor[i]"></i>
+          <i *ngIf="(specality.speciality_image_url == '' || specality.speciality_image_url == undefined) && _constantsService.teleConsultType == 'Health Consultation'" class="fas fa-diagnoses" style="font-size: 50px;" [style.color]="consultSpecialityColor[i]"></i>
+          <i *ngIf="(specality.speciality_image_url == '' || specality.speciality_image_url == undefined) && _constantsService.teleConsultType == 'Fitness Class'" class="fac fa-fitness" style="font-size: 50px;" [style.color]="consultSpecialityColor[i]"></i>
+          <!-- <img [src]="specality.speciality_image_url" class="mx-auto"style="height:15vh;"> -->
+          <i *ngIf="specality.specality_name =='Urology' || specality.specality_name =='Nephrology' || specality.specality_name =='Internal Medicine' || specality.specality_name =='Orthopedics' || specality.specality_name =='Medicine' || specality.specality_name =='General Paediatrics' || specality.specality_name =='Gynecology' || specality.specality_name =='Medical Gastro' || specality.specality_name =='Orthopedic' || specality.specality_name =='Paediatric Endo' || specality.specality_name =='Paediatric Nephro' || specality.specality_name =='Plastic Surgeon' || specality.specality_name =='Diabetes' || specality.specality_name =='Home Health Care Needs' || specality.specality_name =='Counsellor' || specality.specality_name =='Emotional Health Consultant' || specality.specality_name =='Nursing Care' || specality.specality_name =='Nature Cure Treatment' || specality.specality_name =='Natural Therapy'" class="fas fa-briefcase-medical" style="font-size: 50px;" [style.color]="consultSpecialityColor[i]"></i>
+          <h3  class = "teleconsult_speciality_name d-none d-sm-block" [innerHTML]="specality.specality_name"></h3>
+          <div  class = "teleconsult_speciality_name d-block d-sm-none text-wrap" [innerHTML]="specality.specality_name"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-4" (click) = "selectDoctors()">
+      <div class = "teleconsult_speciality_main_dashboard_card">
+        <div class = "teleconsult_speciality_card">
+          <i class="fas fa-5x fa-heartbeat" style="color: #F53F00;"></i>
+          <h3  class = "teleconsult_speciality_name">Cardiology</h3>
+        </div>
+      </div>
+    </div>
+ -->
+    <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-4" (click) = "selectDoctors()">
+      <div class = "teleconsult_speciality_main_dashboard_card" >
+        <div class = "teleconsult_speciality_card">
+          <i class="fas fa-5x fa-pills" style="color: #2895F0;"></i>
+          <h3 class = "teleconsult_speciality_name">Diabetology</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-4" (click) = "selectDoctors()">
+      <div class = "teleconsult_speciality_main_dashboard_card" >
+        <div class = "teleconsult_speciality_card">
+          <i class="fas fa-5x fa-lungs-virus" style="color: #BE4BDC;"></i>
+          <h3 class = "teleconsult_speciality_name">Covid 19</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-4" (click) = "selectDoctors()">
+      <div class = "teleconsult_speciality_main_dashboard_card" >
+        <div class = "teleconsult_speciality_card">
+          <i class="fas fa-5x fa-brain" style="color: #FD7E15;"></i>
+          <h3 class = "teleconsult_speciality_name">Neurology</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-4" (click) = "selectDoctors()">
+      <div class = "teleconsult_speciality_main_dashboard_card" >
+        <div class = "teleconsult_speciality_card">
+          <i class="fas fa-5x fa-medkit" style="color: #65BC87;"></i>
+          <h3 class = "teleconsult_speciality_name">General Medicine</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-4" (click) = "selectDoctors()">
+      <div class = "teleconsult_speciality_main_dashboard_card" >
+        <div class = "teleconsult_speciality_card">
+          <i class="fas fa-5x fa-bone" style="color: #F782AC;"></i>
+          <h3 class = "teleconsult_speciality_name">Orthopedics</h3>
+        </div>
+      </div>
+    </div> -->
+
+  </div>
+
+</div>
+
+<app-footer></app-footer>
+
+<!-- 
+  <i class="fas fa-5x fa-heartbeat" style="color: #F53F00;"></i>
+  <i class="fas fa-5x fa-pills" style="color: #2895F0;"></i>
+  <i class="fas fa-5x fa-lungs-virus" style="color: #BE4BDC;"></i>
+  <i class="fas fa-5x fa-brain" style="color: #FD7E15;"></i>
+  <i class="fas fa-5x fa-medkit" style="color: #65BC87;"></i>
+  <i class="fas fa-5x fa-bone" style="color: #F782AC;"></i>
+
+  <i class="fas fa-info"></i>
+  <i class="fas fa-phone-alt"></i>
+  <i class="far fa-calendar-alt"></i>
+-->

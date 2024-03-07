@@ -1,0 +1,20 @@
+.dp{
+    margin: 0 auto;
+    background: url('../../resources/avatar-female.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100px;
+    height: 100px;
+    
+}
+
+.male{
+    margin: 0 auto;
+    background: url('../../resources/avatar-male.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100px;
+    height: 100px;
+}

@@ -1,0 +1,1231 @@
+<app-side-navigation-bar></app-side-navigation-bar>
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+
+<div class="teleconsult-main-container">
+ 
+  <div class = "row header_position_initial mb-2" [class.mobile_header] = "dropdownHidden">
+    <!-- <h3 class = "col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mobileSizeHeader">{{headerName}}</h3>     -->
+    <div class="col-12 row">
+        <span id="affiliate_image" *ngIf="brand_image_url_exist"><img [src]="brand_image_url"/></span>
+        <h3 class="mb-4" style="margin-left: 15px;">{{headerName}}</h3>
+    </div>
+    <div id="back" class="fa fa-reply element tele-back-btn" (click)="goHome()">
+      <div style="font-size: 12px;
+      padding-top: 2px;">Back</div>
+    </div>
+  </div>
+
+  <!-- <span *ngIf = "dropdownHidden" class="fa fa-reply element backButtonMobile" (click)="goHome()">
+    <div style="font-size: 12px;padding-top: 2px;">Back</div>
+  </span> -->
+
+  <!-- <div class = "row header_position_initial mb-2">
+    <div class = "col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 header_position_initial_mob">
+      <mat-form-field class = "header_position_initial_fil" [class.hideDropdown] = "dropdownHidden">
+        <mat-label>Availability</mat-label>
+        <mat-select [disabled]="disableSelect.value">
+          <option value="" selected></option>
+          <mat-option value="option1">All</mat-option>
+          <mat-option value="option1">Available now</mat-option>
+          <mat-option value="option2" disabled>Busy</mat-option>
+          <mat-option value="option3">Offline</mat-option>
+        </mat-select>
+      </mat-form-field>
+    
+      <mat-form-field class = "header_position_initial_fil2" [class.hideDropdown] = "dropdownHidden">
+        <mat-label>Language</mat-label>
+        <mat-select [ngModel]="selectedLanguage" (ngModelChange)="onChange($event)" name="lang" [disabled]="disableLanguage">
+          <option value="" selected></option>
+          <mat-option value="All" class="language_text">All</mat-option>
+          <mat-option value = {{doctorLanguage}} *ngFor = "let doctorLanguage of doctorsLanguage" class="language_text">{{doctorLanguage | titlecase}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div> -->
+
+  <div class = "header_position row mb-4">
+    <!-- <h3 class = "header_position_header">{{headerName}}</h3> -->
+    <div class="col-10 row">
+        <span id="affiliate_image" *ngIf="brand_image_url_exist"><img [src]="brand_image_url"/></span>
+        <h3 class="mb-4" style="margin-left: 15px;">{{headerName}}</h3>
+    </div>
+    <div class="col adjust-header-padding">
+      <span class="fa fa-reply element backBtn" (click)="goHome()">
+      <div style="font-size: 12px;padding-top: 2px;">Back</div>
+      </span>
+    </div>
+    <!-- <span class = "header_position_filter"> -->
+      <!-- <mat-form-field class = "header_position_filter1" [class.hideDropdown] = "dropdownHidden">
+        <mat-label>Availability</mat-label>
+        <mat-select [disabled]="disableSelect.value">
+          <option value="" selected></option>
+          <mat-option value="option1">All</mat-option>
+          <mat-option value="option1">Available now</mat-option>
+          <mat-option value="option2" disabled>Busy</mat-option>
+          <mat-option value="option3">Offline</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field [class.hideDropdown] = "dropdownHidden">
+        <mat-label>Language</mat-label>
+        <mat-select [ngModel]="selectedLanguage" (ngModelChange)="onChange($event)" name="lang" [disabled]="disableLanguage"> 
+          <option value="" selected></option>
+          <mat-option value="All" class="language_text">All</mat-option>
+          <mat-option value = {{doctorLanguage}} *ngFor = "let doctorLanguage of doctorsLanguage" class="language_text">{{doctorLanguage | titlecase}}</mat-option>
+        </mat-select>
+      </mat-form-field> -->
+
+      <!-- <div class="fa fa-reply element backButton" (click)="goHome()">
+        <div style="font-size: 12px;padding-top: 2px;">Back </div>
+      </div>
+    </span> -->
+  </div>
+<!-- <div *ngIf="noDoctorAvaTxt || doctorList == undefined" style="text-align: center; color: red;">
+  Sorry! No doctors are online right now...
+</div> -->
+
+  <!-- search area - filter doctors by name, language, speciality -->
+  <mat-form-field class="col-12" appearance="outline" style="display: none !important;">
+    <mat-label>Search Consultant</mat-label>
+    <input id="searchTerm" type="text" name="searchTerm" matInput placeholder="Search consultant by name, speciality or language">
+  </mat-form-field>
+
+  <div class="row" *ngIf = "doctorList !== undefined">
+      <ng-container *ngFor = "let doctorList of doctorList; let i = index" >
+       <div #doctor_card *ngIf="this._constant.startCallFlow === true && (doctorList.ihl_consultant_id != this._constant.genixSuperAdminDoctorId)" class = "col-md-6 col-lg-4 col-xl-4" [ngClass]="{'col-md-12 col-lg-12 col-xl-12' : cardExpendDiv == true && doctor_card.id == selectedDoctor}"  id = "doctor_card_{{i}}">
+        <div *ngIf="!cardExpendDiv"> 
+          <div class="doctor-card">
+              <div class = "teleconsult_doctor_list_header">
+                <span class="teleconsult_triangle_topleft" [ngClass]="{
+                  'teleconsult_triangle_topleft_offline':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] == 'Offline'),
+                  'teleconsult_triangle_topleft_online':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] == 'Online'),
+                  'teleconsult_triangle_topleft_busy':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] == 'Busy')
+                }">
+                 <!-- <h6 class = "teleconsult_availability">{{this.getDoctorStatus(doctorList.ihl_consultant_id)}}</h6> -->
+                 <h6 class = "teleconsult_availability">{{this.doctorStatusMappingList[doctorList.ihl_consultant_id]}}</h6>
+                </span>
+                
+                <span *ngIf="this._constant.teleconsultationFlowSelected == 'affiliate'" class="exclusive_container">
+                  <span class="exclusive_container_span">Exclusive Offer</span>
+                </span>
+
+                <div class="teleconsult_img_container">
+                  <ng-container *ngIf="doctorList.vendor_id == 'IHL'">
+                    <img [src]="imageConverter(consultantImagesById[doctorList.ihl_consultant_id])" class = "teleconsult_profile_image" alt=""/>
+                  </ng-container>
+                  <ng-container *ngIf="doctorList.vendor_id != 'IHL'">
+                    <img [src]="imageConverter(consultantImagesById[doctorList.vendor_consultant_id])" class = "teleconsult_profile_image" alt=""/>
+                  </ng-container>
+                   <!-- <i class="fas fa-user-md" style="font-size: 60px; margin-top: 30px;"></i> -->
+                </div>
+                 <!-- <div class = "teleconsult_profile_menu_icon">
+                   <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="mat_button_outline">
+                     <mat-icon>more_vert</mat-icon>                     
+                   </button>
+                   <mat-menu #menu="matMenu">
+                     <button mat-menu-item class="mat_button_outline" *ngIf = "!doctorList.favouriteDoctor" (click) = "addToFavourite(i)">
+                       <mat-icon>star</mat-icon>
+                       <span>Add to favourite</span>
+                     </button>
+                     <button mat-menu-item class="mat_button_outline" *ngIf = "doctorList.favouriteDoctor"  (click) = "removeFromFavourite(i)">
+                      <mat-icon style="color: #2895F0;">star</mat-icon>
+                      <span>Remove from favourite</span>
+                     </button>
+                   </mat-menu>
+                 </div> -->
+               </div>
+
+               <div class = "teleconsult_doctor_list_body">
+                <h6 class = "teleconsult_doctor_name" style="font-size: 16px;">{{doctorNameAndQualification(doctorList.name, doctorList.qualification)}}</h6>
+                <p class = "teleconsult_doctor_experience mb-2">Experience : {{(doctorList.experience && doctorList.experience.trim().length > 0)? doctorList.experience : 'N/A'}}</p>
+                <div class="row teleconsult_doctor_speciality mb-2" style="margin-left: 20px;margin-right: 20px;width: unset;">
+                  <ng-container *ngIf="doctorList.consultant_speciality.length > 2; else specialityMin">
+                    <span *ngFor = "let specialist of doctorList.consultant_speciality | slice:0:2">
+                      <p class="teleconsult_doctor_specialist_list" >
+                        {{specialist | titlecase }}
+                      </p>
+                    </span>
+                    <p style="margin: 4px 0px 0px 0px !important;">+{{(doctorList.consultant_speciality.length - 2) + 'More'}}</p>
+                  </ng-container>
+                  <ng-template #specialityMin>
+                    <span *ngFor = "let specialist of doctorList.consultant_speciality">
+                      <p class="teleconsult_doctor_specialist_list" >
+                        {{specialist | titlecase }}
+                      </p>
+                    </span>
+                  </ng-template>
+                  <!-- <span >
+                    <p class="teleconsult_doctor_specialist_list">
+                      General
+                    </p>
+                  </span> -->
+                </div>
+
+                <!-- <div>
+                  <input [(ngModel)]="this.doctorStatusMappingList[doctorList.ihl_consultant_id]" (ngModelChange)="nextAvailableSlot(doctorList.ihl_consultant_id)"/>
+                </div> -->
+      
+                <div class="row teleconsult_doctor_language mb-2" style="margin-left: 20px;margin-right: 20px;width: unset;">
+                  <!-- <span *ngIf = "doctorList.languages_Spoken != undefined">
+                  <ul *ngIf= "doctorList.languages_Spoken.length > 1" style="text-decoration: none;list-style-type: none; width: 81%; margin: auto;">
+                    <li *ngFor = "let language of doctorList.languages_Spoken; let i = index;" style="float: left;">
+                      <p *ngIf="i<3" class="teleconsult_doctor_language_list">
+                        {{language | titlecase }}
+                      </p>
+                    </li>
+                  </ul>
+                  <span *ngIf = "doctorList.languages_Spoken.length == 1 ">
+                    <p class="teleconsult_doctor_language_list">
+                      English
+                    </p>
+                  </span>
+                  </span> -->
+                  <ng-container *ngIf = "doctorList.languages_Spoken != undefined && doctorList.languages_Spoken.length > 0">
+                    <ng-container *ngIf="_isLanguageArrayEmpty(doctorList.languages_Spoken[0]) > 0; else nolanguage;">
+                      <ng-container *ngIf="doctorList.languages_Spoken.length > 2; else languageList">
+                        <p  *ngFor = "let language of doctorList.languages_Spoken | slice:0:2" class="teleconsult_doctor_language_list">
+                          {{language | titlecase }}
+                        </p>
+                        <p style="margin: 4px 0px 0px 0px !important;">{{'+More'}}</p>
+                      </ng-container>
+                      <ng-template #languageList>
+                        <p  *ngFor = "let language of doctorList.languages_Spoken" class="teleconsult_doctor_language_list">
+                          {{language | titlecase }}
+                        </p>
+                      </ng-template>
+                    </ng-container>
+                    <ng-template #nolanguage>
+                      <p class="teleconsult_doctor_language_list" [textContent]="'english' | titlecase"></p>
+                    </ng-template>
+                  </ng-container>
+                  <span *ngIf = "doctorList.languages_Spoken == undefined || doctorList.languages_Spoken.length == 0">                    
+                    <span>
+                      <p class="teleconsult_doctor_language_list">
+                        English
+                      </p>
+                    </span>
+                  </span>
+                  <!-- <span >
+                    <p class="teleconsult_doctor_language_list">
+                      Hindi
+                    </p>
+                  </span>
+                  <span >
+                    <p class="teleconsult_doctor_language_list">
+                      Punjabi
+                    </p>
+                  </span> -->
+                </div>
+      
+                <p *ngIf="this._constant.teleconsultationFlowSelected == 'genric'" class = "teleconsult_doctor_fees mb-2">Consultation fee :  &#x20B9; {{(doctorList.consultation_fees != 0 ) ? doctorList.consultation_fees+' (Includes all tax)' : doctorList.consultation_fees}}</p>
+                <p *ngIf="this._constant.teleconsultationFlowSelected == 'affiliate'" class = "teleconsult_doctor_fees mb-2">MRP : <s> &#x20B9; {{doctorList.affilation_excusive_data.affilation_array[0].affilation_mrp}}</s>{{' | '}}Offer Price: &#x20B9; {{doctorList.affilation_excusive_data.affilation_array[0].affilation_price}}</p>
+                <div class="star_unchecked mb-1">
+                  
+                  <span *ngFor="let star of fillRatingStars(doctorList.ratings)" [class]="iconClass[star]"></span>
+                  <!-- <span class="fa fa-star star_checked"></span>
+                  <span class="fa fa-star star_checked"></span>
+                  <span class="fa fa-star"></span>
+                  <span class="fa fa-star"></span>  mxhksvnmff-->
+                </div>
+                <p class = "teleconsult_doctor_fees mb-2">{{doctorList.ratings}} ratings</p>
+                
+              </div>
+              <div class = "teleconsult_doctor_list_footer">
+                <span *ngIf="hideCallBtn" class="teleconsult_doctor_mob_dot mb-3" [ngClass]="{'teleconsult_doctor_mob_dot_offline':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] != 'Online')}" (click)="reasonForVisit(doctorList.ihl_consultant_id,doctor_card.id)">
+                  <i class="fas fa-2x fa-phone-alt teleconsult_doctor_icons_pos"></i>
+                </span>
+                <span *ngIf="this._constant.teleConsultationNewFlow" class="teleconsult_doctor_cal_dot mb-3" (click)="expendCardAppointment(doctor_card.id , i, doctorList.avail, doctorList)">
+                  <i class="far fa-2x fa-calendar-alt teleconsult_doctor_icons_pos"></i>
+                </span>
+                <span class="teleconsult_doctor_inf_dot mb-3" (click)="expendCardProfile(doctor_card.id, doctorList)">
+                  <i class="fas fa-2x fa-info teleconsult_doctor_icons_pos"></i>
+                </span>
+              </div>
+              <div class ="teleconsult_doctor_avail_footer">
+                <p>{{doctorStatusMappingList[doctorList.ihl_consultant_id+"_NxtAvail"]}}</p>
+              </div>
+            </div>  
+        </div> 
+        
+        <div class="cardExpendContainer" *ngIf="cardExpendDiv && doctor_card.id == selectedDoctor">
+        <div [ngClass]="{'cardExpendFullDiv row': doctor_card.id == selectedDoctor}"  >
+          <div [ngClass]="{'col-md-12 col-lg-4 col-xl-4 p-0': doctor_card.id == selectedDoctor , 'doctor-card': doctor_card.id !== selectedDoctor}">
+            <div class="doctor-card cardShadowRemove">              
+               <div class = "teleconsult_doctor_list_header">
+                <span class="teleconsult_triangle_topleft" [ngClass]="{
+                  'teleconsult_triangle_topleft_offline':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] == 'Offline'),
+                  'teleconsult_triangle_topleft_online':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] == 'Online'),
+                  'teleconsult_triangle_topleft_busy':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] == 'Busy')
+                }">
+                 <h6 class = "teleconsult_availability">{{this.doctorStatusMappingList[doctorList.ihl_consultant_id]}}</h6>
+                </span>
+                <div class="teleconsult_img_container">
+                  <!-- <i class="fas fa-user-md" style="font-size: 60px; margin-top: 30px;"></i> -->
+                  <ng-container *ngIf="doctorList.vendor_id == 'IHL'">
+                    <img [src]="imageConverter(consultantImagesById[doctorList.ihl_consultant_id])" class = "teleconsult_profile_image" alt=""/>
+                  </ng-container>
+                  <ng-container *ngIf="doctorList.vendor_id != 'IHL'">
+                    <img [src]="imageConverter(consultantImagesById[doctorList.vendor_consultant_id])" class = "teleconsult_profile_image" alt=""/>
+                  </ng-container>
+                  
+                </div>
+                 <!-- <div class = "teleconsult_profile_menu_icon teleconsult_profile_menu_icon_pos_top">
+                   <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="mat_button_outline">
+                     <mat-icon>more_vert</mat-icon>
+                   </button>
+                   <mat-menu #menu="matMenu">
+                      <button mat-menu-item class="mat_button_outline" *ngIf = "!doctorList.favouriteDoctor" (click) = "addToFavourite(i)">
+                        <mat-icon>star</mat-icon>
+                        <span>Add to favourite</span>
+                      </button>
+                      <button mat-menu-item class="mat_button_outline" *ngIf = "doctorList.favouriteDoctor"  (click) = "removeFromFavourite(i)">
+                        <mat-icon style="color: #2895F0;">star</mat-icon>
+                        <span>Remove from favourite</span>
+                       </button>
+                   </mat-menu>
+                 </div> -->
+               </div>
+
+
+               <div class = "teleconsult_doctor_list_body">
+                <h6 class = "teleconsult_doctor_name" style="font-size: 16px;">{{doctorNameAndQualification(doctorList.name, doctorList.qualification)}}</h6>
+                <p class = "teleconsult_doctor_experience mb-2">Experience : {{(doctorList.experience && doctorList.experience.trim().length > 0)? doctorList.experience : 'N/A'}}</p>
+                <div class="row teleconsult_doctor_speciality mb-2">
+                  <span *ngFor = "let specialist of doctorList.consultant_speciality">
+                    <p class="teleconsult_doctor_specialist_list">
+                      {{specialist | titlecase }}
+                    </p>
+                  </span>
+                  <!-- <span >
+                    <p class="teleconsult_doctor_specialist_list">
+                      General
+                    </p>
+                  </span> -->
+                </div>
+      
+                <div class="row teleconsult_doctor_language mb-2" style="margin-left: 20px;margin-right: 20px;width: unset;">    
+                  <!-- <span *ngIf = "doctorList.languages_Spoken != undefined">            
+                  <ul *ngIf= "doctorList.languages_Spoken.length > 1" style="text-decoration: none;list-style-type: none; width: 81%; margin: auto;">
+                    <li *ngFor = "let language of doctorList.languages_Spoken; let i = index;" style="float: left;">
+                      <p *ngIf="i<3" class="teleconsult_doctor_language_list">
+                        {{language | titlecase }}
+                      </p>
+                    </li>
+                  </ul>
+                  <span *ngIf="doctorList.languages_Spoken.length == 1" >
+                    <p class="teleconsult_doctor_language_list">
+                      English {{doctorList.languages_Spoken}}
+                    </p>
+                  </span>
+                  </span>   -->
+                  <ng-container *ngIf = "doctorList.languages_Spoken != undefined  && doctorList.languages_Spoken.length > 0">
+                    <ng-container *ngIf="_isLanguageArrayEmpty(doctorList.languages_Spoken[0]) > 0; else nolanguage;">
+                      <p  *ngFor = "let language of doctorList.languages_Spoken" class="teleconsult_doctor_language_list">
+                        {{language | titlecase }}
+                      </p>
+                    </ng-container>
+                    <ng-template #nolanguage>
+                      <p class="teleconsult_doctor_language_list" [textContent]="'english' | titlecase"></p>
+                    </ng-template>
+                  </ng-container>
+                  <span *ngIf = "doctorList.languages_Spoken == undefined  || doctorList.languages_Spoken.length == 0">                    
+                    <span>
+                      <p class="teleconsult_doctor_language_list">
+                        English
+                      </p>
+                    </span>
+                  </span>
+                  
+                  <!-- <span >
+                    <p class="teleconsult_doctor_language_list">
+                      Hindi
+                    </p>
+                  </span>
+                  <span >
+                    <p class="teleconsult_doctor_language_list">
+                      Punjabi
+                    </p>
+                  </span> -->
+                </div>
+      
+                <p *ngIf="this._constant.teleconsultationFlowSelected == 'genric'" class = "teleconsult_doctor_fees mb-2">Consultation fee :  &#x20B9; {{(doctorList.consultation_fees != 0 ) ? doctorList.consultation_fees+' (Includes all tax)' : doctorList.consultation_fees}}</p>
+                <p *ngIf="this._constant.teleconsultationFlowSelected == 'affiliate'" class = "teleconsult_doctor_fees mb-2">MRP : <s> &#x20B9; {{doctorList.affilation_excusive_data.affilation_array[0].affilation_mrp}}</s>{{' | '}}Offer Price: &#x20B9; {{doctorList.affilation_excusive_data.affilation_array[0].affilation_price}}</p>
+                <p class = "teleconsult_doctor_fees mb-2">Fees for : {{'30 min'}}</p>
+                <div class="star_unchecked mb-1">
+                  <span *ngFor="let star of fillRatingStars(doctorList.ratings)" [class]="iconClass[star]"></span>
+                  <!-- <span class="fa fa-star star_checked"></span>
+                  <span class="fa fa-star star_checked"></span>
+                  <span class="fa fa-star"></span>
+                  <span class="fa fa-star"></span> -->
+                </div>
+                <p class = "teleconsult_doctor_fees mb-2">{{doctorList.ratings}} ratings</p>
+                
+              </div>
+
+              <div *ngIf = "doctor_card.id !== selectedDoctor;" class = "teleconsult_doctor_list_footer">
+                <span *ngIf="hideCallBtn" class="teleconsult_doctor_mob_dot mb-3" [ngClass]="{'teleconsult_doctor_mob_dot_offline':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] != 'Online')}" (click)="reasonForVisit(doctorList.ihl_consultant_id,doctor_card.id)">
+                  <i class="fas fa-2x fa-phone-alt teleconsult_doctor_icons_pos"></i>
+                </span>
+                <!-- <span class="teleconsult_doctor_cal_dot mb-3" (click)="expendCardAppointment(doctor_card.id , i, doctorList.avail, doctorList)">
+                  <i class="far fa-2x fa-calendar-alt teleconsult_doctor_icons_pos"></i>
+                </span> -->
+                <span class="teleconsult_doctor_inf_dot mb-3" (click)="expendCardProfile(doctor_card.id, doctorList)">
+                  <i class="fas fa-2x fa-info teleconsult_doctor_icons_pos"></i>
+                </span>
+              </div>
+
+              <div *ngIf="bookAppointmentView && doctor_card.id == selectedDoctor" class = "teleconsult_doctor_list_footer">
+                <span *ngIf="hideCallBtn" class="teleconsult_doctor_mob_dot mb-3" [ngClass]="{'teleconsult_doctor_mob_dot_offline':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] != 'Online')}" (click)="reasonForVisit(doctorList.ihl_consultant_id,doctor_card.id)">
+                  <i class="fas fa-2x fa-phone-alt teleconsult_doctor_icons_pos"></i>
+                </span>
+                <span *ngIf="this._constant.teleConsultationNewFlow" style="background-color: #77B35D;" class="teleconsult_doctor_cal_dot mb-3" (click)="shrinkCardAppointment(doctor_card.id)">
+                  <i class="far fa-2x fa-calendar-alt teleconsult_doctor_icons_pos"></i>
+                </span>
+                <span class="teleconsult_doctor_inf_dot mb-3" (click)="expendCardProfile(doctor_card.id, doctorList)">
+                  <i class="fas fa-2x fa-info teleconsult_doctor_icons_pos"></i>
+                </span>
+              </div>
+              <div *ngIf="doctorProfileView  && doctor_card.id == selectedDoctor" class = "teleconsult_doctor_list_footer">
+                <span *ngIf="hideCallBtn" class="teleconsult_doctor_mob_dot mb-3" [ngClass]="{'teleconsult_doctor_mob_dot_offline':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] != 'Online')}" (click)="reasonForVisit(doctorList.ihl_consultant_id,doctor_card.id)">
+                  <i class="fas fa-2x fa-phone-alt teleconsult_doctor_icons_pos" ></i>
+                </span>
+                <span  *ngIf="this._constant.teleConsultationNewFlow" class="teleconsult_doctor_cal_dot mb-3" (click)="expendCardAppointment(doctor_card.id , i, doctorList.avail, doctorList)">
+                  <i class="far fa-2x fa-calendar-alt teleconsult_doctor_icons_pos"></i>
+                </span>
+                <span style = "background-color: #77B35D;" class="teleconsult_doctor_inf_dot mb-3" (click)="shrinkCardProfile(doctor_card.id)">
+                  <i class="fas fa-2x fa-info teleconsult_doctor_icons_pos"></i>
+                </span>
+              </div>
+              <div class ="teleconsult_doctor_avail_footer">
+                <p>{{ this.doctorStatusMappingList[doctorList.ihl_consultant_id+"_NxtAvail"] }}</p>
+              </div>
+            </div> 
+
+          </div>
+          <div *ngIf="bookAppointmentView  && doctor_card.id == selectedDoctor;" class="col-md-12 col-lg-8 col-xl-8 bookAppointmnetSecondCardContainer">
+            <h6 class = "teleconsult_doctor_name" > 
+              <i class="fa-2x far fa-clock appointmentTitleIcon"></i>  
+              Appointment Slot 
+            </h6>
+            <div class="horizontal-rule"> </div>
+            <div *ngIf="doctorList.avail == true">
+              <drag-scroll style = "height: 57px !important;" class="dateSlot">
+                <div #mainSlot drag-scroll-item class= "dateBox"  *ngFor = "let eachdaySlots of doctorList.everyDaySlot; let j = index" id = "mainSlot_{{j}}" [class.dateBoxSelect] = "selectedSlot === j" (click) = "getSlotTimings(eachdaySlots.title , j , i , eachdaySlots.subTitle)">  
+                    <p class="dateBoxTitle" value = "eachdaySlots.title">{{eachdaySlots.title}}</p>
+                    <p class="noSlotAva" value = "eachdaySlots.subTitle">{{eachdaySlots.subTitle}}</p>
+                </div>
+                <!-- <div drag-scroll-item class="dateBoxSelect">
+                    <p class="dateBoxTitle">Mon, 25 May</p>
+                    <p class="slotAva"> 20 Slots available </p>
+                </div>
+                <div drag-scroll-item class="dateBox">  
+                    <p class="dateBoxTitle">Tue, 26 May</p>
+                    <p class="slotAva"> 20 Slots available </p>
+                </div>
+                <div drag-scroll-item class="dateBox">  
+                    <p class="dateBoxTitle">Wed, 27 May</p>
+                    <p class="slotAva"> 20 Slots available </p>
+                </div>
+                <div drag-scroll-item class="dateBox">  
+                    <p class="dateBoxTitle">Thu, 28 May</p>
+                    <p class="slotAva"> 20 Slots available </p>
+                </div>  -->
+              </drag-scroll>
+              <div>  
+                <p class="selectDateTitle">{{dateTitle}}</p>
+              </div>
+              <div class="horizontal-rule" *ngIf="doctorSlotMorning?.length !== 0"> </div>
+              <div class="timeSlot">
+                <div class="morningSlot" *ngIf="doctorSlotMorning?.length !== 0">
+                  <p class="timeSlotTitle"> <i class="fas fa-cloud-sun timeSlotTitleIcon"></i> Morning</p>
+                  <div class="row" style="margin: auto;" *ngIf="doctorSlotMorning?.length !== 0 && doctorSlotMorning !== undefined">
+                    <div class="avaTime"  *ngFor = "let doctorSlotMorning of doctorSlotMorning; let k = index" (click) = "getAppointmentTimings(i,'_m_',k,doctorSlotMorning)"  [class.selectAvaTime] = "selectedAppointmentIndex === i+'_m_'+k">{{doctorSlotMorning}}</div>
+                    <!-- <div class="avaTime"> 11:30 AM </div> -->
+                  </div>
+                  <div class="row" *ngIf="doctorSlotMorning?.length == 0 || doctorSlotMorning == undefined" >
+                    <div style="text-align: center;color: gray;margin: auto;">No slots available</div>
+                  </div>
+                </div>
+                <div class="horizontal-rule" *ngIf="doctorSlotAfternoon?.length !== 0"> </div>
+                <div class="afternoonSlot" *ngIf="doctorSlotAfternoon?.length !== 0">
+                  <p class="timeSlotTitle"> <i class="fas fa-sun timeSlotTitleIcon"></i> Afternoon</p>
+                  <div class="row" style="margin: auto;" *ngIf="doctorSlotAfternoon?.length !== 0 && doctorSlotAfternoon !== undefined">
+                    <div class="avaTime" *ngFor = "let doctorSlotAfternoon of doctorSlotAfternoon; let l = index" (click) = "getAppointmentTimings(i,'_a_',l,doctorSlotAfternoon)" [class.selectAvaTime] = "selectedAppointmentIndex === i+'_a_'+l">{{doctorSlotAfternoon}}</div>
+                    <!-- <div class="avaTime"> 12:30 PM </div>
+                    <div class="avaTime"> 01:00 PM </div>
+                    <div class="avaTime"> 01:30 PM </div>
+                    <div class="avaTime"> 02:00 PM </div>
+                    <div class="avaTime"> 02:30 PM </div>
+                    <div class="avaTime"> 03:00 PM </div>
+                    <div class="avaTime"> 03:30 PM </div> -->
+                  </div>
+                  <div class="row" *ngIf="doctorSlotAfternoon?.length == 0 || doctorSlotAfternoon == undefined" >
+                    <div style="text-align: center;color: gray;margin: auto;">No slots available</div>
+                  </div>
+                </div>
+                <div class="horizontal-rule" *ngIf="doctorSlotEvening?.length !== 0"></div>
+                <div class="eveningSlot" *ngIf="doctorSlotEvening?.length !== 0">
+                  <p class="timeSlotTitle"> <i class="fas fa-cloud-moon timeSlotTitleIcon"></i> Evening </p>
+                  <div class="row" style="margin: auto;" *ngIf="doctorSlotEvening?.length !== 0 && doctorSlotEvening !== undefined">
+                    <div class="avaTime" *ngFor = "let doctorSlotEvening of doctorSlotEvening; let m = index" (click) = "getAppointmentTimings(i,'_e_',m,doctorSlotEvening)"  [class.selectAvaTime] = "selectedAppointmentIndex ===  i+'_e_'+m">{{doctorSlotEvening}}
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="doctorSlotEvening?.length == 0  || doctorSlotEvening == undefined" >
+                    <div style="text-align: center;color: gray;margin: auto;">No slots available</div>
+                  </div>
+                </div>
+                <div class="horizontal-rule" *ngIf="doctorSlotNight?.length !== 0"></div>
+                <div class="nightSlot" *ngIf="doctorSlotNight?.length !== 0">
+                  <p class="timeSlotTitle"> <i class="fas fa-moon timeSlotTitleIcon"></i> Night </p>
+                  <div class="row" style="margin: auto;" *ngIf="doctorSlotNight?.length !== 0 && doctorSlotNight !== undefined">
+                    <div class="avaTime" *ngFor = "let doctorSlotNight of doctorSlotNight; let n = index" (click) = "getAppointmentTimings(i,'_n_',n,doctorSlotNight)" [class.selectAvaTime] = "selectedAppointmentIndex === i+'_n_'+n">{{doctorSlotNight}}
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="doctorSlotNight?.length == 0 || doctorSlotNight == undefined" >
+                    <div style="text-align: center;color: gray;margin: auto;">No slots available</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="doctorList.avail == false" style="text-align: center;margin-top: 50px;font-size: 20px;">
+              No slots available
+            </div>
+            <div *ngIf="doctorList.avail == undefined" style="text-align: center;margin-top: 50px;font-size: 20px;">
+              <div style="text-align:center;"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></div>
+              Fetching Time Slots.Please Wait...              
+            </div>
+            <div *ngIf="bookAppointmentView   && doctor_card.id == selectedDoctor;" class="col-sm-12 col-md-8 col-lg-8 col-xl-8 ml-auto mr-auto mt-4 mb-4">
+              <div *ngIf="doctorList.avail == true && confirmButton">               
+                <div class="doctorAppointmentBtn" (click) = "appointmentConfirmation(doctorList);">
+                    <span> Confirm Appointment </span>
+                </div>
+              </div>
+
+              <div *ngIf="doctorList.avail == true && !confirmButton">               
+                <div class="doctorAppointmentBtn" (click) = "gettingDoctorsNextAvailability();">
+                    <span style="font-size: 16px;">Next availability on {{nextDoctorSlotTitle}} </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div *ngIf="bookAppointmentView   && doctor_card.id == selectedDoctor;" class="col-md-12 col-lg-4 col-xl-4 lastCardDiv">          
+            
+            <div *ngIf="doctorList.avail == true" class="appointmentLastCardContainer">
+              <div class="horizontal-rule"> </div>
+              <div class="eveningSlot">
+                <p class="timeSlotTitle"> <i class="fas fa-cloud-moon timeSlotTitleIcon"></i> Evening </p>
+                <div class="row" style="margin: auto;" *ngIf="doctorSlotEvening?.length !== 0 && doctorSlotEvening !== undefined">
+                  <div class="avaTime" *ngFor = "let doctorSlotEvening of doctorSlotEvening; let m = index" (click) = "getAppointmentTimings(i,'_e_',m,doctorSlotEvening)"  [class.selectAvaTime] = "selectedAppointmentIndex ===  i+'_e_'+m">{{doctorSlotEvening}}</div>
+                </div>
+                <div class="row" *ngIf="doctorSlotEvening?.length == 0  || doctorSlotEvening == undefined" >
+                  <div style="text-align: center;color: gray;margin: auto;">No slots available</div>
+                </div>
+              </div>
+              <div class="horizontal-rule"> </div>
+              <div class="nightSlot">
+                <p class="timeSlotTitle"> <i class="fas fa-moon timeSlotTitleIcon"></i> Night </p>
+                <div class="row" style="margin: auto;" *ngIf="doctorSlotNight?.length !== 0 && doctorSlotNight !== undefined">
+                  <div class="avaTime" *ngFor = "let doctorSlotNight of doctorSlotNight; let n = index" (click) = "getAppointmentTimings(i,'_n_',n,doctorSlotNight)" [class.selectAvaTime] = "selectedAppointmentIndex === i+'_n_'+n">{{doctorSlotNight}}</div>
+
+                </div>
+                <div class="row" *ngIf="doctorSlotNight?.length == 0 || doctorSlotNight == undefined" >
+                  <div style="text-align: center;color: gray;margin: auto;">No slots available</div>
+                </div>
+              </div>
+
+              
+            </div>
+            <div *ngIf="doctorList.avail == true && confirmButton" class="doctorAppointmentBtnPos">               
+              <div class="doctorAppointmentBtn" (click) = "appointmentConfirmation(doctorList);">
+                  <span> Confirm Appointment </span>
+              </div>
+              
+            </div>
+
+            <div *ngIf="doctorList.avail == true && !confirmButton" class="doctorAppointmentBtnPos">               
+              <div class="doctorAppointmentBtn" (click) = "gettingDoctorsNextAvailability();">
+                  <span style="font-size: 16px;">Next availability on {{nextDoctorSlotTitle}} </span>
+              </div>
+            </div>
+          </div> -->
+
+          <div *ngIf="doctorProfileView   && doctor_card.id == selectedDoctor;" class="col-md-12 col-lg-4 col-xl-4 bookAppointmnetSecondCardContainer">
+            <h6 class = "teleconsult_doctor_name" style="float:left" > 
+              <i class="fa-2x fas fa-user appointmentTitleIcon"></i>  
+              Profile 
+            </h6>
+            <div class="profileTxt">
+              <p *ngIf="doctorList.description != ''" [innerHtml]="doctorList.description"></p>
+              <p *ngIf="doctorList.description == ''">No description added</p>
+              <!-- <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam aliquet ante id sem vehicula ullamcorper. Proin rutrum eleifend eros nec venenatis. Ut pharetra ipsum at ipsum rutrum vestibulum.</p> -->
+            </div>
+          </div>
+          <div *ngIf="doctorProfileView   && doctor_card.id == selectedDoctor;" class="col-md-12 col-lg-4 col-xl-4 lastCardDiv">          
+            <!-- <div class = "teleconsult_profile_menu_icon teleconsult_profile_menu_icon_pos_bottom">
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="mat_button_outline">
+                <mat-icon>more_vert</mat-icon>               
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item class="mat_button_outline" *ngIf = "!doctorList.favouriteDoctor" (click) = "addToFavourite(i)">
+                  <mat-icon>star</mat-icon>
+                  <span>Add to favourite</span>
+                </button>
+                <button mat-menu-item class="mat_button_outline" *ngIf = "doctorList.favouriteDoctor"  (click) = "removeFromFavourite(i)">
+                  <mat-icon style="color: #2895F0;">star</mat-icon>
+                  <span>Remove from favourite</span>
+                 </button>
+              </mat-menu>
+            </div> -->
+
+            <h6 class = "teleconsult_doctor_name" style="float:left" > 
+              <i class="fa-2x fas fa-star appointmentTitleIcon"></i> 
+              Reviews 
+            </h6>
+            <div class = "profileTxt" [ngClass]="{'had_consult_history':doctorList.hadConsultHistory == true, 'no_consult_history':doctorList.hadConsultHistory == false}">
+              <!-- <h6 style ="float: left;padding-right: 5px;"> 
+               Thamarai Selvan
+              </h6> -->
+              <div *ngIf ="(doctorList.text_reviews_data.length == 0 || doctorList.text_reviews_data == undefined) && doctorList.hadConsultHistory == false">
+                <p style="color: #4d4d4d;font-weight: 500;">No Reviews...</p>
+              </div>
+              <div *ngIf =" doctorList.text_reviews_data.length > 0">
+                <div *ngFor="let eachReview of newDateOrderReviews(doctorList.text_reviews_data)">
+                  <div style="font-size: 11px;">
+                    <p style ="padding-right: 5px;color: #4d4d4d;font-weight: bold;display: inline-block;font-size: 13px;margin-bottom: 5px;"> 
+                      {{eachReview.user_name}}
+                    </p> 
+                    <span class="fa fa-star" [ngClass]="{'stars_color' : eachReview.user_rating < 1, 'review_star_check' : eachReview.user_rating  > 0}"></span>
+                    <span class="fa fa-star" [ngClass]="{'stars_color' : eachReview.user_rating < 2, 'review_star_check' : eachReview.user_rating  > 1}"></span>
+                    <span class="fa fa-star" [ngClass]="{'stars_color' : eachReview.user_rating < 3, 'review_star_check' : eachReview.user_rating  > 2}"></span>
+                    <span class="fa fa-star" [ngClass]="{'stars_color' : eachReview.user_rating < 4, 'review_star_check' : eachReview.user_rating  > 3}"></span>
+                    <span class="fa fa-star" [ngClass]="{'stars_color' : eachReview.user_rating < 5, 'review_star_check' : eachReview.user_rating  > 4}"></span>
+                  </div>
+                  <!-- <br> -->
+                  <p style="color: #4d4d4d;font-weight: 500;">{{eachReview.rating_text}}</p>
+                </div>
+              </div>
+              <div *ngIf ="(doctorList.text_reviews_data.length == 0 || doctorList.text_reviews_data == undefined) && doctorList.hadConsultHistory == true">
+                <div style="font-size: 11px;float: left;">
+                  <span class="fa fa-star stars_color"></span>
+                  <span class="fa fa-star stars_color"></span>
+                  <span class="fa fa-star stars_color"></span>
+                  <span class="fa fa-star stars_color"></span>
+                  <span class="fa fa-star stars_color"></span>
+                </div>
+                <br>
+                <p>Enter Your Reviews in below text field</p>
+              </div>
+            </div>
+
+            <div class= "review_box" *ngIf="doctorList.hadConsultHistory == true">
+              <div class="mb-1">
+                <!-- <span *ngFor="let liveStar of liveRatingStars" class="fa fa-star stars_color" (click)="countStars(liveStar)"
+                [ngClass]="{'selectedLiveStar': (liveRatingStarValue >= liveStar)}"></span> -->
+                <i class="fa fa-star" [ngClass]="{'stars_color' : rateArray[0] == 0, 'selectedLiveStar' : rateArray[0] == 1}" (click)="countStars(1)"></i>
+                <i class="fa fa-star" [ngClass]="{'stars_color' : rateArray[1] == 0, 'selectedLiveStar' : rateArray[1] == 1}" (click)="countStars(2)"></i>
+                <i class="fa fa-star" [ngClass]="{'stars_color' : rateArray[2] == 0, 'selectedLiveStar' : rateArray[2] == 1}" (click)="countStars(3)"></i>
+                <i class="fa fa-star" [ngClass]="{'stars_color' : rateArray[3] == 0, 'selectedLiveStar' : rateArray[3] == 1}" (click)="countStars(4)"></i>
+                <i class="fa fa-star" [ngClass]="{'stars_color': rateArray[4] == 0, 'selectedLiveStar' : rateArray[4] == 1}" (click)="countStars(5)"></i>
+              </div>
+              <mat-form-field appearance="outline" class = "rating_inp">
+                <input matInput class = "rating_letters" placeholder="Your review on {{doctorList.name}}" #reviewField>
+                <mat-icon matSuffix class = "rating_icon" style="cursor: pointer;" *ngIf="!sendReview" (click)="feedBack(doctorList)">send</mat-icon>
+                <mat-spinner matSuffix [diameter]="30"  *ngIf="sendReview"></mat-spinner>
+              </mat-form-field>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div #doctor_card *ngIf="this._constant.startCallFlow === false && (doctorList.ihl_consultant_id != this._constant.genixSuperAdminDoctorId)" class = "col-md-6 col-lg-4 col-xl-4" [ngClass]="{'col-md-12 col-lg-12 col-xl-12' : cardExpendDiv == true && doctor_card.id == selectedDoctor}" id = "doctor_card_{{i}}">
+        <div *ngIf="!cardExpendDiv"> 
+          <div class="doctor-card">
+              <div class = "teleconsult_doctor_list_header">
+                <span class="teleconsult_triangle_topleft" [ngClass]="{
+                  'teleconsult_triangle_topleft_offline':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] == 'Offline'),
+                  'teleconsult_triangle_topleft_online':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] == 'Online'),
+                  'teleconsult_triangle_topleft_busy':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] == 'Busy')
+                }">
+                 <!-- <h6 class = "teleconsult_availability">{{this.getDoctorStatus(doctorList.ihl_consultant_id)}}</h6> -->
+                 <h6 class = "teleconsult_availability">{{this.doctorStatusMappingList[doctorList.ihl_consultant_id]}}</h6>
+                </span>
+
+                <span *ngIf="this._constant.teleconsultationFlowSelected == 'affiliate'" class="exclusive_container">
+                  <span class="exclusive_container_span">Exclusive Offer</span>
+                </span>
+
+                <div class="teleconsult_img_container">
+                  <ng-container *ngIf="doctorList.vendor_id == 'IHL'">
+                    <img [src]="imageConverter(consultantImagesById[doctorList.ihl_consultant_id])" class = "teleconsult_profile_image" alt=""/>
+                  </ng-container>
+                  <ng-container *ngIf="doctorList.vendor_id != 'IHL'">
+                    <img [src]="imageConverter(consultantImagesById[doctorList.vendor_consultant_id])" class = "teleconsult_profile_image" alt=""/>
+                  </ng-container>
+                   <!-- <i class="fas fa-user-md" style="font-size: 60px; margin-top: 30px;"></i> -->
+                </div>
+                 <!-- <div class = "teleconsult_profile_menu_icon">
+                   <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="mat_button_outline">
+                     <mat-icon>more_vert</mat-icon>                     
+                   </button>
+                   <mat-menu #menu="matMenu">
+                     <button mat-menu-item class="mat_button_outline" *ngIf = "!doctorList.favouriteDoctor" (click) = "addToFavourite(i)">
+                       <mat-icon>star</mat-icon>
+                       <span>Add to favourite</span>
+                     </button>
+                     <button mat-menu-item class="mat_button_outline" *ngIf = "doctorList.favouriteDoctor"  (click) = "removeFromFavourite(i)">
+                      <mat-icon style="color: #2895F0;">star</mat-icon>
+                      <span>Remove from favourite</span>
+                     </button>
+                   </mat-menu>
+                 </div> -->
+               </div>
+
+               <div class = "teleconsult_doctor_list_body">
+                <h6 class = "teleconsult_doctor_name" style="font-size: 16px;">{{doctorNameAndQualification(doctorList.name, doctorList.qualification)}}</h6>
+                <p class = "teleconsult_doctor_experience mb-2">Experience : {{(doctorList.experience && doctorList.experience.trim().length > 0)? doctorList.experience : 'N/A'}}</p>
+                <div class="row teleconsult_doctor_speciality mb-2" style="margin-left: 20px;margin-right: 20px;width: unset;">
+                  <ng-container *ngIf="doctorList.consultant_speciality.length > 2; else specialityMin">
+                    <span *ngFor = "let specialist of doctorList.consultant_speciality | slice:0:2">
+                      <p class="teleconsult_doctor_specialist_list" >
+                        {{specialist | titlecase }}
+                      </p>
+                    </span>
+                    <p style="margin: 4px 0px 0px 0px !important;"> +{{(doctorList.consultant_speciality.length - 2) +'More'}}</p>
+                  </ng-container>
+                  <ng-template #specialityMin>
+                    <span *ngFor = "let specialist of doctorList.consultant_speciality">
+                      <p class="teleconsult_doctor_specialist_list" >
+                        {{specialist | titlecase }}
+                      </p>
+                    </span>
+                  </ng-template>
+                  <!-- <span >
+                    <p class="teleconsult_doctor_specialist_list">
+                      General
+                    </p>
+                  </span> -->
+                </div>
+      
+                <div class="row teleconsult_doctor_language mb-2" style="margin-left: 20px;margin-right: 20px;width: unset;">
+                  <!-- <span *ngIf = "doctorList.languages_Spoken != undefined">
+                  <ul *ngIf= "doctorList.languages_Spoken.length > 1" style="text-decoration: none;list-style-type: none; width: 81%; margin: auto;">
+                    <li *ngFor = "let language of doctorList.languages_Spoken; let i = index;" style="float: left;">
+                      <p *ngIf="i<3" class="teleconsult_doctor_language_list">
+                        {{language | titlecase }}
+                      </p>
+                    </li>
+                  </ul>
+                  <span *ngIf = "doctorList.languages_Spoken.length == 1 ">
+                    <p class="teleconsult_doctor_language_list">
+                      English
+                    </p>
+                  </span>
+                  </span> -->
+                  <ng-container *ngIf = "doctorList.languages_Spoken != undefined  && doctorList.languages_Spoken.length > 0">
+                    <ng-container *ngIf="_isLanguageArrayEmpty(doctorList.languages_Spoken[0]) > 0; else nolanguage;">
+                      <ng-container *ngIf="doctorList.languages_Spoken.length > 2; else languageList">
+                        <p  *ngFor = "let language of doctorList.languages_Spoken | slice:0:2" class="teleconsult_doctor_language_list">
+                          {{language | titlecase }}
+                        </p>
+                        <p style="margin: 4px 0px 0px 0px !important;">{{'+More'}}</p>
+                      </ng-container>
+                      <ng-template #languageList>
+                        <p  *ngFor = "let language of doctorList.languages_Spoken" class="teleconsult_doctor_language_list">
+                          {{language | titlecase }}
+                        </p>
+                      </ng-template>
+                    </ng-container>
+                    <ng-template #nolanguage>
+                      <p class="teleconsult_doctor_language_list" [textContent]="'english' | titlecase"></p>
+                    </ng-template>
+                  </ng-container>
+                  <span *ngIf = "doctorList.languages_Spoken == undefined  || doctorList.languages_Spoken.length == 0">                    
+                    <span>
+                      <p class="teleconsult_doctor_language_list">
+                        English
+                      </p>
+                    </span>
+                  </span>
+                  <!-- <span >
+                    <p class="teleconsult_doctor_language_list">
+                      Hindi
+                    </p>
+                  </span>
+                  <span >
+                    <p class="teleconsult_doctor_language_list">
+                      Punjabi
+                    </p>
+                  </span> -->
+                </div>
+      
+                <p *ngIf="this._constant.teleconsultationFlowSelected == 'genric'" class = "teleconsult_doctor_fees mb-2">Consultation fee :  &#x20B9; {{(doctorList.consultation_fees != 0 ) ? doctorList.consultation_fees+' (Includes all tax)' : doctorList.consultation_fees}}</p>
+                <p *ngIf="this._constant.teleconsultationFlowSelected == 'affiliate'" class = "teleconsult_doctor_fees mb-2">MRP : <s> &#x20B9; {{doctorList.affilation_excusive_data.affilation_array[0].affilation_mrp}}</s>{{' | '}}Offer Price: &#x20B9; {{doctorList.affilation_excusive_data.affilation_array[0].affilation_price}}</p>
+                <div class="star_unchecked mb-1">
+                  
+                  <span *ngFor="let star of fillRatingStars(doctorList.ratings)" [class]="iconClass[star]"></span>
+                  <!-- <span class="fa fa-star star_checked"></span>
+                  <span class="fa fa-star star_checked"></span>
+                  <span class="fa fa-star"></span>
+                  <span class="fa fa-star"></span>  mxhksvnmff-->
+                </div>
+                <p class = "teleconsult_doctor_fees mb-2">{{doctorList.ratings}} ratings</p>
+                
+              </div>
+              <div class = "teleconsult_doctor_list_footer">
+                <span *ngIf="hideCallBtn" class="teleconsult_doctor_mob_dot mb-3" [ngClass]="{'teleconsult_doctor_mob_dot_offline':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] != 'Online')}" (click)="reasonForVisit(doctorList.ihl_consultant_id,doctor_card.id)">
+                  <i class="fas fa-2x fa-phone-alt teleconsult_doctor_icons_pos"></i>
+                </span>
+                <span class="teleconsult_doctor_cal_dot mb-3" (click)="expendCardAppointment(doctor_card.id , i, doctorList.avail, doctorList)">
+                  <i class="far fa-2x fa-calendar-alt teleconsult_doctor_icons_pos"></i>
+                </span>
+                <span class="teleconsult_doctor_inf_dot mb-3" (click)="expendCardProfile(doctor_card.id, doctorList)">
+                  <i class="fas fa-2x fa-info teleconsult_doctor_icons_pos"></i>
+                </span>
+              </div>
+            </div>  
+        </div> 
+        
+        <div class="cardExpendContainer" *ngIf="cardExpendDiv && doctor_card.id == selectedDoctor">
+        <div [ngClass]="{'cardExpendFullDiv row': doctor_card.id == selectedDoctor}"  >
+          <div [ngClass]="{'col-md-12 col-lg-4 col-xl-4 p-0': doctor_card.id == selectedDoctor , 'doctor-card': doctor_card.id !== selectedDoctor}">
+            <div class="doctor-card cardShadowRemove">              
+               <div class = "teleconsult_doctor_list_header">
+                <span class="teleconsult_triangle_topleft" [ngClass]="{
+                  'teleconsult_triangle_topleft_offline':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] == 'Offline'),
+                  'teleconsult_triangle_topleft_online':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] == 'Online'),
+                  'teleconsult_triangle_topleft_busy':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] == 'Busy')
+                }">
+                 <h6 class = "teleconsult_availability">{{this.doctorStatusMappingList[doctorList.ihl_consultant_id]}}</h6>
+                </span>
+                <div class="teleconsult_img_container">
+                  <!-- <i class="fas fa-user-md" style="font-size: 60px; margin-top: 30px;"></i> -->
+                  <ng-container *ngIf="doctorList.vendor_id == 'IHL'">
+                    <img [src]="imageConverter(consultantImagesById[doctorList.ihl_consultant_id])" class = "teleconsult_profile_image" alt=""/>
+                  </ng-container>
+                  <ng-container *ngIf="doctorList.vendor_id != 'IHL'">
+                    <img [src]="imageConverter(consultantImagesById[doctorList.vendor_consultant_id])" class = "teleconsult_profile_image" alt=""/>
+                  </ng-container>
+                </div>
+                 <!-- <div class = "teleconsult_profile_menu_icon teleconsult_profile_menu_icon_pos_top">
+                   <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="mat_button_outline">
+                     <mat-icon>more_vert</mat-icon>
+                   </button>
+                   <mat-menu #menu="matMenu">
+                      <button mat-menu-item class="mat_button_outline" *ngIf = "!doctorList.favouriteDoctor" (click) = "addToFavourite(i)">
+                        <mat-icon>star</mat-icon>
+                        <span>Add to favourite</span>
+                      </button>
+                      <button mat-menu-item class="mat_button_outline" *ngIf = "doctorList.favouriteDoctor"  (click) = "removeFromFavourite(i)">
+                        <mat-icon style="color: #2895F0;">star</mat-icon>
+                        <span>Remove from favourite</span>
+                       </button>
+                   </mat-menu>
+                 </div> -->
+               </div>
+
+
+               <div class = "teleconsult_doctor_list_body">
+                <h6 class = "teleconsult_doctor_name" style="font-size: 16px;">{{doctorNameAndQualification(doctorList.name, doctorList.qualification)}}</h6>
+                <p class = "teleconsult_doctor_experience mb-2">Experience : {{(doctorList.experience && doctorList.experience.trim().length > 0)? doctorList.experience : 'N/A'}}</p>
+                <div class="row teleconsult_doctor_speciality mb-2">
+                  <span *ngFor = "let specialist of doctorList.consultant_speciality">
+                    <p class="teleconsult_doctor_specialist_list">
+                      {{specialist | titlecase }}
+                    </p>
+                  </span>
+                  <!-- <span >
+                    <p class="teleconsult_doctor_specialist_list">
+                      General
+                    </p>
+                  </span> -->
+                </div>
+      
+                <div class="row teleconsult_doctor_language mb-2" style="margin-left: 20px;margin-right: 20px;width: unset;">    
+                  <!-- <span *ngIf = "doctorList.languages_Spoken != undefined">            
+                  <ul *ngIf= "doctorList.languages_Spoken.length > 1" style="text-decoration: none;list-style-type: none; width: 81%; margin: auto;">
+                    <li *ngFor = "let language of doctorList.languages_Spoken; let i = index;" style="float: left;">
+                      <p *ngIf="i<3" class="teleconsult_doctor_language_list">
+                        {{language | titlecase }}
+                      </p>
+                    </li>
+                  </ul>
+                  <span *ngIf="doctorList.languages_Spoken.length == 1" >
+                    <p class="teleconsult_doctor_language_list">
+                      English {{doctorList.languages_Spoken}}
+                    </p>
+                  </span>
+                  </span>   -->
+                  <ng-container *ngIf = "doctorList.languages_Spoken != undefined  && doctorList.languages_Spoken.length > 0">
+                    <ng-container *ngIf="_isLanguageArrayEmpty(doctorList.languages_Spoken[0]) > 0; else nolanguage;">
+                      <p  *ngFor = "let language of doctorList.languages_Spoken" class="teleconsult_doctor_language_list">
+                        {{language | titlecase }}
+                      </p>
+                    </ng-container>
+                    <ng-template #nolanguage>
+                      <p class="teleconsult_doctor_language_list" [textContent]="'english' | titlecase"></p>
+                    </ng-template>
+                  </ng-container>
+                  <span *ngIf = "doctorList.languages_Spoken == undefined  || doctorList.languages_Spoken.length == 0">                    
+                    <span>
+                      <p class="teleconsult_doctor_language_list">
+                        English
+                      </p>
+                    </span>
+                  </span>
+                  
+                  <!-- <span >
+                    <p class="teleconsult_doctor_language_list">
+                      Hindi
+                    </p>
+                  </span>
+                  <span >
+                    <p class="teleconsult_doctor_language_list">
+                      Punjabi
+                    </p>
+                  </span> -->
+                </div>
+      
+                <p *ngIf="this._constant.teleconsultationFlowSelected == 'genric'" class = "teleconsult_doctor_fees mb-2">Consultation fee :  &#x20B9; {{(doctorList.consultation_fees != 0 ) ? doctorList.consultation_fees+' (Includes all tax)' : doctorList.consultation_fees}}</p>
+                <p *ngIf="this._constant.teleconsultationFlowSelected == 'affiliate'" class = "teleconsult_doctor_fees mb-2">MRP : <s> &#x20B9; {{doctorList.affilation_excusive_data.affilation_array[0].affilation_mrp}}</s>{{' | '}}Offer Price: &#x20B9; {{doctorList.affilation_excusive_data.affilation_array[0].affilation_price}}</p>
+                <p class = "teleconsult_doctor_fees mb-2">Fees for : {{'30 min'}}</p>
+                <div class="star_unchecked mb-1">
+                  <span *ngFor="let star of fillRatingStars(doctorList.ratings)" [class]="iconClass[star]"></span>
+                  <!-- <span class="fa fa-star star_checked"></span>
+                  <span class="fa fa-star star_checked"></span>
+                  <span class="fa fa-star"></span>
+                  <span class="fa fa-star"></span> -->
+                </div>
+                <p class = "teleconsult_doctor_fees mb-2">{{doctorList.ratings}} ratings</p>
+                
+              </div>
+
+              <div *ngIf = "doctor_card.id !== selectedDoctor;" class = "teleconsult_doctor_list_footer">
+                <span *ngIf="hideCallBtn" class="teleconsult_doctor_mob_dot mb-3" [ngClass]="{'teleconsult_doctor_mob_dot_offline':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] != 'Online')}" (click)="reasonForVisit(doctorList.ihl_consultant_id,doctor_card.id)">
+                  <i class="fas fa-2x fa-phone-alt teleconsult_doctor_icons_pos"></i>
+                </span>
+                <span class="teleconsult_doctor_cal_dot mb-3" (click)="expendCardAppointment(doctor_card.id , i, doctorList.avail, doctorList)">
+                  <i class="far fa-2x fa-calendar-alt teleconsult_doctor_icons_pos"></i>
+                </span>
+                <span class="teleconsult_doctor_inf_dot mb-3" (click)="expendCardProfile(doctor_card.id, doctorList)">
+                  <i class="fas fa-2x fa-info teleconsult_doctor_icons_pos"></i>
+                </span>
+              </div>
+
+              <div *ngIf="bookAppointmentView && doctor_card.id == selectedDoctor" class = "teleconsult_doctor_list_footer">
+                <span *ngIf="hideCallBtn" class="teleconsult_doctor_mob_dot mb-3" [ngClass]="{'teleconsult_doctor_mob_dot_offline':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] != 'Online')}" (click)="reasonForVisit(doctorList.ihl_consultant_id,doctor_card.id)">
+                  <i class="fas fa-2x fa-phone-alt teleconsult_doctor_icons_pos"></i>
+                </span>
+                <span style="background-color: #77B35D;" class="teleconsult_doctor_cal_dot mb-3" (click)="shrinkCardAppointment(doctor_card.id)">
+                  <i class="far fa-2x fa-calendar-alt teleconsult_doctor_icons_pos"></i>
+                </span>
+                <span class="teleconsult_doctor_inf_dot mb-3" (click)="expendCardProfile(doctor_card.id, doctorList)">
+                  <i class="fas fa-2x fa-info teleconsult_doctor_icons_pos"></i>
+                </span>
+              </div>
+              <div *ngIf="doctorProfileView  && doctor_card.id == selectedDoctor" class = "teleconsult_doctor_list_footer">
+                <span *ngIf="hideCallBtn" class="teleconsult_doctor_mob_dot mb-3" [ngClass]="{'teleconsult_doctor_mob_dot_offline':(this.doctorStatusMappingList[doctorList.ihl_consultant_id] != 'Online')}" (click)="reasonForVisit(doctorList.ihl_consultant_id,doctor_card.id)">
+                  <i class="fas fa-2x fa-phone-alt teleconsult_doctor_icons_pos" ></i>
+                </span>
+                <span class="teleconsult_doctor_cal_dot mb-3" (click)="expendCardAppointment(doctor_card.id , i, doctorList.avail, doctorList)">
+                  <i class="far fa-2x fa-calendar-alt teleconsult_doctor_icons_pos"></i>
+                </span>
+                <span style = "background-color: #77B35D;" class="teleconsult_doctor_inf_dot mb-3" (click)="shrinkCardProfile(doctor_card.id)">
+                  <i class="fas fa-2x fa-info teleconsult_doctor_icons_pos"></i>
+                </span>
+              </div>
+            </div> 
+
+          </div>
+          <div *ngIf="bookAppointmentView  && doctor_card.id == selectedDoctor;" class="col-md-12 col-lg-8 col-xl-8 bookAppointmnetSecondCardContainer">
+            <h6 class = "teleconsult_doctor_name" > 
+              <i class="fa-2x far fa-clock appointmentTitleIcon"></i>  
+              Appointment Slot 
+            </h6>
+            <div class="horizontal-rule"> </div>
+            <div *ngIf="doctorList.avail == true">
+              <div class="date-scroll-arrow" style="left: 20px;"><i class="fas fa-arrow-alt-circle-left" id="leftArrow" (click)="moveLeft()"></i></div>
+              <drag-scroll #dragScroll style = "height: 57px !important;" class="dateSlot">
+                <div #mainSlot drag-scroll-item class= "dateBox"  *ngFor = "let eachdaySlots of doctorList.everyDaySlot; let j = index" id = "mainSlot_{{j}}" [class.dateBoxSelect] = "selectedSlot === j" (click) = "getSlotTimings(eachdaySlots.title , j , i , eachdaySlots.subTitle)">  
+                    <p class="dateBoxTitle" value = "eachdaySlots.title">{{eachdaySlots.title}}</p>
+                    <p class="noSlotAva" value = "eachdaySlots.subTitle">{{eachdaySlots.subTitle}}</p>
+                </div>
+                <!-- <div drag-scroll-item class="dateBoxSelect">
+                    <p class="dateBoxTitle">Mon, 25 May</p>
+                    <p class="slotAva"> 20 Slots available </p>
+                </div>
+                <div drag-scroll-item class="dateBox">  
+                    <p class="dateBoxTitle">Tue, 26 May</p>
+                    <p class="slotAva"> 20 Slots available </p>
+                </div>
+                <div drag-scroll-item class="dateBox">  
+                    <p class="dateBoxTitle">Wed, 27 May</p>
+                    <p class="slotAva"> 20 Slots available </p>
+                </div>
+                <div drag-scroll-item class="dateBox">  
+                    <p class="dateBoxTitle">Thu, 28 May</p>
+                    <p class="slotAva"> 20 Slots available </p>
+                </div>  -->
+              </drag-scroll>
+              <div class="date-scroll-arrow" style="right: 20px;"><i class="fas fa-arrow-alt-circle-right" id="rightArrow" (click)="moveRight()"></i></div>
+              <div>  
+                <p class="selectDateTitle">{{dateTitle}}</p>
+              </div>
+              <div class="horizontal-rule" *ngIf="doctorSlotMorning?.length !== 0"> </div>
+              <div class="timeSlot">
+                <div class="morningSlot" *ngIf="doctorSlotMorning?.length !== 0">
+                  <p class="timeSlotTitle"> <i class="fas fa-cloud-sun timeSlotTitleIcon"></i> Morning</p>
+                  <div class="row" style="margin: auto;" *ngIf="doctorSlotMorning?.length !== 0 && doctorSlotMorning !== undefined">
+                    <div class="avaTime"  *ngFor = "let doctorSlotMorning of doctorSlotMorning; let k = index" (click) = "getAppointmentTimings(i,'_m_',k,doctorSlotMorning)"  [class.selectAvaTime] = "selectedAppointmentIndex === i+'_m_'+k">{{doctorSlotMorning}}</div>
+                    <!-- <div class="avaTime"> 11:30 AM </div> -->
+                  </div>
+                  <div class="row" *ngIf="doctorSlotMorning?.length == 0 || doctorSlotMorning == undefined" >
+                    <div style="text-align: center;color: gray;margin: auto;">No slots available</div>
+                  </div>
+                </div>
+                <div class="horizontal-rule" *ngIf="doctorSlotAfternoon?.length !== 0"> </div>
+                <div class="afternoonSlot" *ngIf="doctorSlotAfternoon?.length !== 0">
+                  <p class="timeSlotTitle"> <i class="fas fa-sun timeSlotTitleIcon"></i> Afternoon</p>
+                  <div class="row" style="margin: auto;" *ngIf="doctorSlotAfternoon?.length !== 0 && doctorSlotAfternoon !== undefined">
+                    <div class="avaTime" *ngFor = "let doctorSlotAfternoon of doctorSlotAfternoon; let l = index" (click) = "getAppointmentTimings(i,'_a_',l,doctorSlotAfternoon)" [class.selectAvaTime] = "selectedAppointmentIndex === i+'_a_'+l">{{doctorSlotAfternoon}}</div>
+                    <!-- <div class="avaTime"> 12:30 PM </div>
+                    <div class="avaTime"> 01:00 PM </div>
+                    <div class="avaTime"> 01:30 PM </div>
+                    <div class="avaTime"> 02:00 PM </div>
+                    <div class="avaTime"> 02:30 PM </div>
+                    <div class="avaTime"> 03:00 PM </div>
+                    <div class="avaTime"> 03:30 PM </div> -->
+                  </div>
+                  <div class="row" *ngIf="doctorSlotAfternoon?.length == 0 || doctorSlotAfternoon == undefined" >
+                    <div style="text-align: center;color: gray;margin: auto;">No slots available</div>
+                  </div>
+                </div>
+                <div class="horizontal-rule" *ngIf="doctorSlotEvening?.length !== 0"> </div>
+                <div class="eveningSlot" *ngIf="doctorSlotEvening?.length !== 0">
+                  <p class="timeSlotTitle"> <i class="fas fa-cloud-moon timeSlotTitleIcon"></i> Evening </p>
+                  <div class="row" style="margin: auto;" *ngIf="doctorSlotEvening?.length !== 0 && doctorSlotEvening !== undefined">
+                    <div class="avaTime" *ngFor = "let doctorSlotEvening of doctorSlotEvening; let m = index" (click) = "getAppointmentTimings(i,'_e_',m,doctorSlotEvening)"  [class.selectAvaTime] = "selectedAppointmentIndex ===  i+'_e_'+m">{{doctorSlotEvening}}
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="doctorSlotEvening?.length == 0  || doctorSlotEvening == undefined" >
+                    <div style="text-align: center;color: gray;margin: auto;">No slots available</div>
+                  </div>
+                </div>
+                <div class="horizontal-rule" *ngIf="doctorSlotNight?.length !== 0"> </div>
+                <div class="nightSlot" *ngIf="doctorSlotNight?.length !== 0">
+                  <p class="timeSlotTitle"> <i class="fas fa-moon timeSlotTitleIcon"></i> Night </p>
+                  <div class="row" style="margin: auto;" *ngIf="doctorSlotNight?.length !== 0 && doctorSlotNight !== undefined">
+                    <div class="avaTime" *ngFor = "let doctorSlotNight of doctorSlotNight; let n = index" (click) = "getAppointmentTimings(i,'_n_',n,doctorSlotNight)" [class.selectAvaTime] = "selectedAppointmentIndex === i+'_n_'+n">{{doctorSlotNight}}
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="doctorSlotNight?.length == 0 || doctorSlotNight == undefined" >
+                    <div style="text-align: center;color: gray;margin: auto;">No slots available</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="doctorList.avail == false" style="text-align: center;margin-top: 50px;font-size: 20px;">
+              No slots available
+            </div>
+            <div *ngIf="doctorList.avail == undefined" style="text-align: center;margin-top: 50px;font-size: 20px;">
+              <div style="text-align:center;"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></div>
+              Fetching Time Slots.Please Wait...              
+            </div>
+            <div *ngIf="bookAppointmentView   && doctor_card.id == selectedDoctor;" class="col-sm-12 col-md-8 col-lg-8 col-xl-8 ml-auto mr-auto mt-4 mb-4">
+              <div *ngIf="doctorList.avail == true && confirmButton">               
+                <div class="doctorAppointmentBtn" (click) = "appointmentConfirmation(doctorList);">
+                  <span> Confirm Appointment </span>
+                </div>
+              </div>
+
+              <div *ngIf="doctorList.avail == true && !confirmButton">               
+                <div class="doctorAppointmentBtn" (click) = "gettingDoctorsNextAvailability();">
+                  <span style="font-size: 16px;">Next availability on {{nextDoctorSlotTitle}} </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div *ngIf="bookAppointmentView   && doctor_card.id == selectedDoctor;" class="col-md-12 col-lg-4 col-xl-4 lastCardDiv">          
+            
+            <div *ngIf="doctorList.avail == true" class="appointmentLastCardContainer">
+              <div class="horizontal-rule"> </div>
+              <div class="eveningSlot">
+                <p class="timeSlotTitle"> <i class="fas fa-cloud-moon timeSlotTitleIcon"></i> Evening </p>
+                <div class="row" style="margin: auto;" *ngIf="doctorSlotEvening?.length !== 0 && doctorSlotEvening !== undefined">
+                  <div class="avaTime" *ngFor = "let doctorSlotEvening of doctorSlotEvening; let m = index" (click) = "getAppointmentTimings(i,'_e_',m,doctorSlotEvening)"  [class.selectAvaTime] = "selectedAppointmentIndex ===  i+'_e_'+m">{{doctorSlotEvening}}</div>
+                  </div>
+                <div class="row" *ngIf="doctorSlotEvening?.length == 0  || doctorSlotEvening == undefined" >
+                  <div style="text-align: center;color: gray;margin: auto;">No slots available</div>
+                </div>
+              </div>
+              <div class="horizontal-rule"> </div>
+              <div class="nightSlot">
+                <p class="timeSlotTitle"> <i class="fas fa-moon timeSlotTitleIcon"></i> Night </p>
+                <div class="row" style="margin: auto;" *ngIf="doctorSlotNight?.length !== 0 && doctorSlotNight !== undefined">
+                  <div class="avaTime" *ngFor = "let doctorSlotNight of doctorSlotNight; let n = index" (click) = "getAppointmentTimings(i,'_n_',n,doctorSlotNight)" [class.selectAvaTime] = "selectedAppointmentIndex === i+'_n_'+n">{{doctorSlotNight}}</div>
+                  
+                </div>
+                <div class="row" *ngIf="doctorSlotNight?.length == 0 || doctorSlotNight == undefined" >
+                  <div style="text-align: center;color: gray;margin: auto;">No slots available</div>
+                </div>
+              </div>
+
+              
+            </div>
+            <div *ngIf="doctorList.avail == true && confirmButton" class="doctorAppointmentBtnPos">               
+              <div class="doctorAppointmentBtn" (click) = "appointmentConfirmation(doctorList);">
+                  <span> Confirm Appointment </span>
+              </div>
+            
+            </div>
+
+            <div *ngIf="doctorList.avail == true && !confirmButton" class="doctorAppointmentBtnPos">               
+              <div class="doctorAppointmentBtn" (click) = "gettingDoctorsNextAvailability();">
+                  <span style="font-size: 16px;">Next availability on {{nextDoctorSlotTitle}} </span>
+              </div>
+            </div>
+          </div> -->
+
+          <div *ngIf="doctorProfileView   && doctor_card.id == selectedDoctor;" class="col-md-12 col-lg-4 col-xl-4 bookAppointmnetSecondCardContainer">
+            <h6 class = "teleconsult_doctor_name" style="float:left" > 
+              <i class="fa-2x fas fa-user appointmentTitleIcon"></i>  
+              Profile 
+            </h6>
+            <div class="profileTxt">
+              <p *ngIf="doctorList.description != ''" [innerHtml]="doctorList.description"></p>
+              <p *ngIf="doctorList.description == ''">No description added</p>
+              <!-- <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam aliquet ante id sem vehicula ullamcorper. Proin rutrum eleifend eros nec venenatis. Ut pharetra ipsum at ipsum rutrum vestibulum.</p> -->
+            </div>
+          </div>
+          <div *ngIf="doctorProfileView   && doctor_card.id == selectedDoctor;" class="col-md-12 col-lg-4 col-xl-4 lastCardDiv">          
+            <!-- <div class = "teleconsult_profile_menu_icon teleconsult_profile_menu_icon_pos_bottom">
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="mat_button_outline">
+                <mat-icon>more_vert</mat-icon>               
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item class="mat_button_outline" *ngIf = "!doctorList.favouriteDoctor" (click) = "addToFavourite(i)">
+                  <mat-icon>star</mat-icon>
+                  <span>Add to favourite</span>
+                </button>
+                <button mat-menu-item class="mat_button_outline" *ngIf = "doctorList.favouriteDoctor"  (click) = "removeFromFavourite(i)">
+                  <mat-icon style="color: #2895F0;">star</mat-icon>
+                  <span>Remove from favourite</span>
+                 </button>
+              </mat-menu>
+            </div> -->
+
+            <h6 class = "teleconsult_doctor_name" style="float:left" > 
+              <i class="fa-2x fas fa-star appointmentTitleIcon"></i> 
+              Reviews 
+            </h6>
+            <div class = "profileTxt" [ngClass]="{'had_consult_history': doctorList.hadConsultHistory == true, 'no_consult_history': doctorList.hadConsultHistory == false}">
+              <!-- <h6 style ="float: left;padding-right: 5px;"> 
+               Thamarai Selvan
+              </h6> -->
+              <div *ngIf ="(doctorList.text_reviews_data.length == 0 || doctorList.text_reviews_data == undefined) && doctorList.hadConsultHistory == false">
+                <p style="color: #4d4d4d;font-weight: 500;">No Reviews...</p>
+              </div>
+              <div *ngIf =" doctorList.text_reviews_data.length > 0">
+                <div *ngFor="let eachReview of newDateOrderReviews(doctorList.text_reviews_data)">
+                  <div style="font-size: 11px;">
+                    <p style ="padding-right: 5px;color: #4d4d4d;font-weight: bold;display: inline-block;font-size: 13px;margin-bottom: 5px;"> 
+                      {{eachReview.user_name}}
+                    </p> 
+                    <span class="fa fa-star" [ngClass]="{'stars_color' : eachReview.user_rating < 1, 'review_star_check' : eachReview.user_rating  > 0}"></span>
+                    <span class="fa fa-star" [ngClass]="{'stars_color' : eachReview.user_rating < 2, 'review_star_check' : eachReview.user_rating  > 1}"></span>
+                    <span class="fa fa-star" [ngClass]="{'stars_color' : eachReview.user_rating < 3, 'review_star_check' : eachReview.user_rating  > 2}"></span>
+                    <span class="fa fa-star" [ngClass]="{'stars_color' : eachReview.user_rating < 4, 'review_star_check' : eachReview.user_rating  > 3}"></span>
+                    <span class="fa fa-star" [ngClass]="{'stars_color' : eachReview.user_rating < 5, 'review_star_check' : eachReview.user_rating  > 4}"></span>
+                  </div>
+                  <!-- <br> -->
+                  <p style="color: #4d4d4d;font-weight: 500;">{{eachReview.rating_text}}</p>
+                </div>
+              </div>
+              <div *ngIf ="(doctorList.text_reviews_data.length == 0 || doctorList.text_reviews_data == undefined) && doctorList.hadConsultHistory == true">
+                <div style="font-size: 11px;float: left;">
+                  <span class="fa fa-star stars_color"></span>
+                  <span class="fa fa-star stars_color"></span>
+                  <span class="fa fa-star stars_color"></span>
+                  <span class="fa fa-star stars_color"></span>
+                  <span class="fa fa-star stars_color"></span>
+                </div>
+                <br>
+                <p>Enter Your Reviews in below text field</p>
+              </div>
+            </div>
+
+            <div class= "review_box" *ngIf="doctorList.hadConsultHistory == true">
+              <div class="mb-1">
+                <!-- <span *ngFor="let liveStar of liveRatingStars" class="fa fa-star stars_color" (click)="countStars(liveStar)"
+                [ngClass]="{'selectedLiveStar': (liveRatingStarValue >= liveStar)}"></span> -->
+                <i class="fa fa-star" [ngClass]="{'stars_color' : rateArray[0] == 0, 'selectedLiveStar' : rateArray[0] == 1}" (click)="countStars(1)"></i>
+                <i class="fa fa-star" [ngClass]="{'stars_color' : rateArray[1] == 0, 'selectedLiveStar' : rateArray[1] == 1}" (click)="countStars(2)"></i>
+                <i class="fa fa-star" [ngClass]="{'stars_color' : rateArray[2] == 0, 'selectedLiveStar' : rateArray[2] == 1}" (click)="countStars(3)"></i>
+                <i class="fa fa-star" [ngClass]="{'stars_color' : rateArray[3] == 0, 'selectedLiveStar' : rateArray[3] == 1}" (click)="countStars(4)"></i>
+                <i class="fa fa-star" [ngClass]="{'stars_color': rateArray[4] == 0, 'selectedLiveStar' : rateArray[4] == 1}" (click)="countStars(5)"></i>
+              </div>
+              <mat-form-field appearance="outline" class = "rating_inp">
+                <input matInput class = "rating_letters" placeholder="Your review on {{doctorList.name}}" #reviewField>
+                <mat-icon matSuffix class = "rating_icon" style="cursor: pointer;" *ngIf="!sendReview" (click)="feedBack(doctorList)">send</mat-icon>
+                <mat-spinner matSuffix [diameter]="30"  *ngIf="sendReview"></mat-spinner>
+              </mat-form-field>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+    </ng-container>
+  </div>
+
+  <!-- <div *ngIf = "isDoctorOnline === false && _constant.startCallFlow === true" style="text-align: center;margin: auto;color: red;">
+    No Consultant Are Online Right Now.
+  </div> -->
+
+  <div *ngIf = "doctorList.length == 0" style="text-align: center;margin: auto;color: red;"><!--&& _constant.startCallFlow === false  "old code removed here for no doctor list Info"-->
+    No Consultant Are Available.
+  </div>
+
+</div>
+
+<app-footer></app-footer>
+
+<!-- 
+  <i class="fas fa-5x fa-heartbeat" style="color: #F53F00;"></i>
+  <i class="fas fa-5x fa-pills" style="color: #2895F0;"></i>
+  <i class="fas fa-5x fa-lungs-virus" style="color: #BE4BDC;"></i>
+  <i class="fas fa-5x fa-brain" style="color: #FD7E15;"></i>
+  <i class="fas fa-5x fa-medkit" style="color: #65BC87;"></i>
+  <i class="fas fa-5x fa-bone" style="color: #F782AC;"></i>
+
+  <i class="fas fa-info"></i>
+  <i class="fas fa-phone-alt"></i>
+  <i class="far fa-calendar-alt"></i>
+
+  [class.cardExpendFullDiv] = "doctor_card.id == selectedDoctor" [class.row] = "doctor_card.id == selectedDoctor"
+
+class="col-md-12 col-lg-4 col-xl-4 p-0" [class.doctor-card] = "doctor_card.id !== selectedDoctor"
+
+[ngClass]="{'col-md-6 col-lg-4 col-xl-4': cardExpendDiv == false , 'cardExpendDynamic' : cardExpendDiv == true && doctor_card.id == selectedDoctor , 'col-md-6 col-lg-4 col-lg-4' : cardExpendDiv == true && doctor_card.id !== selectedDoctor}"
+-->
+
+<div *ngIf="showLoadingModal" class="loading-modal-container">    
+  <div class="loading-modal-container-one">
+    <div style="text-align: center;"> 
+      <img width="25px" src="assets/img/ihl-plus.png" /> <span class=processprogram style="color: #656565;"> Tele Consultation </span>
+    </div>
+    <hr>
+    <div class="loading-modal-spinner" *ngIf="showLoadingModalSpinner == true"></div>
+    <div style="font-weight: bold;color: #656565;font-size: 15px;">
+      {{showLoadingModalContent}}
+    </div>
+  </div>
+</div>

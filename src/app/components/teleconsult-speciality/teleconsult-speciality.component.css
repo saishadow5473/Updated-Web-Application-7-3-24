@@ -1,0 +1,66 @@
+.teleconsult-main-container{
+    margin-left: 72px;
+    margin-top: 80px;
+    padding: 28px 24px;
+    min-height: 540px;
+}
+
+.teleconsult-main-container h2{
+    font-weight: 500;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+@media (max-width: 500px){
+    .teleconsult-main-container{
+        margin-left: 1px;
+        margin-top: 0px;
+        padding: 28px 24px;
+    }
+}
+
+
+.teleconsult_speciality_main_dashboard_card{
+    font-family: 'Quicksand', sans-serif;
+    cursor: pointer;
+    /* margin: 5px auto; */
+    padding: 5px 12px;
+    background: #fff;
+    color: #4885ed;
+    border-radius: 7px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+    transition: 0.2s;
+    /* margin-bottom: 16px; */
+    /*height: 210px;*/
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.teleconsult_speciality_card{
+    text-align: center;
+    margin-top: 6%;
+}
+
+.teleconsult_speciality_name{
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+#affiliate_image {
+    border-radius: 6px;
+    box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    margin: auto 10px 10px 0;
+    top: -10px;
+    position: relative;
+}
+
+#affiliate_image img {width: 100%;}

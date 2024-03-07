@@ -1,0 +1,133 @@
+<h2 class="mb-4">{{testType}}</h2>
+<div id="back" class="fa fa-reply element back" (click)="showDashboard()">
+    <div style="font-size: 12px;
+    padding-top: 2px;">Back</div>
+</div>
+<div>
+    <div class="row">
+        <div class="col-md-4">
+            <mat-card (click)="showDashboard()" [style.color]="testColour" class="vital-info" matRipple
+                [matRippleCentered]="centered" [matRippleDisabled]="disabled" [matRippleUnbounded]="unbounded">
+                <div class="stats-container-value-{{testValue}}">{{testValue}}
+                    <span style="font-size: 15px;">{{testUnit}}</span></div>
+                <p class="stats-container-desc-{{sanitized}}">{{testType}}</p>
+                <span class="stats-container-icon-{{testType}} fas" [ngClass]="testIcon"></span>
+            </mat-card>
+            <mat-card class="measurement-history">
+                <app-measurement-history></app-measurement-history>
+            </mat-card>
+        </div>
+        <div class="col-md-8">
+            <mat-card [style.color]="testColour" class="vital-graph">
+                <div id="vitalChart">
+                    <!--<span style="color: #4885ed;font-weight: bold; top:13px; position: absolute;">{{testType}}</span>-->
+                    <ul class="nav justify-content-end ul-settings">
+                        <li id="all-days" class="nav-item" (click)="showGraph('showAllDays')">
+                            <a style="color: #4885ed; font-weight: bold;" class="nav-link">All</a>
+                        </li>
+                        <li id="test" class="nav-item" (click)="showGraph('showNinetyDays')">
+                            <a style="color: #4885ed; font-weight: bold;" class="nav-link">90 Days</a>
+                        </li>
+                        <li id="test1" class="nav-item" (click)="showGraph('showThirtyDays')">
+                            <a style="color: #4885ed; font-weight: bold;" class="nav-link">30 Days</a>
+                        </li>
+                        <li id="test2" class="nav-item" (click)="showGraph('showSevenDays')">
+                            <a style="color: #4885ed; font-weight: bold;" class="nav-link">7 Days</a>
+                        </li>
+                    </ul>
+                    <div id="weightChartContainer"></div>
+                    <div id="bmiChartContainer"></div>
+                    <div id="ecgChartContainer"></div>
+                    <div id="bmcChartContainer"></div>
+                    <div id="pulseChartContainer"></div>
+                    <div id="spo2ChartContainer"></div>
+                    <div id="bpChartContainer"></div>
+                    <div id="temperatureChartContainer"></div>
+                    <div id="pbfChartContainer"></div>
+                    <div id="bmctChartContainer"></div>
+                    <div id="ecwChartContainer"></div>
+                    <div id="icwChartContainer"></div>
+                    <div id="mineralChartContainer"></div>
+                    <div id="proteinChartContainer"></div>
+                    <div id="bfmChartContainer"></div>
+                    <div id="smmChartContainer"></div>
+                    <div id="bcmChartContainer"></div>
+                    <div id="whprChartContainer"></div>
+                    <div id="whtrChartContainer"></div>
+                    <div id="vfChartContainer"></div>
+                    <div id="bmrChartContainer"></div>
+                    <p *ngIf="showMinimumError" class="min-test-error">Minimum Two tests required to show your graph..!
+                    </p>
+                    <p *ngIf="loadingMessage" class="min-test-error">Loading graph. Please wait..</p>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <i *ngIf="previousNav" (click)="showPreviousGraphs()"
+                                class="fas fa-chevron-circle-left prev-button"></i>
+                            <div style=" position: absolute;width: 100%; left: 5%;">
+                                <i *ngIf="nextNav" (click)="showAugmentedGraphs()"
+                                    class="fas fa-chevron-circle-right next-button"></i>
+                                <div class="ecg-graph" id="ecgGraphChartContainerLead1"></div>
+                                <div class="ecg-graph" id="ecgGraphChartContainerLead2"></div>
+                                <div class="ecg-graph" id="ecgGraphChartContainerLead3"></div>
+                                <div class="ecg-graph" id="ecgGraphChartContainerLead4"></div>
+                                <div class="ecg-graph" id="ecgGraphChartContainerLead5"></div>
+                                <div class="ecg-graph" id="ecgGraphChartContainerLead6"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card>
+            <mat-card class = "minmax-history-infobox">
+                <!-- <app-min-max-stat></app-min-max-stat> -->
+                <div class="row">
+                <div class="titleTxt">Over All Stats</div>
+                <div class="col-md-12 viatl_avg_content">
+
+                    <div class="row">
+                        <div class="col-md-4 col-xl-4 col-sm-4 col-4">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="TxtCenter">
+                                        <i class="fas fa-2x fa-sort-amount-up Higicon"></i><br>
+                                        <span class="avg_vital_val">{{highestValueInLast30days}}</span>
+                                        <p class="FtSz12">Highest</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="vertical_line v1"></div>
+                                </div>    
+                            </div>    
+                        </div>
+                        <div class="col-md-4 col-xl-4 col-sm-4 col-4">
+                            <div class="row">                                                
+                                <div class="col-md-10">
+                                    <div class="TxtCenter">
+                                        <i class="fas fa-2x fa-sort-amount-down Lowicon"></i><br>
+                                        <span class="avg_vital_val">{{lowestValueInLast30days}}</span>
+                                        <p class="FtSz12">Lowest</p>
+                                    </div>
+                                </div>
+                                    <div class="col-md-2">
+                                        <div class="vertical_line v2"></div>
+                                    </div>    
+                            </div>    
+                        </div>
+                        <div class="col-md-4 col-xl-4 col-sm-4 col-4">
+                            <div class="row">
+                                <div class="col-md-12">                                                    
+                                    <div class="TxtCenter">
+                                        <i class="fas fa-2x fa-arrows-alt-v Lowicon"></i><br>
+                                        <span class="avg_vital_val">{{averageValueInLast30days}}</span>
+                                        <p class="FtSz12">Average</p>
+                                    </div>
+                                </div>    
+                            </div>    
+                        </div>
+                    </div>       
+                
+                 </div>
+                </div>    
+            </mat-card>
+        </div>
+    </div>
+</div>

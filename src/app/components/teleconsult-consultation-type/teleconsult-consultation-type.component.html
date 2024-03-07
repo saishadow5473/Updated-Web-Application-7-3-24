@@ -1,0 +1,50 @@
+<app-side-navigation-bar></app-side-navigation-bar>
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+
+<div class="teleconsult-main-container">
+  
+  <div class="col-12 row">
+    <span id="affiliate_image" *ngIf="brand_image_url_exist"><img [src]="brand_image_url"/></span>
+    <h3 class="mb-4 text-wrap">Select Consultation</h3>
+  </div>
+  <div id="back" class="fa fa-reply element tele-back-btn" (click)="showTeleDashboard()">
+      <div style="font-size: 12px;
+      padding-top: 2px;">Back</div>
+  </div>
+  
+  <div class="row" *ngIf="consultationPlatformData != undefined">
+    
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-4 d-flex" *ngFor="let consult_type of consultationPlatformData; let i = index;" (click) = "selectSpeciality(consult_type.consultation_type_name)">
+      
+      <div class = "teleconsult_types_main_dashboard_card" style="width:100%">
+        <div class = "teleconsult_types_card text-wrap">
+          <i class="{{consult_type.consultation_type_image_url}}" style="font-size: 50px;" [style.color]="consultTypeColor[i]"></i>
+          <!-- <img [src]="consult_type.consultation_type_image_url" class="mx-auto" style="height:15vh;"> -->
+          <h3 class = "teleconsult_types_name text-wrap d-none d-sm-block" *ngIf="consult_type.consultation_type_name=='Medical Consultation'">Doctor Consultation</h3>
+          <h3 class = "teleconsult_types_name text-wrap d-none d-sm-block" *ngIf="consult_type.consultation_type_name=='Health Consultation'">Diet & Fitness Consultation</h3>
+          <h3 class = "teleconsult_types_name text-wrap d-none d-sm-block" *ngIf="consult_type.consultation_type_name!='Medical Consultation'&&consult_type.consultation_type_name!='Health Consultation'">{{consult_type.consultation_type_name}}</h3>
+          <div class = "teleconsult_types_name text-wrap d-sm-none" *ngIf="consult_type.consultation_type_name!='Medical Consultation'&&consult_type.consultation_type_name!='Health Consultation'">{{consult_type.consultation_type_name}}</div>
+        </div>
+      </div>
+    
+    </div>
+
+  </div>
+
+</div>
+
+<app-footer></app-footer>
+
+<!-- 
+  <i class="fas fa-5x fa-heartbeat" style="color: #F53F00;"></i>
+  <i class="fas fa-5x fa-pills" style="color: #2895F0;"></i>
+  <i class="fas fa-5x fa-lungs-virus" style="color: #BE4BDC;"></i>
+  <i class="fas fa-5x fa-brain" style="color: #FD7E15;"></i>
+  <i class="fas fa-5x fa-medkit" style="color: #65BC87;"></i>
+  <i class="fas fa-5x fa-bone" style="color: #F782AC;"></i>
+
+  <i class="fas fa-info"></i>
+  <i class="fas fa-phone-alt"></i>
+  <i class="far fa-calendar-alt"></i>
+-->

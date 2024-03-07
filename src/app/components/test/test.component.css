@@ -1,0 +1,78 @@
+.dateSlot{
+    display: -webkit-box; 
+    height: 50px; 
+    margin: 20px 0px; 
+    width:100%; 
+    overflow-x:scroll;
+
+  overflow-y:hidden;
+}
+
+.dateBox{
+    border: 1px solid #ccc; 
+    color: #47464c; 
+    font-size: 12px; 
+    margin: 0px 15px 0px 0px; 
+    text-align: center; 
+    width: 120px; 
+    cursor: pointer; 
+    padding: 5px 0px;
+}
+
+.dateBoxTitle{
+    font-weight: 600;
+}
+
+.noSlotAva{
+    position: relative; 
+    top: -15px; 
+    font-size: 10px;
+}
+.dateBoxSelect{
+    border: 1px solid #46bde7; 
+    color: #47464c; 
+    font-size: 12px; 
+    margin: 0px 15px 0px 0px; 
+    text-align: center; 
+    width: 120px; 
+    cursor: pointer; 
+    padding: 5px 0px; 
+    background-color: #f3fdff;
+}
+
+.slotAva{
+    position: relative; 
+    top: -15px; 
+    font-size: 10px; 
+    color: #27b126
+}
+
+.dateSlot::-webkit-scrollbar {
+
+    display: none;
+
+}
+
+
+.dateSlot {
+
+    -ms-overflow-style: none;
+
+} 
+
+.scrolling-wrapper {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+  
+   
+  }
+
+  .card {
+    display: inline-block;
+  }
+  
+  .container {
+    cursor: grab;
+    overflow: auto;
+}

@@ -1,0 +1,90 @@
+<app-side-navigation-bar></app-side-navigation-bar>
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+<div *ngIf="loading" class="text-center" style="margin-top: 75px;">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+
+<div *ngIf="!loading" class="image_header" >  
+  <img id="dashboardBannerImg" [src]= 'bannerImg' class="image_banner" (click) = "teleCall()" />
+</div>
+
+<div class="bb-main-container" style="margin-top:0px;padding: 5px 24px;">
+  <!-- <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div> -->
+  <div *ngIf="!loading">
+    <div id = "vital-stats-board">      
+    <h2 class="mb-4">Stats</h2>
+    <div *ngIf="!loading" class="row mb-5" style="margin-top: -15px;">      
+      <div id = "vital-stats-card" *ngFor="let vitalLaskCheckin of vitalLaskCheckins" class="col-sm-12 col-md-4 col-lg-3">
+        <div id = {{vitalLaskCheckin.name}}>
+          <app-stats-card-test [id]="vitalLaskCheckin['name']" [name]="vitalLaskCheckin['name']" [title]="vitalLaskCheckin['title']" [value]="vitalLaskCheckin['val']" [unit]="vitalLaskCheckin['unit']" [icon]="vitalLaskCheckin['icon']" [color]="vitalLaskCheckin['color']"></app-stats-card-test> 
+        </div>
+      </div>
+
+      <!--<div id = "vital-stats-card" *ngFor="let vital of vitals" class="col-sm-12 col-md-4">
+        <app-stats-card-test [id]="Constants['HealthDataPrefs'][vital]['name']" [title]="Constants['HealthDataPrefs'][vital]['title']" [value]="healthData[vital]"
+          [color]="Constants['HealthDataPrefs'][vital]['color']" [icon]="Constants['HealthDataPrefs'][vital]['icon']"
+          [name]="Constants['HealthDataPrefs'][vital]['name']"
+          [shouldShowGraphView]="Constants['HealthDataPrefs'][vital]['shouldShowGraphView']"
+          [isECG]="Constants['HealthDataPrefs'][vital]['isECG']" [graphData]=graphData[vital]></app-stats-card-test>
+      </div> -->
+    </div>
+    </div>
+    <div id="vital-stats-info">
+        <app-vital-graphs></app-vital-graphs>
+       <!-- <app-measurement-history></app-measurement-history>-->
+    </div>
+
+    
+    <!-- <h2 class="mb-4">Your rings</h2>
+  <div *ngIf="goals" class="row">
+    <div *ngFor="let goal of goalKeys" class="col-md-6 col-sm-12">
+      <div class="d-flex mx-auto align-items-center">
+      <circle-progress class="d-flex mb-2"
+        [percent]="getPercentFor(goal)"
+        [radius]="90"
+        [title]="Constants['HealthDataPrefs'][goal]['title']"
+        [outerStrokeWidth]="16"
+        [innerStrokeWidth]="0"
+        [outerStrokeColor]="Constants['HealthDataPrefs'][goal]['color']"
+        [innerStrokeColor]="'transparent'"
+        [animation]="true"
+        [subtitle]="getPercentTextFor(goal)"
+        [animationDuration]="400"
+        [titleFontSize]="16"
+        [titleColor]= "Constants['HealthDataPrefs'][goal]['color']"
+      ></circle-progress>
+    </div>
+  </div>  
+  </div>
+
+  <h2 class="mb-4">Chartings</h2>
+  <div *ngIf="healthData" class="row">
+      <ngx-charts-bubble-chart
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="single"
+      [xAxis]="showXAxis"
+      [yAxis]="showYAxis"
+      [legend]="showLegend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      (select)="onSelect($event)">
+    </ngx-charts-bubble-chart>
+  </div> -->
+
+    <app-recommendations></app-recommendations>
+    <!--<app-blog></app-blog>-->
+  </div>
+</div>
+
+<app-footer *ngIf="!loading"></app-footer>

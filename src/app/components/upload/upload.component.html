@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-12">
+    <div class="upload-box" style="padding: 32px 21px; border: 2px grey dashed">
+      <p>Drag files here or <span class="upload">upload</span></p>
+    </div>
+
+    <div class="file-box" style="padding: 16px 0">
+      <div *ngFor="let file of files" class="row ">
+        <div class="col d-flex align-items-center justify-content-center" style="height: 80px; max-width: 80px; background-color: red;">
+          <p style="color: white; text-transform: uppercase">{{file.extension}}</p>
+        </div>
+        <div class="col d-flex justify-content-center" style="flex-direction: column;">
+          <p style="font-weight: 600; text-align: center;">{{file.name}}</p>
+          <div class="w-100" style="height: 4px; background-color: red; border-radius: 2px;">
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>

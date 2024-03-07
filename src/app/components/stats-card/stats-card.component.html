@@ -1,0 +1,15 @@
+<div class="stats-container" [style.color]="color">
+  <div class="row">
+    <div class="col-9">
+      <p class="stats-container-value">{{value}}</p>
+      <p class="stats-container-desc">{{title}}</p>
+    </div>
+    <div class="col-3">
+      <div class="stats-container-icon-div">
+        <div class="row align-items-center h-100">
+              <span class="stats-container-icon fas" [ngClass]="icon" [class.bounce]="bounce"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

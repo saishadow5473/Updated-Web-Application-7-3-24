@@ -1,0 +1,118 @@
+<app-side-navigation-bar></app-side-navigation-bar>
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+
+<div class="affiliate-main-container">
+	<div class="row">
+		<div class="col-10 row">
+    		<span id="affiliate_image" *ngIf="brand_image_url_exist"><img [src]="brand_image_url"/></span>
+    		<h3 class="mb-4" style="margin-left: 15px;">{{mainTitle}}</h3>
+  		</div>
+		<div  *ngIf="openAffiliatedFeatures" class="col adjust-header-padding">
+		  <span class="fa fa-reply backBtn" (click)="backtoMain()">
+			<div style="font-size: 16px; padding-top: 2px; font-family: 'Quicksand', sans-serif;">Back</div>
+		  </span>
+		</div>
+	</div>
+
+	<div *ngIf="isLoading && !openAffiliatedFeatures" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></div>
+	<div *ngIf="!isLoading && !openAffiliatedFeatures">
+		<div class="row">
+			<ng-container>
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-3" *ngFor="let aff_obj of affiliatedDataObjArr">
+					<div class = "affiliate_main_dashboard_card" (click)="openAffiliateCard(aff_obj)">
+						<span class= "col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 affiliate_span_dashboard_card">
+							<i class="fas fa-3x fa-building affiliate_icon_dashboard_card" style="color: #4885ed;" *ngIf="!aff_obj['brand_image_url_exist']"></i>
+							<span id="affiliate_image_dashboard_card" *ngIf="aff_obj['brand_image_url_exist']"><img [src]="aff_obj['brand_image_url']"/></span>
+							<h4 class="affiliate_header_dashboard_card" style="font-size:24px;"> {{aff_obj['affilate_name']}} </h4>
+						</span>
+					</div>
+				</div>
+			</ng-container>
+		</div>
+	</div>
+	<!-- old code works fyn hided for 4 pillar catogory concept starts here 
+		<div *ngIf="!isLoading && openAffiliatedFeatures">
+		<div class="row">
+			<ng-container>
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-3">
+					<div class = "affiliate_main_dashboard_card" (click)="gotoHealthConsultPage()">
+						<span class= "col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 affiliate_span_dashboard_card">
+							<i class="fas fa-3x fa-user-md affiliate_icon_dashboard_card" style="color: #4885ed;"></i>
+							<h4 class="affiliate_header_dashboard_card" style="font-size:24px;"> Teleconsultation </h4>
+						</span>
+					</div>
+				</div>
+			</ng-container>
+			<ng-container>
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-3">
+					<div class = "affiliate_main_dashboard_card" (click)="gotoWellnessCartPage()">
+						<span class= "col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 affiliate_span_dashboard_card">
+							<i class="fas fa-3x fa-walking affiliate_icon_dashboard_card" style="color: rgb(106, 191, 100);"></i>
+							<h4 class="affiliate_header_dashboard_card" style="font-size:24px;"> Wellness Care E-Marketplace </h4>
+						</span>
+					</div>
+				</div>
+			</ng-container>
+			<ng-container *ngIf="(constant.teleconsultationAffiliationSelectedName == 'purva_highlands' || constant.teleconsultationAffiliationSelectedName == 'chartered_beveraly_hills')">
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-3">
+					<div class = "affiliate_main_dashboard_card" (click)="onDiagnosticsClick()">
+						<span class= "col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 affiliate_span_dashboard_card">
+							<i class="fas fa-3x fa-diagnoses affiliate_icon_dashboard_card" style="color: rgb(244, 67, 54);"></i>
+							<h4 class="affiliate_header_dashboard_card" style="font-size:24px;"> {{'diagnologist' | titlecase}} </h4>
+						</span>
+					</div>
+				</div>
+			</ng-container>
+			<ng-container *ngIf="(constant.teleconsultationAffiliationSelectedName == 'persistent')">
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-3" *ngFor="let keys of constant.persistentSpecialityArrList; let i=index">
+					<div class="affiliate_main_dashboard_card" (click)="specialitySelect(keys.specality_name)">
+						<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 affiliate_span_dashboard_card">
+							<i class="fac fa-3x fa-fitness affiliate_icon_dashboard_card" [style.color]="consultSpecialityColor[i]"></i>
+							<h4 class="affiliate_header_dashboard_card" style="font-size:24px">{{keys.specality_name}}</h4>
+						</span>
+					</div>
+				</div>
+			</ng-container>
+		</div>
+	</div> 
+    old code works fyn hided for 4 pillar catogory concept ends here -->
+
+	<!-- shows 4 pillar category concept flow -->
+	<div *ngIf="constant.teleconsultationFlowSelected == 'affiliate' && openAffiliatedFeatures">
+		<div class="row">
+			<ng-container>
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-3" *ngFor="let category of affiliationCategoryList; let i = index;">
+					<div class = "affiliate_main_dashboard_card" (click)="selectCategory(category)">
+						<span class= "col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 affiliate_span_dashboard_card">
+							<i class="fac fa-3x fa-fitness affiliate_icon_dashboard_card" [style.color]="consultSpecialityColor[i]"></i>
+							<h4 class="affiliate_header_dashboard_card" style="font-size:24px;" [innerHTML]="category"></h4>
+						</span>
+					</div>
+				</div>
+			</ng-container>
+			<ng-container>
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-3">
+					<div class = "affiliate_main_dashboard_card" (click)="gotoWellnessCartPage()">
+						<span class= "col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 affiliate_span_dashboard_card">
+							<i class="fas fa-3x fa-walking affiliate_icon_dashboard_card" style="color: rgb(106, 191, 100);"></i>
+							<h4 class="affiliate_header_dashboard_card" style="font-size:24px;"> Wellness Care E-Marketplace </h4>
+						</span>
+					</div>
+				</div>
+			</ng-container>	
+			<ng-container>
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-3" (click) = "MySubscriptions()">
+					<div class = "affiliate_main_dashboard_card" >
+					  <span class= "col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 affiliate_span_dashboard_card">
+						<i class="fas fa-3x fa-bell affiliate_icon_dashboard_card" style="color: #a5a23f"></i>
+						<h4 class="affiliate_header_dashboard_card" style="font-size:24px;">My Subscriptions</h4>
+					  </span>
+					</div>
+				  </div>
+			</ng-container>	
+		</div>
+	</div>
+</div>
+
+<app-footer></app-footer>

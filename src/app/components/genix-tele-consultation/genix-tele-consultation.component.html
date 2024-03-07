@@ -1,0 +1,65 @@
+<app-side-navigation-bar></app-side-navigation-bar>
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+
+<div class="teleconsult-main-container">
+
+  <h3 class="mb-4">Consultation</h3>
+
+</div>
+
+<!-- <kendo-window *ngIf="_constant.genixIframeOpened" [(state)]="WindowState"  [top] ="0" [left] ="0" class="kendo_frame_pos" #mainWindow >
+    <kendo-window-titlebar style="background-color: #4885ed;">
+        <div style="font-size: 18px; line-height: 1.3em;"><i class="fas fa-1x fa-video video_icon" style="color: white;"></i> Teleconsultation</div>
+        <span style="float: right !important;right: 25px;position: absolute;">
+            <button kendoWindowMaximizeAction></button>
+            <button kendoWindowRestoreAction></button>
+            <span (click)="closeGenixTeleconsultation()">
+              <i class="fa fa-sign-out" aria-hidden="true"></i> Exit
+            </span>
+        </span>
+    </kendo-window-titlebar>
+    <iframe [src]=""  [ngClass]="{'i_frame_max' : WindowState === 'maximized', 'i_frame_min' : WindowState === 'default'}" frameBorder="0" allow="camera *;microphone *" #genix_teleconsultation_iframe></iframe>
+</kendo-window> -->
+
+<div *ngIf="_constant.genixIframeOpened" style="position: fixed;top: 0px;width: 100%;height: 100%;background-color: rgba(0,0,0,0.5);z-index: 1001;">
+  <!-- <button *ngIf="afterPrescriptionEndCall" mat-icon-button mat-raised-button matTooltip="Exit Session" matTooltipPosition="right" class = "reject_button" (click)="closeGenixTeleconsultation()">
+    <mat-icon class="mat-18">clear</mat-icon>
+  </button> -->
+  <button *ngIf="!afterPrescriptionEndCall" class="btn btn-danger" style="position: absolute;z-index: 1005;border: none;bottom: 16px;left: 40px;line-height: 40px;background: #ba1c42;padding: 0px 27px 0px 27px;" (click)="closeGenixTeleconsultation()">
+    <span class="fas fa-sign-out-alt" ></span> Exit 
+  </button>
+ <iframe [src]="urlSafe" allow="camera *;microphone *"  frameBorder="0" allow="camera *;microphone *" style="position: fixed;top: 0px;width: 100%;height: 100%;" #genix_teleconsultation_iframe ></iframe>
+</div>
+
+<div *ngIf="showLoadingModal" class="loading-modal-container">
+  <div class="loading-modal-container-one">
+    <div style="font-weight: bold;font-size: 15px;color: #656565;">
+      <div class="col-12">
+        <img src="./assets/img/ihl-plus.png" width="30px" height="30px"><span> Tele Consultation</span>
+      </div>
+      <hr class="col-12">
+      {{showLoadingModalContent}}
+    </div>
+    <div class="loading-modal-spinner" *ngIf="showLoadingModalSpinner == true"></div>
+    <div class="col-12 pt-3">
+      <button class="btn text-primary float-right" *ngIf="showLoadingModalHideButton == true" (click)="hideModal()">Hide</button>
+    </div>
+
+    <div class="col-12 pt-3" *ngIf="exitConfirm" >
+      <button style = "margin: 5px;padding-left: 20px;padding-right: 20px;" class="btn btn-primary float-right" on-click="forceExitConfirmation('yes_exit')">Yes</button>
+      <button style = "margin: 5px;padding-left: 20px;padding-right: 20px;" class="btn btn-primary float-right" on-click="forceExitConfirmation('no')">No</button>
+    </div>
+
+  </div>
+</div>
+
+
+ <!-- Genix SignalR Script Run to show call alert in genix portal  -->
+ <div id="genixSignalRScript" *ngIf="genixSignalRScriptRun" style="display: none !important;">
+  <iframe [src]="signalRSafeResourceUrl"  height="0px" width="0px" frameborder="0" style="display: none !important"></iframe> 
+</div>
+<!--Genix SignalR Script Run to show call alert in genix portal ends -->
+  
+<app-footer></app-footer>
+

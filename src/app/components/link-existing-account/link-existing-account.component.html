@@ -1,0 +1,82 @@
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+<app-side-navigation-bar></app-side-navigation-bar>
+<div class="bb-main-container">
+  <div class="col-12 row">
+    <h3 class="mb-4 text-wrap">Link Existing Account</h3>
+  </div>
+  <div id="back" class="fa fa-reply element tele-back-btn" (click)="onBack()">
+    <div style="font-size: 12px;padding-top: 2px;">Back</div>
+  </div>
+
+  <mat-card class="px-5">
+    <mat-card-title class="text-center mb-4" style="color: #4d4d4d;">
+      Link Your Existing Family User Account
+    </mat-card-title>
+
+    <mat-card-content>
+      <form #linkExistingAccountForm="ngForm" (ngSubmit)="onSubmit(linkExistingAccountForm)" novalidate>
+        <div class="form-row">
+          <mat-form-field class="col-md-4" appearance="outline">
+            <mat-label>User Name</mat-label>
+            <mat-icon matSuffix aria-hidden="false">person_outline</mat-icon>
+            <input matInput type="text" autocomplete="off" name="userName" ngModel #userName="ngModel" minlength="3"
+              required #clearName />
+            <mat-error *ngIf="!userName.valid && userName.touched">
+              <mat-hint *ngIf="userName.errors?.required" class="text-danger">User name must be filled.</mat-hint>
+              <mat-hint *ngIf="userName.errors?.minlength" class="text-danger">Minimum length must be
+                {{userName.errors.minlength?.requiredLength}}</mat-hint>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-4" appearance="outline">
+            <mat-label>Email Id</mat-label>
+            <mat-icon matSuffix aria-hidden="false">mail_outline</mat-icon>
+            <input matInput type="email" autocomplete="off" name="email" ngModel #email="ngModel" email
+              uniqueEmailValidator #clearEmail />
+            <mat-error *ngIf="!email.valid && email.touched">
+              <mat-hint *ngIf="email.errors?.emailNotTaken; else notValidEmailFormat" class="text-danger">New email or
+                current email are not allowed.</mat-hint>
+              <ng-template #notValidEmailFormat>
+                <mat-hint class="text-danger">Email is not a valid format.</mat-hint>
+              </ng-template>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-4" appearance="outline">
+            <mat-label>Mobile Number</mat-label>
+            <mat-icon matSuffix aria-hidden="false">phone</mat-icon>
+            <input matInput type="number" autocomplete="off" name="mobileNumber" ngModel #mobileNumber="ngModel"
+              pattern="[1-9]{1}[0-9]{9}" uniqueMobileValidator (input)="onMobileInput($event)" #clearMobile />
+            <mat-error *ngIf="!mobileNumber.valid && mobileNumber.touched">
+              <mat-hint *ngIf="mobileNumber.errors?.pattern" class="text-danger">Enter 10 digit valid mobile number.
+              </mat-hint>
+              <mat-hint *ngIf="mobileNumber.errors?.mobileNotTaken" class="text-danger">New mobile or current mobile are
+                not allowed.
+              </mat-hint>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row gx-4 justify-content-md-between">
+          <div></div>
+          <div class="blink_me p-3">
+            <p style="position: relative;top: 4px;">
+              If you want to create a New Account
+              <a class="text-decoration-none text-primary d-inline" style="cursor: pointer;" [routerLink]="['/export', 'linkAccount']">
+                Click Here.
+              </a>
+            
+            </p>
+          </div>
+          <div class="p-3">
+            <button mat-raised-button color="primary" class="link-btn" type="submit"
+              [disabled]="!linkExistingAccountForm.valid || (_isMobileNumberEmpty(mobileNumber.value) && email.value == '')" *ngIf="!_LinkButtonClicked">Submit</button>
+            <mat-spinner matSuffix [diameter]="30" *ngIf="_LinkButtonClicked"></mat-spinner>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+<app-footer></app-footer>

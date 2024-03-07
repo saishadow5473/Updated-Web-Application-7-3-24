@@ -1,0 +1,22 @@
+
+    <h2 class="mb-4">Your diet recommendations</h2>
+    <div class="row">
+      <div style="margin-bottom: 15px; border-left-color: #3498db; margin-left: 16px;" class="col-md-6 col-sm-12 recommendation-box">
+          <h4 style="color: #3498db">Fitness</h4>
+          <p>{{exercise}}</p>
+          <p>Energy needed per Day: {{energyneed}}</p>
+      </div>
+      <div style="margin-bottom: 15px; border-left-color: #1abc9c; margin-left: 16px;" class="col-md-5 col-sm-12 recommendation-box">
+          <h4 style="color: #1abc9c">Diet</h4> 
+          <p>{{recomedation}}</p>
+          <p *ngIf = "showRestrictions">{{restrictions}}</p>
+      </div>
+      <!--<div style="margin-bottom: 32px; border-left-color: #9b59b6" class="col-md-6 col-sm-12 recommendation-box">
+          <h4 style="color: #9b59b6" class="mb-3">Diet</h4>
+          <p>{{recomedation}}</p>
+      </div>
+      <div style="margin-bottom: 32px; border-left-color: #8b0000" class="col-md-6 col-sm-12 recommendation-box">
+          <h4 style="color: #8b0000" class="mb-3">Restrictions</h4>
+          <p>{{restrictions}}</p>
+      </div>-->
+    </div>

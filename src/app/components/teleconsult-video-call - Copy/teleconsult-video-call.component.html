@@ -1,0 +1,34 @@
+<app-side-navigation-bar></app-side-navigation-bar>
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+
+<div class="teleconsult-main-container">
+
+  <h3 class="mb-4">Consultation</h3>
+
+<!-- 
+  <div class="text-right">
+    <button class="btn btn-primary" (click)="callSummary()">Call Summary</button> &nbsp;&nbsp;
+    <button class="btn btn-primary" (click)="StartCallButtonClick()" [disabled]="showMakeCallButton == false?true:null">Start call</button> &nbsp;&nbsp; -->
+    <!-- <button class="btn btn-primary" (click)="videoCallEnd()">End call</button> &nbsp;&nbsp; -->
+  <!-- </div> -->
+
+</div>
+
+<div *ngIf="showLoadingModal" class="loading-modal-container">
+  <div class="loading-modal-container-one">
+    <div style="font-weight: bold;font-size: 15px;color: #656565;">
+      <div class="col-12">
+        <img src="./assets/img/ihl-plus.png" width="30px" height="30px"><span> Tele Consultation</span>
+      </div>
+      <hr class="col-12">
+      {{showLoadingModalContent}}
+    </div>
+    <div class="loading-modal-spinner" *ngIf="showLoadingModalSpinner == true"></div>
+    <div class="col-12 pt-3">
+      <button class="btn text-primary float-right" *ngIf="showLoadingModalHideButton == true" (click)="hideModal()">Hide</button>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

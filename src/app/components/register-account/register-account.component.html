@@ -1,0 +1,506 @@
+<div class="container-fluid"> 
+  <div class="row"> 
+    <div class="col-md-8 bg-image">
+    </div> 
+    <div class="col-md-4 bg-light"> 
+      <div class="login d-flex py-5"> 
+        <div class="container"> 
+          <div class="row"> 
+            <div class="col-lg-7 col-xl-12">
+              <div class="login-logo"> </div>
+              <div *ngIf="!vaptEnabled">
+                <button style="width: 189px;box-shadow:none;pointer-events: none;" (click)="viewMode ='tab1';" class="btn" [class.activebtn]="viewMode == 'tab1'" rel="tab1">Register</button>
+                <!-- <div class="tab" style="margin-bottom: 10px;"> code works fyn commented based on requirement
+                  <button style="width: 189px;box-shadow:none;" (click)="viewMode ='tab1';" class="btn" [class.activebtn]="viewMode == 'tab1'" rel="tab1">Register</button>
+                  <button style="width: 200px;box-shadow:none;" (click)="viewMode ='tab2';" class="btn" [class.activebtn]="viewMode == 'tab2'" rel="TAB2">Single Sign On</button>
+                </div> -->
+                <div [ngSwitch]="viewMode" style="margin-top:20px">
+                  <div id="tab1" *ngSwitchCase="'tab1'">
+                    <form class="form" #registerForm="ngForm" [appMatchPassword]="['password', 'confirmPassword']"
+                      (ngSubmit)="registerForm.form.valid && onRegisterSubmit()" novalidate>
+                      <!-- <div class="form-group">
+                        <span class="form-title">Register</span>
+                      </div> -->
+                      <div class="form-group" *ngIf="isRegistrationSuccess">
+                        <p class="alert alert-success">
+                          <strong>Registration Success!</strong>
+                        </p>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <input type="text" class="form-control" [(ngModel)]="userModal.firstName" name="firstName" #firstName="ngModel" placeholder="First Name" minlength="2" required>
+                            <span class="text-danger" *ngIf="(firstName.touched || registerForm.submitted) && firstName.errors?.required">
+                              First Name is required
+                            </span>
+                            <span class="text-danger" *ngIf="firstName.errors?.minlength">
+                              First Name must be at least 2 characters long.
+                            </span> 
+                          </div>
+                          <div class="col-md-6">
+                            <input type="text" class="form-control" [(ngModel)]="userModal.lastName" name="lastName" #lastName="ngModel" placeholder="Last Name" required>
+                            <span class="text-danger" *ngIf="(lastName.touched || registerForm.submitted) && lastName.errors?.required">
+                              Last Name is required
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <input type="text" class="form-control" [(ngModel)]="userModal.email" name="email" #email="ngModel" placeholder="Email" (change)="checkEmailExist()" required email />
+                        <span class="text-danger" *ngIf="(email.touched || registerForm.submitted) && email.errors?.required">
+                          Email is required
+                        </span>
+                        <span class="text-danger" *ngIf="email.touched && email.errors?.email">
+                          Enter a valid email address
+                        </span>
+                        <span class="text-danger" *ngIf="isEmailExist && !email.errors?.required && !email.errors?.email">
+                          Email already exists.
+                        </span>
+                      </div>
+                      <div class="form-group">
+                        <input type="text" class="form-control" [(ngModel)]="userModal.mobileNumber" #mobileNumber="ngModel" name="mobileNumber" placeholder="Mobile Number" pattern="[1-9]{1}[0-9]{9}" (change)="checkMobileExist()" required />
+                        <span class="text-danger" *ngIf="(mobileNumber.touched || registerForm.submitted) && mobileNumber.errors?.required">
+                          Mobile number is required
+                        </span>
+                        <span class="text-danger" *ngIf="mobileNumber.errors?.pattern">
+                          Enter 10 digit valid mobile number.
+                        </span>
+                        <span class="text-danger" *ngIf="isMobileExist && !mobileNumber.errors?.required && !mobileNumber.errors?.pattern">
+                          Mobile number already exists.
+                        </span>
+                      </div>
+                      <div class="form-group">
+                        <input type="password" class="form-control" [(ngModel)]="userModal.password" name="password"
+                            #password="ngModel" placeholder="Password" appPasswordPattern required>
+                        <span class="text-danger" *ngIf="(password.touched || registerForm.submitted) && password.errors?.required">
+                          Password is required
+                        </span>
+                        <span class="text-danger" *ngIf="password.touched && password.errors?.invalidPassword">
+                            Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase
+                            letter and 1 number
+                        </span>
+                      </div>
+                      <div class="form-group">
+                        <input type="password" class="form-control" [(ngModel)]="userModal.confirmPassword"
+                            name="confirmPassword" #confirmPassword="ngModel" placeholder="Confirm Password" required>
+                        <span class="text-danger" *ngIf="(confirmPassword.touched || registerForm.submitted) && confirmPassword.errors?.required">
+                          Confirm Password is required
+                        </span>
+                        <span class="text-danger" *ngIf="confirmPassword.touched && confirmPassword.errors?.passwordMismatch">
+                          Password doesn't match
+                        </span>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <input type="text" class="form-control" #height="ngModel" [(ngModel)]="userModal.height" name="height" placeholder="Height in CM" (input)="validateHeight()" required>
+                            <span class="text-danger" *ngIf="(height.touched || registerForm.submitted) && height.errors?.required">
+                              Height is required
+                            </span>
+                            <span class="text-danger" *ngIf="isInValidHeight && userModal.height != ''">
+                              Invalid Height
+                            </span>
+                          </div>
+                          <div class="col-md-6">
+                            <input type="text" class="form-control" #weight="ngModel" [(ngModel)]="userModal.weight" name="weight" placeholder="Weight in KG" (input)="validateWeight()" required>
+                            <span class="text-danger" *ngIf="(weight.touched || registerForm.submitted) && weight.errors?.required">
+                              Weight is required
+                            </span>
+                            <span class="text-danger" *ngIf="isInValidWeight && userModal.weight != ''">
+                              Invalid Weight
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <mat-form-field class="form-control form-control-md" appearance="none" style="padding-top: 0px;">
+                              <mat-select placeholder="Select Gender" #gender="ngModel" [(ngModel)]="userModal.gender" name="gender" required>
+                                <!-- <mat-option value="">Select Gender</mat-option> -->
+                                <mat-option value="m">Male</mat-option>
+                                <mat-option value="f">Female</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                            <span class="text-danger" *ngIf="(gender.touched || registerForm.submitted) && gender.errors?.required">
+                              Gender is required
+                            </span>
+                          </div>
+                          <!-- <div class="col-md-6">
+                            <mat-form-field id="dob" class="form-control form-control-md" appearance="none" style="padding-top: 0px;">
+                              <input matInput [matDatepicker]="picker" [max]="today" placeholder="DOB" (dateChange)="calculateAge($event)" #dob="ngModel" [(ngModel)]="userModal.dob" name="dob" required readonly>
+                              <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+                              <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+                            </mat-form-field>
+                            <span class="text-danger" *ngIf="(dob.touched || registerForm.submitted) && dob.errors?.required">
+                              Dob is required
+                            </span>
+                            <span class="text-danger" *ngIf="isInvalidAge">
+                              Age should be above 13
+                            </span>
+                          </div> -->
+                          <div class="col-md-6">
+                            <div id="dob" class="form-control form-control-md" style="padding-top: 10px;">
+                              <input matInput [matDatepicker]="valid_date_picker" [max]="today" (click)="valid_date_picker.open()" [(ngModel)]="userModal.dob" #dob="ngModel" name="dob" (dateChange)="calculateAge($event)" placeholder="Date of Birth" readonly>
+                              <mat-datepicker #valid_date_picker></mat-datepicker>
+                            </div>
+                            <span class="text-danger" *ngIf="(dob.touched || registerForm.submitted) && dob.errors?.required">
+                              Dob is required
+                            </span>
+                            <span class="text-danger" *ngIf="isInvalidAge">
+                              Age should be above 13
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+            
+                      <div *ngIf="showAffiliatedInfo">
+                        <div class="form-group">
+                          <input id="affiliatedCompany" autocomplete="off" type="text" class="form-contro" #affiliated_company="ngModel" [(ngModel)]="affiliatedCompany" name="affiliatedCompany" placeholder="Affiliated Company Name" readonly>
+                        </div>
+                        <div class="form-group">
+                          <input id="affiliatedMail" autocomplete="off" type="text" class="form-control" #affiliated_mail="ngModel" [(ngModel)]="affiliatedMail" name="affiliatedMail" placeholder="Affiliated Mail" readonly>
+                        </div>
+                        <div class="form-group">
+                          <input id="affiliatedMobile" autocomplete="off" type="text" class="form-control" #affiliated_mobile="ngModel" [(ngModel)]="affiliatedMobile" name="affiliatedMobile" placeholder="Affiliated Mobile Number" readonly>
+                        </div>
+                      </div>
+                      <div class="terms pt-xl" [class.text-danger]="!isPrivacyChecked">
+                        <div>
+                          <mat-checkbox class="termsCheck" [checked]="complete" (change)="setAll($event.checked)"></mat-checkbox>
+                          <a style="cursor: pointer; margin: auto; text-align: center;" on-click="onTermsConditionsCheck()"> Terms Conditions & Privacy Policy.</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register <span *ngIf="isLoading" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></span></button>
+                      </div>
+                      <hr>
+                      <!-- <div class="sso_register" style="text-align: center;">
+                        <a class="ssoText" on-click="ssoFromRegister()" [routerLink]="['/sso-login']"><span> Register with your organization account >></span></a>
+                      </div> -->
+                      <div class="div-options" style="margin-top: 15px; width: 110%;">
+                        <span>Already have an account?</span><a [routerLink]="['/']"><span> Login here</span></a>
+                      </div>
+                    </form>
+                  </div>
+                  <div id="tab2" *ngSwitchCase="'tab2'">
+                    <form class="form" #ssoOrgForm="ngForm">
+                      <div *ngIf="ssoRegistrationSection"> <!--This is for *ngIf-->
+                        <span style="font-weight: 500;color: black;">Select Organization</span>
+                        <div class="form-group has-search" style="margin-top:20px;padding-bottom:20px">
+                          <span class="fa fa-search form-control-feedback"></span>
+                          <input type="text" class="form-control form-group" placeholder="Search" (ngModelChange)="SsoOrganizationSelection($event)" [matAutocomplete] = "auto" [formControl] = "ssoOrgControl">
+                          <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let org_data of ssoOrgName" [value]="org_data.company_name" (click)="onSsoOptionSelected(org_data.affiliation_unique_name)">
+                              <ng-container *ngIf="org_data.sign_in_option === 'microsoft'">
+                                <img style="width: 25px;height: 15px;padding-right: 10px;" src="./assets/img/microsoft.png" alt="Microsoft Image">
+                              </ng-container>
+                              <ng-container *ngIf="org_data.sign_in_option === 'google'">
+                                <img style="width: 25px;height: 15px;padding-right: 10px;" src="./assets/img/google.png" alt="Google Image">
+                              </ng-container>
+                              <ng-container *ngIf="!org_data.sign_in_option">
+                                <img style="width: 25px;height: 15px;padding-right: 10px;" src="./assets/img/noImage.png" alt="No Image">
+                              </ng-container>
+                              <span>{{org_data.company_name}}</span>
+                            </mat-option>
+                          </mat-autocomplete>
+                          <span class="text-danger" *ngIf="userIdExist">
+                            Email is already registered!
+                          </span>
+                          <div *ngIf="isSsoLoggedIn() && userIdExist" style="padding-bottom: 10px;padding-top: 14px;">
+                            <span style="color: black;margin-left:50px" >You have currently signed in.. <a [routerLink]="['/register']" (click)="ssoLogout()"><span> Sign out</span></a></span>
+                          </div>
+                          <div class="row" *ngIf="ssoRegisterButton">
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <button class="btn btn-primary" type="submit" (click)="ssoRegister()" [disabled]="isSsoRegiserLoading">Single Sign-On Register<span *ngIf="isSsoRegiserLoading" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></span></button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div *ngIf="ssoAlternativeEmailSection"> <!--This is for *ngIf-->
+                        <div class="form-group">
+                          <input type="text" class="form-control" [(ngModel)]="ssoAlternativeEmail" name="alternativeEmail" #alternativeEmail="ngModel"  placeholder="Alternative Email" (ngModelChange)="validateAlternativeEmail($event)" required>
+                        </div>
+                        <span class="text-danger" *ngIf="emailValid && !alternativeEmail.errors?.required">
+                          Enter a valid email address
+                        </span>
+                        <span class="text-danger"
+                          *ngIf="(alternativeEmail.touched) && alternativeEmail.errors?.required || ssoAlternativeEmailErr">
+                          Email is required
+                        </span>
+                        <span class="text-danger" *ngIf="domainNameExistInEmail">
+                          Please enter your personal email
+                        </span>
+                        <div class="form-group" style="padding-top:15px">
+                          <input type="text" class="form-control" [(ngModel)]="ssoMobileNumber" name="mobilenumber" #mobilenumber="ngModel"  placeholder="Mobile Number (Optional)">
+                        </div>
+                        <span class="text-danger" *ngIf="ssoOtpServerError">
+                          Server Error
+                        </span>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <button class="btn btn-primary" type="button" (click)="submitAlternativeEmail()" [disabled]="isEmailLoading">Submit <span *ngIf="isEmailLoading" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></span></button>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <button class="btn btn-primary" type="button" (click)="returnSsoRegistration()">Back</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div *ngIf="ssoOTPSection"> <!--This is for *ngIf-->
+                        <span style="font-weight: 500;color: black;padding-bottom: 10px;">Please enter the OTP sent to your email or mobile</span>
+                        <div class="form-group" style="padding-left: 21px;padding-top: 25px;">
+                          <ng-otp-input #ngOtpInput (onInputChange)="onAlternativeEmailOTPChange($event)" *ngIf="showOtpComponent" [config]="config" ></ng-otp-input>
+                        </div>
+                        <span class="text-danger" *ngIf="ssoAlternativeEmailInvalidOTP">
+                          {{ssoAlternativeEmailOTPMsg}}
+                        </span>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <button class="btn btn-primary" type="submit" (click)="validateAlternativeEmailOTP()" [disabled]="ssoAlternativeEmailOTPLoading">Verify OTP <span *ngIf="ssoAlternativeEmailOTPLoading" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></span></button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div *ngIf="basicInfoSection">
+                        <form class="form" #ssoRegisterForm="ngForm" (ngSubmit)="ssoRegisterForm.form.valid && onSsoRegisterSubmit()" novalidate>
+                          <div class="form-group" *ngIf="isSssoRegistrationSuccess">
+                            <p class="alert alert-success">
+                              <strong>Registration Success!</strong>
+                            </p>
+                          </div>
+                          <div class="form-group">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <input type="text" class="form-control" #height="ngModel" [(ngModel)]="ssoUserModal.height" name="height" placeholder="Height in CM" (input)="validateHeight()" required>
+                                <span class="text-danger" *ngIf="(height.touched || ssoRegisterForm.submitted) && height.errors?.required">
+                                  Height is required
+                                </span>
+                                <span class="text-danger" *ngIf="isInValidHeight && ssoUserModal.height != ''">
+                                  Invalid Height
+                                </span>
+                              </div>
+                              <div class="col-md-6">
+                                <input type="text" class="form-control" #weight="ngModel" [(ngModel)]="ssoUserModal.weight" name="weight" placeholder="Weight in KG" (input)="validateWeight()" required>
+                                <span class="text-danger" *ngIf="(weight.touched || ssoRegisterForm.submitted) && weight.errors?.required">
+                                  Weight is required
+                                </span>
+                                <span class="text-danger" *ngIf="isInValidWeight && ssoUserModal.weight != ''">
+                                  Invalid Weight
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div id="dob" class="form-control form-control-md" style="padding-top: 10px;">
+                                  <input matInput [matDatepicker]="valid_date_picker" [max]="today" (click)="valid_date_picker.open()" [(ngModel)]="ssoUserModal.dob" #dob="ngModel" name="dob" (dateChange)="calculateAge($event)" placeholder="Date of Birth" readonly>
+                                  <mat-datepicker #valid_date_picker></mat-datepicker>
+                                </div>
+                                <span class="text-danger" *ngIf="(dob.touched || ssoRegisterForm.submitted) && dob.errors?.required">
+                                  Dob is required
+                                </span>
+                                <span class="text-danger" *ngIf="isInvalidAge">
+                                  Age should be above 13
+                                </span>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="gender-radio custom-radio form-check-inline">
+                                  <input id="male" type="radio" class="custom-control-input" value="m" name="gender" #gender="ngModel" [(ngModel)]="ssoUserModal.gender" required>
+                                  <label class="custom-control-label" style="color: black; font-size: 18px;" for="male">Male</label>
+                                </div>
+                                <div class="gender-radio custom-radio form-check-inline">
+                                  <input id="female" type="radio" class="custom-control-input" value="f" name="gender" #gender="ngModel" [(ngModel)]="ssoUserModal.gender" required>
+                                  <label class="custom-control-label" style="color: black; font-size: 18px;" for="female">Female</label>
+                                </div>
+                                <span class="text-danger" *ngIf="(gender.touched || ssoRegisterForm.submitted) && gender.errors?.required">
+                                  Gender is required
+                                </span>
+                              </div>                            
+                            </div>
+                          </div>              
+                          <div class="terms pt-xl" [class.text-danger]="!isPrivacyChecked">
+                            <div>
+                              <mat-checkbox class="termsCheck" [checked]="complete" (change)="setAll($event.checked)"></mat-checkbox>
+                              <a style="cursor: pointer; margin: auto; text-align: center;" on-click="onTermsConditionsCheck()"> Terms Conditions & Privacy Policy.</a>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Register <span *ngIf="isLoading" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></span></button>
+                          </div>
+                        </form>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="vaptEnabled">
+                <form class="form" #registerForm="ngForm" [appMatchPassword]="['password', 'confirmPassword']"
+                (ngSubmit)="registerForm.form.valid && onRegisterOTP()" novalidate>
+                <div class="form-group">
+                  <span class="form-title">Register</span>
+                </div>
+                <div class="form-group" *ngIf="isRegistrationSuccess">
+                  <p class="alert alert-success">
+                    <strong>Registration Success!</strong>
+                  </p>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <input type="text" class="form-control" [(ngModel)]="userModal.firstName" name="firstName" #firstName="ngModel" placeholder="First Name" pattern="[a-zA-Z'-'\s]*" minlength="2" maxlength="12" required>
+                      <span class="text-danger" *ngIf="(firstName.touched || registerForm.submitted) && firstName.errors?.required">
+                        First Name is required
+                      </span>
+                      <span class="text-danger" *ngIf="firstName.errors?.minlength">
+                        First Name must be at least 2 characters long.
+                      </span>
+                      <span class="text-danger" *ngIf="firstName.errors?.pattern">
+                        Only Alphabets allowed.
+                      </span> 
+                    </div>
+                    <div class="col-md-6">
+                      <input type="text" class="form-control" [(ngModel)]="userModal.lastName" name="lastName" #lastName="ngModel" maxlength="12" pattern="[a-zA-Z'-'\s]*" placeholder="Last Name" required>
+                      <span class="text-danger" *ngIf="(lastName.touched || registerForm.submitted) && lastName.errors?.required">
+                        Last Name is required
+                      </span>
+                      <span class="text-danger" *ngIf="lastName.errors?.pattern">
+                        Only Alphabets allowed.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" [(ngModel)]="userModal.email" name="email" #email="ngModel" placeholder="Email" (change)="checkEmailExist()" required email />
+                  <span class="text-danger" *ngIf="(email.touched || registerForm.submitted) && email.errors?.required">
+                    Email is required
+                  </span>
+                  <span class="text-danger" *ngIf="email.touched && email.errors?.email">
+                    Enter a valid email address
+                  </span>
+                  <span class="text-danger" *ngIf="isEmailExist && !email.errors?.required && !email.errors?.email">
+                    Email already exists.
+                  </span>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" [(ngModel)]="userModal.mobileNumber" #mobileNumber="ngModel" name="mobileNumber" placeholder="Mobile Number" pattern="[1-9]{1}[0-9]{9}" (change)="checkMobileExist()" required />
+                  <span class="text-danger" *ngIf="(mobileNumber.touched || registerForm.submitted) && mobileNumber.errors?.required">
+                    Mobile number is required
+                  </span>
+                  <span class="text-danger" *ngIf="mobileNumber.errors?.pattern">
+                    Enter 10 digit valid mobile number.
+                  </span>
+                  <span class="text-danger" *ngIf="isMobileExist && !mobileNumber.errors?.required && !mobileNumber.errors?.pattern">
+                    Mobile number already exists.
+                  </span>
+                </div>
+                <div class="form-group">
+                  <input type="password" class="form-control" [(ngModel)]="userModal.password" name="password"
+                      #password="ngModel" placeholder="Password" appPasswordPattern required>
+                  <span class="text-danger" *ngIf="(password.touched || registerForm.submitted) && password.errors?.required">
+                    Password is required
+                  </span>
+                  <span class="text-danger" *ngIf="password.touched && password.errors?.invalidPassword">
+                      Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase
+                      letter and 1 number
+                  </span>
+                </div>
+                <div class="form-group">
+                  <input type="password" class="form-control" [(ngModel)]="userModal.confirmPassword"
+                      name="confirmPassword" #confirmPassword="ngModel" placeholder="Confirm Password" required>
+                  <span class="text-danger" *ngIf="(confirmPassword.touched || registerForm.submitted) && confirmPassword.errors?.required">
+                    Confirm Password is required
+                  </span>
+                  <span class="text-danger" *ngIf="confirmPassword.touched && confirmPassword.errors?.passwordMismatch">
+                    Password doesn't match
+                  </span>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <input type="text" class="form-control" #height="ngModel" [(ngModel)]="userModal.height" name="height" placeholder="Height in CM" (input)="validateHeight()" required>
+                      <span class="text-danger" *ngIf="(height.touched || registerForm.submitted) && height.errors?.required">
+                        Height is required
+                      </span>
+                      <span class="text-danger" *ngIf="isInValidHeight && userModal.height != ''">
+                        Invalid Height
+                      </span>
+                    </div>
+                    <div class="col-md-6">
+                      <input type="text" class="form-control" #weight="ngModel" [(ngModel)]="userModal.weight" name="weight" placeholder="Weight in KG" (input)="validateWeight()" required>
+                      <span class="text-danger" *ngIf="(weight.touched || registerForm.submitted) && weight.errors?.required">
+                        Weight is required
+                      </span>
+                      <span class="text-danger" *ngIf="isInValidWeight && userModal.weight != ''">
+                        Invalid Weight
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <mat-form-field class="form-control form-control-md" appearance="none" style="padding-top: 0px;">
+                        <mat-select placeholder="Gender" #gender="ngModel" [(ngModel)]="userModal.gender" name="gender" required>
+                          <mat-option value="m">Male</mat-option>
+                          <mat-option value="f">Female</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <span class="text-danger" *ngIf="(gender.touched || registerForm.submitted) && gender.errors?.required">
+                        Gender is required
+                      </span>
+                    </div>
+                    <div class="col-md-6">
+                      <mat-form-field id="dob" class="form-control form-control-md" appearance="none" style="padding-top: 0px;">
+                        <input matInput [matDatepicker]="picker" [max]="today" placeholder="DOB" (dateChange)="calculateAge($event)" #dob="ngModel" [(ngModel)]="userModal.dob" name="dob" required readonly>
+                        <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+                        <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+                      </mat-form-field>
+                      <span class="text-danger" *ngIf="(dob.touched || registerForm.submitted) && dob.errors?.required">
+                        Dob is required
+                      </span>
+                      <span class="text-danger" *ngIf="isInvalidAge">
+                        Age should be above 13
+                      </span>
+                    </div>
+                  </div>
+                </div>
+      
+                <div *ngIf="showAffiliatedInfo">
+                  <div class="form-group">
+                    <input id="affiliatedCompany" autocomplete="off" type="text" class="form-contro" #affiliated_company="ngModel" [(ngModel)]="affiliatedCompany" name="affiliatedCompany" placeholder="Affiliated Company Name" readonly>
+                  </div>
+                  <div class="form-group">
+                    <input id="affiliatedMail" autocomplete="off" type="text" class="form-control" #affiliated_mail="ngModel" [(ngModel)]="affiliatedMail" name="affiliatedMail" placeholder="Affiliated Mail" readonly>
+                  </div>
+                  <div class="form-group">
+                    <input id="affiliatedMobile" autocomplete="off" type="text" class="form-control" #affiliated_mobile="ngModel" [(ngModel)]="affiliatedMobile" name="affiliatedMobile" placeholder="Affiliated Mobile Number" readonly>
+                  </div>
+                </div>
+                <div class="terms pt-xl" [class.text-danger]="!isPrivacyChecked">
+                  <div>
+                    <mat-checkbox class="termsCheck" [checked]="complete" (change)="setAll($event.checked)"></mat-checkbox>
+                    <a style="cursor: pointer; margin: auto; text-align: center;" on-click="onTermsConditionsCheck()"> Terms Conditions & Privacy Policy.</a>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Register <span *ngIf="isLoading" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></span></button>
+                  <p *ngIf="otpValidate" style="color: red;"> Invalid OTP or invalid input field</p>
+                </div>
+                <hr>
+                <!-- <div class="sso_register" style="text-align: center;">
+                  <a class="ssoText" on-click="ssoFromRegister()" [routerLink]="['/sso-login']"><span> Register with your organization account >></span></a>
+                </div> -->
+                <div class="div-options" style="margin-top: 15px; width: 110%;">
+                  <span>Already have an account?</span><a [routerLink]="['/']"><span> Login here</span></a>
+                </div>
+              </form>
+              </div>
+            </div> 
+          </div> 
+        </div> 
+      </div> 
+    </div> 
+  </div>
+</div>

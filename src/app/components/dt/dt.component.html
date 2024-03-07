@@ -1,0 +1,465 @@
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+<app-side-navigation-bar></app-side-navigation-bar>
+<div class="bb-main-container">
+  <div *ngIf="pageloading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+  <div *ngIf="!pageloading">
+  <h2 style="margin-bottom: 30px;color: dodgerblue;font-weight: 500;">Profile Settings</h2>
+   <!-- <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+          <tr>
+            <th>Blood Type</th>
+            <th>Age</th>
+            <th>Weight</th>
+            <th>Height</th>
+            <th>BMI</th>
+            <th>Flights Climbed</th>
+            <th>Steps</th>
+            <th>Body Fat Percentage</th>
+            <th>Heart Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let h of health">
+            <td>{{ h.bloodType }}</td>
+            <td>{{ h.age }}</td>
+            <td>{{ h.weight }}</td>
+            <td>{{ h.height }}</td>
+            <td>{{ h.bmi }}</td>
+            <td>{{ h.flightsClimbed }}</td>
+            <td>{{ h.steps }}</td>
+            <td>{{ h.fatRatio }}</td>
+            <td>{{ h.heartRate }}</td>
+          </tr>
+        </tbody>
+
+      </table>-->
+      <div class="row" style="row-gap: 20px;">
+        <div class="col-md-12 col-lg-4 col-xl-4">
+          <mat-card class="" style="min-height:527px;">
+            <mat-card-content style="font-size: 17px;">
+              <div style="width: 100%;height: auto;left: 0;" class="p-8 bd-highlight dp-container profile-pic-container">
+                <img [src] = "cardImageBase64" id="profilepic" (click)="profileUpload.click()">
+                <span class="profile-pic-overlay fa-stack" (click)="profileUpload.click()">
+                  <i class="fa fa-circle fa-stack-2x icon-background"></i>
+                  <i *ngIf="!imgLoading" class="fa fa-camera fa-stack-1x fa-inverse" style="color: #19a9e5;"></i>
+                  <i *ngIf="imgLoading" class="fas fa-spinner fa-pulse" style="color: #19a9e5;"></i>
+                </span>
+                <input [disabled]="imgLoading ? true : false" type="file" #profileUpload id="profileUpload" hidden (change)="profileChangeEvent($event)" accept="image/x-png,image/jpg,image/gif,image/jpeg">
+                <h4 style="padding-top: 10px;">{{fn}} {{ln}}</h4>
+                <p><span>IHL Health Score</span><span *ngIf="surveyComplete" style="color:gray;font-size: 20px;cursor: default; text-align: center;">
+                  <i style="color:gold" class="fas fa-trophy"></i>  {{userScore}}  Points</span>
+                  <span *ngIf="!surveyComplete" style="color:gray;font-size: 20px; text-align: center;">
+                    <span class="fa-stack"  matTooltip="Check your health score now" style="vertical-align: top; cursor: pointer; font-size: 14px;" (click)="redirectToSurvey()">
+                      <i class="far fa-circle fa-stack-2x" style="color:#797979"></i>
+                      <i class="fas fa-question fa-stack-1x fa-inverse" style="color:#797979;"></i>
+                    </span>
+                  </span>
+                </p>
+              </div>
+              <hr class="style-one" style="margin-top: 1%;">
+              <div>
+                <mat-card-header [ngStyle]="{'opacity': (_constant._isDependentUserAccount == true)? '0.6': '', 'pointer-events': (_constant._isDependentUserAccount == true)? 'none': 'auto'}">
+                  <mat-card-title style="color: dodgerblue;font-size: 20px;"><i class="fas fa-unlock-alt"></i> Change Password</mat-card-title>
+                    <!-- {{ metriceForm.value | json}} -->
+                </mat-card-header>
+                <mat-card-content [ngStyle]="{'opacity': (_constant._isDependentUserAccount == true)? '0.6': '', 'pointer-events': (_constant._isDependentUserAccount == true)? 'none': 'auto'}">
+                  <div>
+                    <mat-form-field appearance="outline" class="col-lg-12">
+                      <mat-label style="text-transform: capitalize;">Old Password</mat-label>
+                      <input [disabled]="changePasswordSection" type="password" matInput #oldPwd disallow-spaces (change)="changeOP(oldPwd)"  ngModel />
+                      <mat-hint *ngIf="oldPwd.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Old Password must contain 6 characters</mat-hint>
+                      <mat-hint *ngIf="wrongpassforchange" style=" color:red;font-size: 13px;white-space: nowrap;">*Your Old Password is wrong</mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="col-lg-12">
+                      <mat-label style="text-transform: capitalize;">New Password</mat-label>
+                      <input [disabled]="changePasswordSection" type="password" matInput #newPwd disallow-spaces (change)="changeNP(newPwd)"  ngModel/>
+                      <mat-hint *ngIf="newPwd.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Your Password format is invalid</mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="col-lg-12" [class.text-danger]="hasError">
+                      <mat-label style="text-transform: capitalize;">Confirm Password</mat-label>
+                      <input [disabled]="changePasswordSection" type="password" matInput #confPwd disallow-spaces (change)="changeCP(confPwd)"  ngModel/>
+                      <mat-hint *ngIf="confPwd.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Password mismatched</mat-hint>
+                    </mat-form-field>
+
+                    <p style="color: gray;font-size: 12px;margin-left: 26px;">
+                    *Password must contain 8 characters, atleast 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character
+                    </p>
+
+                  </div>
+                  <div *ngIf="nt_loading" style="margin-left: 18px;">
+                    <button [disabled]="changePasswordSection" mat-raised-button #metbutton class="Password_input_button" (click)="onClickPasswordChange(oldPwd,newPwd,confPwd)">Save</button>
+                  </div>
+                  <div *ngIf="loading" style="margin-left: 18px;">
+                    <progress style="display: block; float: none;margin-top: 15px; text-align: center;color: dodgerblue;" id="message_submit_progress" class="pure-material-progress-circular" ></progress>
+                  </div>
+                </mat-card-content>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- //Change password box -->
+
+
+
+        </div>
+
+        <div class="col-md-12 col-lg-8 col-xl-8">
+          <mat-card *ngIf="editProCard" class="" style="width: 100%;">
+            <div *ngIf="disableDeleteAccountBtn" style="float: right;color: dodgerblue;font-size: 20px;border: none;outline: none;background-color: transparent;">
+              <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="disableMenuBtn" aria-label="Example icon-button with a menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button *ngIf="_constant.affiliatedCompanies.length != 0" mat-menu-item style="border: none;outline: none;background-color: transparent;" (click)="showDeleteAffiliation()">
+                  <!-- <mat-icon></mat-icon> -->
+                  <span>Delete Affiliation</span>
+                </button>
+                <button *ngIf="disableDeleteAccountBtn" mat-menu-item style="border: none;outline: none;background-color: transparent;" (click)="ShowDeleteProfile()">
+                  <!-- <mat-icon></mat-icon> -->
+                  <span>Delete Account</span>
+                </button>
+                <!-- <button *ngIf="disableUnlinkBtn" mat-menu-item style="border: none;outline: none;background-color: transparent;" (click)="unLinkJointAccountDialog()">
+                  <span>Unlink Account</span>
+                </button>
+                <button *ngIf="!disableJointBtn" mat-menu-item [matMenuTriggerFor]="jointAccount" style="border: none;outline: none;background-color: transparent;" >
+                  <span>Joint Account</span>
+                </button> -->
+                <mat-menu #jointAccount="matMenu">
+                  <button mat-menu-item style="border: none;outline: none;background-color: transparent;" [routerLink]="['/export', 'linkAccount']">Create An Account</button>
+                  <button mat-menu-item style="border: none;outline: none;background-color: transparent;" [routerLink]="['/link-acc']">Link An Account</button>
+                  <button *ngIf="_constant.requestedlistAccount" mat-menu-item style="border: none;outline: none;background-color: transparent;" (click) = "joinuserrequest()">Requested An Account</button>
+                  <button *ngIf="_constant.caretakerlistAccount" mat-menu-item style="border: none;outline: none;background-color: transparent;" (click) = "caretakerdetails()">Caretaker Account</button>
+                </mat-menu>
+              </mat-menu>
+            </div>
+            <mat-card-header>
+              <mat-card-title style="color: dodgerblue;font-size: 20px;"><i class="fas fa-edit"></i> Edit Profile</mat-card-title>
+              <!-- <span *ngIf="basicInfoNeed" style="color: red; font-size: 14px; text-align: center;"> Please enter the basic info  </span> -->
+            </mat-card-header>
+            <mat-card-content>
+
+                <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" >
+                  <mat-label style="text-transform: capitalize;">First Name</mat-label>
+                  <input matInput #fname name="fname" [(ngModel)]="firstname" (change)="changeFN(fname)" />
+                  <mat-hint *ngIf="fname.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Firstname must contain 2 characters</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" >
+                  <mat-label style="text-transform: capitalize;">Last Name</mat-label>
+                  <input matInput #lname name="lname" [(ngModel)]="lastname" (change)="changeLN(lname)" />
+                  <mat-hint *ngIf="lname.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Lastname must contain 2 characters</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" [ngStyle]="{'display': (_constant._isDependentUserAccount == false)? 'none': ''}">
+                  <mat-label style="text-transform: capitalize;">Email Address</mat-label>
+                  <input matInput #jEmailAd id="jntMail" type="email" autocomplete="off" name="jEmailAd" (change)="changeJEA(jEmailAd)"
+                    [readonly]="showJAccEmailBox" [(ngModel)]="jointEmail"/>
+                    <mat-hint *ngIf="jEmailAd.required" class="text-danger"> Email already exists or Email not valid</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" [ngStyle]="{'display': (_constant._isDependentUserAccount == false)? 'none': ''}">
+                  <mat-label style="text-transform: capitalize;">Mobile Number</mat-label>
+                  <input matInput #jMobileNum id="jntMobile" type="number" autocomplete="off" name="jMobileNum" (change)="changeJMN(jMobileNum)"
+                    [readonly]="showJAccMobileBox" [(ngModel)]="jointMobileNumber" />
+                  <mat-hint *ngIf="jointMobileNumber.required" class="text-danger">Already existing or invalid mobile number.
+                  </mat-hint>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" [ngStyle]="{'display': (_constant._isDependentUserAccount == true)? 'none': ''}">
+                  <mat-label style="text-transform: capitalize;">Email Address</mat-label>
+                  <input matInput #emailadd name="emailadd" [(ngModel)]="email" [readonly]="showEmailBox" (change)="changeEA(emailadd)" />
+                  <mat-hint *ngIf="emailadd.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Invalid Email Address</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" [ngStyle]="{'display': (_constant._isDependentUserAccount == true)? 'none': ''}">
+                  <mat-label style="text-transform: capitalize;">Mobile Number</mat-label>
+                  <input matInput #mobilenum type = "number" name="mobilenum" [(ngModel)]="mobile" [readonly]="showMobileBox" (change)="changeMN(mobilenum)"/>
+                  <mat-hint *ngIf="mobilenum.required" style=" color:red;font-size: 13px;white-space: nowrap;">{{throwMobileError}}</mat-hint>
+                </mat-form-field>
+
+
+                <form  [formGroup]="dobForm" >
+                  <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" >
+                    <mat-label>Date Of Birth(mm/dd/yyyy)</mat-label>
+                    <input matInput [matDatepicker]="picker" (dateInput)="addEvent('input', $event)"
+                    formControlName="userDob" (dateChange)="addEvent('change', $event)" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+                    <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+                    <mat-hint *ngIf="picker.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Invalid date of birth</mat-hint>
+                  </mat-form-field>
+                  <!--<div *ngIf="unit=='CMs'; then centimetre else metre"></div>
+                  <ng-template #centimetre>
+                    <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4" >
+                    <mat-label style="text-transform: capitalize;">Height(in Cms)</mat-label>
+                    <input matInput #hght name="hght" formControlName="userHeight" (change)="changeHght(hght)" />
+                    <mat-hint *ngIf="hght.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Invalid height</mat-hint>
+                  </mat-form-field>
+                  </ng-template>
+                  <ng-template #metre>
+                    <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4" >
+                    <mat-label style="text-transform: capitalize;">Height(in Mtrs)</mat-label>
+                    <input matInput #hght name="hght" formControlName="userHeight" (change)="changeHght(hght)" />
+                    <mat-hint *ngIf="hght.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Invalid height</mat-hint>
+                  </mat-form-field>
+                  </ng-template>-->
+                  <!--<mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+                    <mat-label>Unit</mat-label>
+                    <mat-select [(ngModel)]="unit" matNativeControl (selectionChange)="changeUnit($event)" required>
+                      <mat-option value="CMs">CMs</mat-option>
+                      <mat-option value="Metres">Mtrs</mat-option>
+                    </mat-select>
+                  </mat-form-field>-->
+                  <!--<mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" >
+                    <mat-label style="text-transform: capitalize;">Height(in Cms)</mat-label>
+                    <input matInput #hght name="hght" formControlName="userHeight" (change)="changeHght(hght)" />
+                    <mat-hint *ngIf="hght.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Invalid height</mat-hint>
+                  </mat-form-field>-->
+                </form>
+                <div class="row" style="margin-left: 8px;">
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <mat-label>Height</mat-label>
+                    <mat-radio-group class="example-radio-group" (change)="heightonChange($event)" name="heightCentimeter">
+                      <mat-radio-button class="example-radio-button"  value="cm" checked="checked">Cm</mat-radio-button>
+                      <mat-radio-button class="example-radio-button"  value="ft" >Feet</mat-radio-button>
+
+                      <mat-form-field class="col-xs-3 col-sm-3 col-md-9 col-lg-9 col-xl-9" appearance="outline" style="margin-top: -17px; overflow: hidden;" >
+                        <input matInput #hght (change)="updatedHeight(hght)" name="height" [(ngModel)]="height" placeholder="{{heightCentimeter}}"/>
+                        <mat-hint *ngIf="hght.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Invalid Height</mat-hint>
+                      </mat-form-field>
+                    </mat-radio-group>
+                   </div>
+                </div>
+                <!-- <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" >
+                  <mat-label style="text-transform: capitalize;">Affiliation</mat-label>
+                  <input matInput #aff name="aff" [(ngModel)]="affiliate" />
+
+                </mat-form-field> -->
+
+                <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="display: none;">
+                  <mat-label>Affiliation</mat-label>
+                  <mat-select #aff matNativeControl (selectionChange)="AffonChange($event)" [(ngModel)]="affiliate">
+                    <mat-option value="None">None</mat-option>
+                    <mat-option value="dimension">Dimension</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+             <!-- <div class="row" style="margin-left: 8px;">
+
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-6" >
+                    <mat-label>Gender</mat-label>
+                    <mat-radio-group class="example-radio-group" (change)="genderonChange($event)" name="gender" [(ngModel)]="gender" >
+                      <mat-radio-button class="example-radio-button" value="male">Male</mat-radio-button>
+                      <mat-radio-button class="example-radio-button" value="female">Female</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 ">
+                    <mat-label>Height</mat-label>
+                    <mat-radio-group class="example-radio-group" (change)="heightonChange($event)" name="heightCentimeter">
+                      <mat-radio-button class="example-radio-button"  value="cm" checked="checked">Cm</mat-radio-button>
+                      <mat-radio-button class="example-radio-button"  value="ft" >Feet</mat-radio-button>
+
+                      <mat-form-field appearance="outline" style="margin-left: 6px;margin-top: -17px;width: 48%;" >
+                        <input matInput #hght style="width: 50%;" (change)="updatedHeight(hght)" name="height" [(ngModel)]="height" placeholder="{{heightCentimeter}}"/>
+                        <mat-hint *ngIf="hght.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Invalid Height</mat-hint>
+                      </mat-form-field>
+                    </mat-radio-group>
+                   </div>
+
+              </div>-->
+                <div class="row" style="margin-left: 8px;">
+
+                  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" >
+                      <mat-label>Gender</mat-label>
+                      <mat-radio-group class="example-radio-group" (change)="GenonChange($event)" name="gender" [(ngModel)]="gender" >
+                        <mat-radio-button class="example-radio-button" value="m">Male</mat-radio-button>
+                        <mat-radio-button class="example-radio-button" value="f">Female</mat-radio-button>
+                        <mat-hint *ngIf="genderHint" style=" color:red;font-size: 13px;white-space: nowrap;">*Select your gender</mat-hint>
+                      </mat-radio-group>
+
+
+                    </div>
+
+                    <div *ngIf="weightInputShow" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                      <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" >
+                      <mat-label style="text-transform: capitalize;">Weight(in Kgs)</mat-label>
+                      <input matInput #wght name="wght" (change)="changeWght(wght)" [(ngModel)]="weightCheckins"/>
+                      <mat-hint *ngIf="wght.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Invalid weight</mat-hint>
+                      </mat-form-field>
+                    </div>
+
+                    <!-- <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                      <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" >
+                      <mat-label style="text-transform: capitalize;">Aadhaar</mat-label>
+                      <input matInput #aadhaar name="aadhaar" (change)="changeAadhaar(aadhaar)" [(ngModel)]="aadhaarNumber"/>
+                      <mat-hint *ngIf="aadhaar.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Invalid Aadhaar</mat-hint>
+                      </mat-form-field>
+                    </div> -->
+                </div>
+
+                <div *ngIf="EdtPro_nt_loading" style="margin-left: 28px;margin-top: 18px;">
+                  <button mat-raised-button #metbutton class="Password_input_button" (click)="onClickMobileCheck(fname,lname,emailadd,jEmailAd,picker,mobilenum,jMobileNum,hght,wght)">Save</button>
+                </div>
+                <div *ngIf="EdtPro_loading" style="margin-left: 28px;margin-top: -3px;">
+                  <progress style="display: block; float: none;margin-top: 10px; text-align: center;color: dodgerblue;" id="message_submit_progress" class="pure-material-progress-circular" ></progress>
+                </div>
+
+            </mat-card-content>
+          </mat-card>
+
+          <!-- //Delete aff box -->
+          <mat-card *ngIf="show_affiliation_del_ui" style="width: 100%;margin-bottom: 30px;width: 100%;">
+            <div style="margin: 20px 20px 30px 20px;">
+              <div style="float: right;color: dodgerblue;font-size: 20px;margin-right:15px;border: none;outline: none;background-color: transparent;">
+                <div  class="fa fa-reply element back" id="back" (click)="ShowEditProfile()" style="cursor: pointer;"><div style="font-size: 12px;
+                  padding-top: 2px;">Back</div></div>
+                </div>
+              <mat-card-header>
+                <mat-card-title style="color: dodgerblue;font-size: 20px;"><i class="fas fa-trash-alt"></i> Delete Affiliation</mat-card-title>
+              </mat-card-header>
+              <mat-card-content >
+              <table *ngIf="_constant.affiliatedCompanies.length != 0" mat-table [dataSource]="_constant.affiliatedCompanies" class="col-12 mb-4">
+                <ng-container matColumnDef="affilate_name">
+                  <th mat-header-cell *matHeaderCellDef>
+                    Affiliated Company
+                  </th>
+                  <td mat-cell *matCellDef="let aff_company">{{aff_company['affilate_name']}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="affilate_delete">
+                  <th mat-header-cell *matHeaderCellDef>Delete</th>
+                  <td mat-cell *matCellDef="let aff_company">
+                    <button mat-icon-button color="warn" (click)="openDeleteAffiliationModal(aff_company['affilate_unique_name'], aff_company['affilate_name'])">
+                      <mat-icon class="mat-18">delete</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="affiliated_data_table"></tr>
+                <tr mat-row *matRowDef="let row; columns: affiliated_data_table;"></tr>
+              </table>
+              <div *ngIf="_constant.affiliatedCompanies.length == 0" style="text-align: center; color: #19a9e5; margin: 10px auto;">
+                <i class="fas fa-2x fa-spinner fa-pulse" aria-hidden="true"></i>
+              </div>
+              </mat-card-content>
+            </div>
+          </mat-card>
+
+          <!-- //Delete acc box -->
+          <mat-card *ngIf="delProCard" class="" style="width: 100%;margin-bottom: 30px;width: 100%;">
+            <div style="float: right;color: dodgerblue;font-size: 20px;margin-right:15px;border: none;outline: none;background-color: transparent;">
+              <div  class="fa fa-reply element back" id="back" (click)="ShowEditProfile()"><div style="font-size: 12px;
+                padding-top: 2px;">Back</div></div>
+              </div>
+            <mat-card-header>
+              <mat-card-title style="color: dodgerblue;font-size: 20px;"><i class="fas fa-trash-alt"></i> Delete Profile</mat-card-title>
+            </mat-card-header>
+            <mat-card-content >
+
+              <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" >
+                <mat-label style="text-transform: capitalize;">First Name</mat-label>
+                <input matInput #fname name="fname" [(ngModel)]="firstname" readonly />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" >
+                <mat-label style="text-transform: capitalize;">Last Name</mat-label>
+                <input matInput #lname name="lname" [(ngModel)]="lastname" readonly />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [ngStyle]="{'display': (_constant._isDependentUserAccount == true)? 'none': ''}">
+                <mat-label style="text-transform: capitalize;">Email Address</mat-label>
+                <input matInput #emailadd name="emailadd" [(ngModel)]="email" readonly />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [ngStyle]="{'display': (_constant._isDependentUserAccount == true)? 'none': ''}">
+                <mat-label style="text-transform: capitalize;">Mobile Number</mat-label>
+                <input matInput #mobilenum name="mobilenum" [(ngModel)]="mobile" readonly />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" >
+                <mat-label style="text-transform: capitalize;">Password</mat-label>
+                <input type="password" matInput #passforDelAcc name="passforDelAcc" />
+                <mat-hint *ngIf="passforDelete" style=" color:red;font-size: 13px;white-space: nowrap;">*Password must contain 6 characters</mat-hint>
+                <mat-hint *ngIf="wrongpassforDelete" style=" color:red;font-size: 13px;white-space: nowrap;">*Your Password is wrong</mat-hint>
+              </mat-form-field>
+
+              <span style="color: gray;font-size: 12px;margin-left: 26px;">
+                *Password should contain atleast 6 characters.
+              </span>
+
+              <p style="color: red;font-size: 14px;margin-left: 26px;margin-top: 30px;">
+                *Once click this button, your account will be removed permanently.This action won't be reversed.
+              </p>
+
+              <div *ngIf="delPro_nt_loading" style="margin-left: 18px;margin-bottom: 18px;">
+                <button mat-raised-button #metbutton class="DelConfirm_button" (click)="onClickDeleteProfile(passforDelAcc)">Delete your account permanently</button>
+              </div>
+              <div *ngIf="delPro_loading" style="margin-left: 18px;margin-bottom: 18px;">
+                <progress style="display: block; float: none;margin-top: 15px; text-align: center;color: dodgerblue;" id="message_submit_progress" class="pure-material-progress-circular" ></progress>
+              </div>
+
+            </mat-card-content>
+          </mat-card>
+
+        </div>
+      </div>
+
+
+      <!--<div class="row" style="row-gap: 20px">
+        <div class="col-md-12">
+          <mat-card style="width: 100%;margin-top: 20px;" >
+            <mat-card-header>
+              <mat-card-title style="color: dodgerblue;font-size: 20px;"><i class="fas fa-unlock-alt"></i> Change Password</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>-->
+                <!-- {{ metriceForm.value | json}} -->
+                <!--<div >
+
+                  <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4" >
+                    <mat-label style="text-transform: capitalize;">Old Password</mat-label>
+                    <input type="password" matInput #oldPwd disallow-spaces (change)="changeOP(oldPwd)"  ngModel />
+                    <mat-hint *ngIf="oldPwd.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Old Password must contain 6 characters</mat-hint>
+                    <mat-hint *ngIf="wrongpassforchange" style=" color:red;font-size: 13px;white-space: nowrap;">*Your Old Password is wrong</mat-hint>
+                  </mat-form-field>
+
+                 <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4" >
+                   <mat-label style="text-transform: capitalize;">New Password</mat-label>
+                   <input type="password" matInput #newPwd disallow-spaces (change)="changeNP(newPwd)"  ngModel/>
+                   <mat-hint *ngIf="newPwd.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Your Password format is invalid</mat-hint>
+                  </mat-form-field>
+
+                 <mat-form-field appearance="outline" class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4" [class.text-danger]="hasError">
+                   <mat-label style="text-transform: capitalize;">Confirm Password</mat-label>
+                   <input type="password" matInput #confPwd disallow-spaces (change)="changeCP(confPwd)"  ngModel/>
+                   <mat-hint *ngIf="confPwd.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Password mismatched</mat-hint>
+                   </mat-form-field>
+
+                   <p style="color: gray;font-size: 12px;margin-left: 26px;">
+                    *Password must contain 8 characters, atleast 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character
+                   </p>
+
+                  </div>
+                  <div *ngIf="nt_loading" style="margin-left: 18px;">
+                    <button mat-raised-button #metbutton class="Password_input_button" (click)="onClickPasswordChange(oldPwd,newPwd,confPwd)">Save</button>
+                  </div>
+                  <div *ngIf="loading" style="margin-left: 18px;">
+                    <progress style="display: block; float: none;margin-top: 15px; text-align: center;color: dodgerblue;" id="message_submit_progress" class="pure-material-progress-circular" ></progress>
+                  </div>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>-->
+
+
+
+  </div>
+</div>
+<app-footer></app-footer>

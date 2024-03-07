@@ -1,0 +1,92 @@
+<div class="container-fluid"> 
+  <div class="row no-gutter"> 
+    <div class="col-md-8 d-none d-md-flex bg-image">
+    </div> 
+    <div class="col-md-4 bg-light"> 
+      <div class="login d-flex py-5"> 
+        <div class="container"> 
+          <div class="row"> 
+            <div class="col-lg-7 col-xl-8">
+              <div class="login-logo"> </div>
+              <div *ngIf="isOrgSubmit">
+                <form class="form" #orgForm="ngForm" (ngSubmit)="organizationName()" novalidate>
+                  <div class="form-group">
+                    <span class="form-title">Select Organization</span>
+                  </div>
+                  <div class="form-group">
+                    <input placeholder="Organization" class="inputBox" type = "text" aria-label = "Number" (ngModelChange)="pushOrg($event)" matInput [formControl] = "orgControl" [matAutocomplete] = "auto">
+                    <mat-autocomplete #auto = "matAutocomplete">
+                      <mat-option *ngFor = "let orgName of org_name" [value] = "orgName.value">
+                        {{orgName.display}}
+                      </mat-option>
+                    </mat-autocomplete>
+                    <mat-hint *ngIf="invalidOrgName" style=" color:red;font-size: 13px;white-space: nowrap;">*Select valid Organization name</mat-hint>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <button class="btn btn-primary"  type="submit">Submit <span *ngIf="isLoading" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></span></button>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <button class="btn btn-primary" type="button" (click)="showLoginPage()">Back</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div *ngIf="isRegisterFlow">
+                <form class="form" #regForm="ngForm" (ngSubmit)="sendPersonalMail()" novalidate>
+                  <div class="form-group">
+                    <span class="form-title">Set your Personal Email</span>
+                  </div>
+                  <div class="form-group">
+                      <input placeholder="Personal Email" class="inputBox" type = "text" aria-label = "Number" (ngModelChange)="PersonalMailCheck($event)" matInput [formControl] = "mailControl">
+                      <mat-hint *ngIf="mailError" style=" color:red;font-size: 13px;white-space: nowrap;">*Enter valid Email</mat-hint>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Submit <span *ngIf="isLoadingMail" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></span></button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div *ngIf="isNewUserRegister">
+                <form class="form" #newRegForm="ngForm" (ngSubmit)="sendPersonalMail()" novalidate>
+                  <div class="form-group">
+                    <span class="form-title">Give your Basic details</span>
+                  </div>
+                  <div class="form-group">
+                    <input type = "text" class="inputBox" placeholder="Personal Mail" readonly aria-label = "Number" matInput #personalMail="ngModel" name="personalMail" [(ngModel)]="personalEmail">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" [(ngModel)]="userModal.mobileNumber" #mobileNumber="ngModel" name="mobileNumber" placeholder="Mobile Number" pattern="[1-9]{1}[0-9]{9}" (change)="checkMobileExist()" required />
+                    <span class="text-danger" *ngIf="(mobileNumber.touched || registerForm.submitted) && mobileNumber.errors?.required">
+                      Mobile number is required
+                    </span>
+                    <span class="text-danger" *ngIf="mobileNumber.errors?.pattern">
+                      Enter 10 digit valid mobile number.
+                    </span>
+                    <span class="text-danger" *ngIf="isMobileExist && !mobileNumber.errors?.required && !mobileNumber.errors?.pattern">
+                      Mobile number already exists.
+                    </span>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Register <span *ngIf="isLoadingOrgReg" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></span></button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div> 
+          </div> 
+        </div> 
+      </div> 
+    </div> 
+  </div>
+</div>

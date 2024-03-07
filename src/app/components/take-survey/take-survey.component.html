@@ -1,0 +1,78 @@
+<app-side-navigation-bar></app-side-navigation-bar>
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+
+<div class="bb-main-container">
+  <h2 class="mb-4"> Personalised Health Assessment </h2>
+  <mat-card class="questionCard">
+  <div *ngIf="questionShow">
+    <div *ngIf = "filterQuestions.length == 0"> 
+      <p class="questionCompletionTxt"> Thankyou for your interest. You already completed Personalised Health Assessment.</p>
+      <!-- <div>
+        <button mat-raised-button class="questionBtn" style="margin-left:0px" (click)="moreQuestion()"> </button>
+      </div> -->
+    </div>
+    <div *ngIf = "filterQuestions.length > 0">
+    <div  *ngFor="let question of filterQuestions" > 
+      <div *ngIf="question.showStatus">
+        <div>
+          <mat-card-title class ="questionTitle">
+            <i class="{{question.icon}} questionIcon" ></i>  {{question.name}} <span style="position: relative; float: right; font-size: 18px; color: #ccc;"> {{currentQues + 1}} / {{filterQuestions.length}} </span>
+          </mat-card-title>
+          <mat-card-content>
+            <div *ngIf="question.type=='radio'">
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="question.answer">
+                <div *ngFor = "let ans of question.option"> <mat-radio-button name="{{question.q_id}}" (click)="getCurrentRadioBtnVal(ans.value)" value="{{ans.value}}" class="questionRadioBtn">{{ans.status}} <br class="nextLine"> <span style="font-size: 14px;">{{ans.range}}</span> </mat-radio-button> </div>
+              </mat-radio-group>
+            </div>
+            <div *ngIf="question.yes.showStatus">
+              <p style="font-size: 18px; color:#4885ec; margin-top: 20px;"> {{question.yes.name}} </p>
+              
+              <div *ngIf="question.yes.type=='radio'">
+                <mat-radio-group aria-label="Select an option" [(ngModel)]="question.yes.answer">
+                  <div *ngFor = "let ans of question.yes.option"> <mat-radio-button name="{{question.yes.q_id}}" (click)="getYesRadioBtnVal(ans.value)" value="{{ans.value}}" class="questionRadioBtn">{{ans.status}} <br class="nextLine"> <span style="font-size: 14px;">{{ans.range}}</span></mat-radio-button> </div>
+                </mat-radio-group>
+              </div>
+
+              <div *ngIf="question.yes.type=='checkbox'">                
+                <div *ngFor="let box of question.yes.option"> <mat-checkbox style="font-size: 18px;" (click)="CheckBoxValue(box.value)" [checked]="box.check"> {{box.status}} </mat-checkbox> </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </div>
+      </div>
+
+    </div>
+    <mat-card-footer>
+      <div> <p  *ngIf="quesValidate" class="questionErrorMsg"> Please answer the above question </p></div>
+      <div class="row">
+        <div class="row questionBtnWidth">
+            <!-- <button mat-raised-button class="questionBtn" (click)="preQues()" [ngClass]="{'disableBtn' : preBtnDisable == true}" [disabled]="preBtnDisable">Previous</button> -->
+            <button mat-raised-button class="questionBtn" (click)="preQues()" [disabled]="preBtnDisable">Previous</button>
+            <button mat-raised-button class="questionBtn" (click)="nxtQues()">{{nxtBtnTxt}}</button>            
+        </div>
+        <div  class="row questionProgress">        
+          <p *ngIf="questionSkipTxt" style="font-size: 14px;"> You can <span (click)= "skipQuestion()" style="color: #4885ed; cursor: pointer;font-size: 16px;"> Skip </span> and resume it later. </p></div>
+            <!-- <div  class="row questionProgress">
+              <mat-progress-bar mode="determinate" value="{{(100/filterQuestions.length)*currentQues}}"></mat-progress-bar>
+            </div> -->
+      </div>
+
+    </mat-card-footer>
+    </div>
+  </div>
+    <div *ngIf="!questionShow">
+      <p class="questionCompletionTxt"> Your survey has been completed Successfully. </p>
+      
+      <div>
+        <button mat-raised-button class="questionBtn" style="margin-left:0px" (click)="questionCompleted()">Okay</button>        <!-- <button mat-flat-button color="primary" class="moreQuestionBtn" (click)= "moreQuestion()"> Continue </button> -->
+      </div>
+    </div>  
+
+  </mat-card>  
+</div>
+
+
+<app-footer></app-footer>
+
+

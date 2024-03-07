@@ -1,0 +1,746 @@
+.teleconsult-main-container{
+    margin-left: 72px;
+    margin-top: 80px;
+    padding: 28px 24px;
+    min-height: 540px;
+}
+
+.teleconsult-main-container h2{
+    font-weight: 500;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+@media (max-width: 500px){
+    .teleconsult-main-container{
+        margin-left: 1px;
+        margin-top: 0px;
+        padding: 28px 24px;
+    }
+}
+
+@media screen  and (max-width: 767px) and (min-width: 0px){
+    .header_position{
+        display: none;
+    }
+    .header_position_initial{
+        display: block;
+    }
+}
+
+@media screen and (min-width: 768px){
+    .header_position{
+        display: inline-block;
+        width: 100%;
+    }
+    .header_position_initial{
+        display: none;
+    }
+}
+
+.header_position_header{
+    width: fit-content;
+}
+
+.header_position_filter{
+    margin-top: -60px;
+    float: right;
+    margin-bottom: -20px;
+}
+
+.header_position_filter1{
+    padding-right: 40px;
+}
+
+.header_position_initial_mob{
+    display: inline-flex;
+}
+
+.header_position_initial_fil{
+    width: 45%;
+    margin-right: 10%;
+}
+
+.header_position_initial_fil2{
+    width: 45%;
+}
+
+.teleconsult_doctor_list_main_dashboard_card{
+    font-family: 'Quicksand', sans-serif;
+    cursor: pointer;
+    /* margin: 5px auto; */
+    /* padding: 5px 12px; */
+    background: #fff;
+    color: #4885ed;
+    border-radius: 0px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+    transition: 0.2s;
+    /* margin-bottom: 16px; */
+    height: auto;
+    position: relative;
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: transparent;
+}
+.doctor-card{    
+    font-family: 'Quicksand', sans-serif;
+    cursor: pointer;
+    /* margin: 5px auto; */
+    /* padding: 5px 12px; */
+    background: #fff;
+    color: #4885ed;
+    border-radius: 0px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+    transition: 0.2s;
+    /* margin-bottom: 16px; */
+    height: auto;
+    position: relative;
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: transparent;border: 1px soild #CD2D4F; background-color: #fff; margin-bottom: 15px;
+}
+
+.horizontal-rule {
+    border-top: 1px solid #dcdcdc;    
+    margin-top: 18px;
+    width: -moz-available;          /* WebKit-based browsers will ignore this. */
+    width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+    width: stretch;
+}
+
+.teleconsult_triangle_topleft {
+    width: 0;
+    height: 0;
+    color: #fff;
+    position: absolute;
+    border-top: 115px solid #2CB039;
+    border-right: 105px solid transparent;
+}
+
+.teleconsult_availability{
+    margin-top: -100px;
+    padding-left: 8px;
+    font-size: 0.9rem;
+}
+
+.teleconsult_profile_image {
+    width: 135px;
+    height: 135px;
+    border-radius: 50%;
+    margin: 20px;
+
+    /* object-fit: cover;
+    object-position: center right; */
+}
+
+.teleconsult_img_container{
+    text-align: center;
+    /* display: block; */
+}
+
+.teleconsult_profile_menu_icon{
+    float: right;
+    color: grey;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    margin-top: -170px;    
+}
+
+.teleconsult_doctor_list_body{
+    padding: 5px 12px;
+}
+
+.teleconsult_doctor_name{
+    text-align: center;
+    font-weight: 600;
+}
+
+@media screen and (min-width:351px){
+    .teleconsult_doctor_name{
+        text-align: center;
+        font-size: 1.05rem;
+        font-weight: 600;
+    }
+}
+
+.teleconsult_doctor_experience{
+    text-align: center;
+    /* color: dimgrey;
+    font-size: 14px; */
+    color: #2cb039;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.teleconsult_doctor_speciality{
+    justify-content: center;
+    width: 70%;
+    margin: auto;
+}
+
+.teleconsult_doctor_specialist_list{
+    text-align: center;
+    padding: 3px 10px 3px 10px;
+    border-radius: 14px;
+    color: #2d3238bd;
+    background-color: #e9ecef;
+    font-weight: bold;
+    font-size: 12px;
+    margin: 4px;
+    width: fit-content;
+}
+
+.teleconsult_doctor_language{
+    justify-content: center;
+    width: 72%;
+    margin: auto;
+}
+
+.teleconsult_doctor_language_list{
+    text-align: center;
+    padding: 3px 10px 3px 10px;
+    border-radius: 14px;
+    color: #fff;
+    background-color: #2895F0;
+    font-weight: bold;
+    font-size: 12px;
+    margin: 4px;
+    width: fit-content;
+}
+
+.teleconsult_doctor_fees{
+    text-align: center;
+    color: dimgrey;
+    font-size: 14px; 
+    font-weight: 500;
+}
+
+.star_unchecked{
+    text-align: center;
+    color: #80808073;
+}
+
+.star_checked {
+    color: #2895F0;
+}
+
+.teleconsult_doctor_list_footer{
+    padding: 5px 12px;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.teleconsult_doctor_mob_dot{
+    height: 50px;
+    width: 50px;
+    background-color: #26B327;
+    border-radius: 50%;
+    display: inline-flex;
+    margin-left: 0px;
+    margin-right: 25px;
+    cursor: pointer;
+}
+
+.teleconsult_doctor_cal_dot{
+    height: 50px;
+    width: 50px;
+    background-color: #2D99F4;
+    border-radius: 50%;
+    display: inline-flex;
+    margin-left: 0px;
+    margin-right: 25px;
+    cursor: pointer;
+}
+
+.teleconsult_doctor_inf_dot{
+    height: 50px;
+    width: 50px;
+    background-color: #2D99F4;
+    border-radius: 50%;
+    display: inline-flex;
+    margin-left: 0px;
+    margin-right: 0px;
+    cursor: pointer;
+}
+
+.teleconsult_doctor_icons_pos{
+    color: #fff;
+    display: inline-block;
+    line-height: 1.5em;
+    position: absolute;
+    vertical-align: middle;
+    width: 1.6em;
+}
+
+.doctorAppointmentBtnPos{
+    position: absolute; 
+    bottom: 0px; 
+    padding-bottom: 30px;
+}
+.doctorAppointmentBtn{
+    padding: 5px 10px;
+    cursor: pointer;
+    /* border: 1px solid; */
+    color: #fff;
+    background-color: #2895F0;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+}
+.teleconsult_profile_menu_icon_pos_top{
+    display: none;
+}
+.teleconsult_profile_menu_icon_pos_bottom{
+    display: block;
+    margin-top: 0px;
+}
+.lastCardDiv{
+    padding: 15px 30px;
+    margin-top: 0px;
+}
+
+.cardExpendMainContainer{
+    max-width: 100%; 
+    /* padding: 0px; */
+}
+.appointmentLastCardContainer{
+    margin-top: 17px !important; 
+    padding: 15px 0px !important;
+    height: 294px;
+    overflow: scroll;
+}
+
+.cardExpendContainer{
+    width: 98%; margin: auto;
+}
+.cardExpendFullDiv{
+    background-color: #fff; 
+    margin-bottom: 15px !important; 
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.09);    
+    transition: 0.2s;
+    margin: auto;
+}
+
+.p-0{
+    padding: 0px;
+}
+
+.cardShadowRemove{
+    margin-bottom: 0px; 
+    box-shadow: none;
+}
+
+.bookAppointmnetSecondCardContainer{
+    padding: 15px 30px 15px 30px;
+}
+
+.appointmentTitleIcon{
+    position: relative; top: 8px; padding-right: 10px;
+}
+
+.dateSlot{
+    display: -webkit-box; 
+    margin: 20px 0px; 
+    width:100%; 
+    overflow:hidden;
+}
+
+.dateBox{
+    border: 1px solid #ccc; 
+    color: #47464c; 
+    font-size: 12px; 
+    margin: 0px 15px 0px 0px; 
+    text-align: center; 
+    width: 120px; 
+    height: 50px;
+    cursor: pointer; 
+    padding: 5px 0px;
+}
+
+.dateBoxTitle{
+    font-weight: 600;
+}
+
+.noSlotAva{
+    position: relative; 
+    top: -15px; 
+    font-size: 10px;
+}
+.dateBoxSelect{
+    border: 1px solid #46bde7; 
+    color: #47464c; 
+    font-size: 12px; 
+    margin: 0px 15px 0px 0px; 
+    text-align: center; 
+    width: 120px; 
+    height: 50px;
+    cursor: pointer; 
+    padding: 5px 0px; 
+    background-color: #f3fdff;
+}
+
+.slotAva{
+    position: relative; 
+    top: -15px; 
+    font-size: 10px; 
+    color: #27b126
+}
+
+.selectDateTitle{
+    font-weight: 700; 
+    text-align: center; 
+    color: #47464c; 
+    font-size: 14px;
+}
+
+.timeSlotTitle{
+    color: #47464c; 
+    font-size: 14px; 
+    font-weight: 500; 
+    margin: 10px 0px;
+}
+.timeSlotTitleIcon{
+    color: #c6c6c6;
+}
+
+.avaTime{
+    background-color: #2895F0;
+    height: 30px; 
+    border-radius: 5px; 
+    color: #fff; 
+    width: auto; 
+    text-align: center; 
+    font-weight: 500; 
+    margin: 3px; 
+    padding: 5px;
+    font-size: 14px; 
+    cursor: pointer;
+}
+
+.selectAvaTime{
+    background-color: #27b126; 
+    height: 30px; 
+    /* border: 1px solid #ace1ab;  */
+    border-radius: 5px; 
+    color: #fff;
+    /* width: 80px;  */
+    text-align: center; 
+    font-weight: 500; 
+    margin: 3px; 
+    padding: 5px;
+    font-size: 14px; 
+    cursor: pointer;
+}
+.profileTxt{
+    margin-top: 55px;
+    font-size: 14px; 
+    color: #000; 
+    text-align: justify;
+    overflow-y: scroll;
+    height: 50vh;
+}
+
+.review_box{
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    padding-right: 50px;
+}
+@media screen and (max-width: 991px) {
+    .doctorAppointmentBtnPos{
+        position: unset;
+        margin: 25px 0px -25px 0px; 
+    }   
+    .teleconsult_profile_menu_icon_pos_top{
+        display: block;
+    }
+    .teleconsult_profile_menu_icon_pos_bottom{
+        display: none;
+    } 
+    .lastCardDiv{
+        padding: 15px 30px;
+        padding-top: 0px;
+        margin-top: -20px;
+    }
+
+    .review_box{
+        position: unset;
+        bottom: 10px;
+        padding: 0px;
+    }
+}
+
+@media screen and (max-width: 320px) and (max-height: 568px){
+    .doctorAppointmentBtn{
+        font-size: 21px;
+    }
+}
+
+@media screen and (max-width: 991px) and (min-width: 0px){
+    .timeSlot{
+        height: 209px;
+        overflow: hidden auto;
+    }
+
+    .appointmentLastCardContainer{
+        margin-top: 17px !important; 
+        padding: 15px 0px !important;
+        height: 250px;
+        overflow: scroll;
+    }
+
+    .avaTime{
+        background-color: #2895F0;
+        height: 30px;
+        border-radius: 5px;
+        color: #fff;
+        /* width: 70px; */
+        text-align: center;
+        font-weight: 500;
+        margin: 3px;
+        padding: 6px;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    .selectAvaTime{
+        background-color: #27b126;
+        /* height: 30px; */
+        border-radius: 5px;
+        color: #fff;
+        /* width: 70px; */
+        text-align: center;
+        font-weight: 500;
+        margin: 3px;
+        padding: 5px;
+        font-size: 13px;
+        cursor: pointer;
+    }
+}
+@media screen and (min-width: 992px){
+    .timeSlot{
+        height: 255px;
+        overflow: hidden auto;
+    }
+}
+
+*::-webkit-scrollbar {
+    width: 5px;
+  }
+
+*::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 20px;
+  background: #d7d7d7;  
+}
+
+*{
+    scrollbar-width: thin;
+    scrollbar-color:  #d7d7d7 transparent;
+}
+
+
+.review_star_uncheck{
+    text-align: initial;
+    color: #80808073;
+    padding: 5px 12px;
+}
+
+.review_star_check {
+    color: gold;
+}
+
+.rating_div{
+    padding: 5px 12px;
+}
+
+.rating_inp{
+    width: 100%;
+}
+
+.rating_letters{
+    font-size: 12px;
+}
+
+.rating_icon{
+    color: #2895F0;
+}
+
+.language_text{
+    text-transform: capitalize;
+}
+
+.hideDropdown{
+    display: none;
+}
+
+.stars_color{
+    color: #a9a9a9b5;
+}
+
+.selectedLiveStar {
+    color: #ffd700;
+}
+
+.mat_button_outline{
+    outline: none !important;
+}
+
+
+
+
+@media screen and (max-width: 400px) and (min-width: 0px){
+    
+    .mobile_header{
+        width: fit-content;
+        position: absolute;
+    }
+
+    .mobileSizeHeader{
+        font-size: 1.35rem;
+    }
+}
+
+@media screen and (max-width: 767px) and (min-width: 401px){
+    .mobile_header{
+        width: fit-content;
+        position: absolute;
+    }
+
+}
+
+.week_days{
+    background-color:#2895F0;
+    border-radius:10px;
+    color:#fff;
+    text-align:center;
+    font-weight:500;
+    margin:3px;
+    padding:4px 8px;
+    font-size:13px;
+    text-transform: capitalize;
+}
+
+.star_unchecked{
+    text-align: center;
+    color: #80808073;
+}
+
+.star_checked {
+    color: #2895F0;
+}
+.backButton{
+    position: relative;
+    /* margin-top: 19px; */
+    font-size: 26px;
+    float: right;
+    /* margin-right: 54px; */
+    cursor: pointer;
+}
+.subscribe_button{
+    border-radius: 25px;
+    border: 0px;
+    color: white;
+    background-color: rgb(40,149,240);
+    padding: 5px 25px; font-weight: 600;
+}
+.subscribe_button:focus{
+    border:0px solid;
+    outline: 0;
+}
+.confirm_subscription_button{
+    border-radius: 25px;
+    border: 0px;
+    color: white;
+    background-color: rgb(40,149,240);
+    padding: 5px 25px;
+}
+.confirm_subscription_button:focus{
+    outline: 0;
+}
+
+.review_skip{
+    text-align: center;
+    color: #2895F0;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.info_btn {
+    font-size: 20px;
+    float: right;
+    padding: 20px;
+    position: absolute;
+    right: 0px;
+}
+.hide {
+    display: none;
+}
+.subscribed {
+    height: 190px;
+    overflow: scroll;
+}
+.not_subscribed {
+    height: 330px;
+    overflow: scroll;
+}
+
+.exclusive_container {
+    height: 100px;
+    overflow: hidden;
+    position: absolute;
+    width: 90px;
+    right: 0px;
+}
+
+.exclusive_container_span {
+    display: inherit;
+    width: 120px;
+    height: 25px;
+    /* background-color: #007bff; */
+    /* background-color: #28a745; */
+    background-color: #009688;
+    transform: rotate(45deg);
+    position: absolute;
+    text-align: center;
+    line-height: 24px;
+    right: -26px;
+    top: 22px;
+    font-family: arial;
+    font-size: 11px;
+    overflow: hidden;
+    color:white;
+    letter-spacing: 0.4px;
+    border: 1px dashed white;
+}
+
+#affiliate_image {
+    border-radius: 6px;
+    box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    margin: auto 15px;
+    top: -10px;
+    position: relative;
+}
+
+#affiliate_image img {width: 100%;}
+
+#invoicePdf {
+    width: 800px;
+    /* height: 700px; */
+    font-size: 15px;
+    color: black;
+    margin: 25px;
+}

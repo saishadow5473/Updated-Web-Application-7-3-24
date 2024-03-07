@@ -1,0 +1,127 @@
+<div class="showHeaderSideMenu">
+  <mat-sidenav-container>
+    <mat-sidenav #drawer fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
+      <div class="userPicture" style="top: 18px;height: 60px;position: relative;">
+        <img [src]='genderImg' (click)="dt()" alt="profile picture" />
+      </div>
+      <span class="profile-pic-overlay"><i class="fas fa-user-edit"></i></span>
+      <!-- <div class="userPicture" style="top: 18px;height: 60px;position: relative;">
+        <img [src]='genderImg' [matMenuTriggerFor]="belowMenu" alt="profile picture" />
+      </div>
+      <span class="profile-pic-overlay"><i class="fas fa-user-edit"></i></span>
+      <mat-menu #belowMenu="matMenu" yPosition="below" backdropClass="sg-vertical-sub-menu" class="join-account-menu" >
+        <manage-account *ngIf="innerWidth <= 500" [userDetails]="_constants.userProfileData" (onLogOut)="logOut()" ></manage-account>
+      </mat-menu> -->
+
+
+      <div style="margin-top: 20%;text-align: center;font-weight: 800;" class="text-settings">{{user}}
+      </div>
+      <div style="margin: 10px; text-align: center;" class="text-settings">Health Score:
+        <span *ngIf="surveyComplete" style="cursor: default;">
+          {{userScore}} <i style="color:gold; font-size: 20px" class="fas fa-trophy"></i>
+        </span>
+
+        <span *ngIf="!surveyComplete">
+          <span class="fa-stack"  matTooltip="Check your health score now" style="vertical-align: top; cursor: pointer; font-size: 14px;" (click)="redirectToSurvey(); closeSideNav();">
+            <i class="far fa-circle fa-stack-2x" style="color:#797979"></i>
+            <i class="fas fa-question fa-stack-1x fa-inverse" style="color:#797979;"></i>
+          </span>
+        </span>
+      </div>
+      <span class="divider"></span>
+      <mat-nav-list>
+        <mat-list-item (click)="closeSideNav()">
+          <a matLine [routerLink]="['/dashboard']" class="text-settings">
+            <span style="padding-right: 15px;" class="fas fa-tachometer-alt glow"></span>
+            Dashboard</a>
+        </mat-list-item>
+
+        <!-- affiliated user -->
+        <mat-list-item (click)="closeSideNav()" *ngIf="_constants.isAffiliatedUser">
+          <a matLine [routerLink]="['/affiliated-users']" class="text-settings">
+            <span style="padding-right: 20px;" class="fas fa-building glow"></span>
+            Member Services</a>
+        </mat-list-item>
+
+        <mat-list-item (click)="closeSideNav()" [ngStyle]="displayMenu">
+          <a [class.disabledMetrics]="_constants.notShowMetrics" matLine [routerLink]="['/metrices']" class="text-settings">
+            <span style="padding-right: 15px;" class="fas fa-dumbbell glow"></span>
+            Programs</a>
+        </mat-list-item>
+
+        <!-- ihl tele consultation -->
+        <mat-list-item (click)="closeSideNav()">
+          <a matLine [routerLink]="['/teleconsultation']" class="text-settings" (click)="generalConsultationFlow()">
+            <span style="padding-right: 20px;" class="fas fa-user-md glow"></span>
+            Teleconsultation</a>
+        </mat-list-item>
+
+        <!-- ihl tele consultation -->
+        <mat-list-item (click)="closeSideNav()">
+          <a matLine [routerLink]="['/fitnessPage']" class="text-settings" (click)="generalConsultationFlow()">
+            <span style="padding-right: 20px;" class="fas fa-walking glow"></span>
+            Wellness Care E-Marketplace</a>
+        </mat-list-item>
+
+        <!-- doctorcare247 -->
+        <!-- <mat-list-item (click)="closeSideNav(); teleCall()">
+          <a matLine class="text-settings">
+            <span style="padding-right: 20px;" class="fas fa-user-md glow"></span>
+            Tele Consultation</a>
+        </mat-list-item> -->
+
+        <!--<mat-list-item (click)="closeSideNav()">
+          <a matLine [routerLink]="['/takesurvey']" class="text-settings">
+            <span style="padding-right: 21px;" class="fas fa-notes-medical glow"></span>
+            Take Survey</a>
+        </mat-list-item>-->
+
+        <!-- <mat-list-item>
+          <a title = "Awards feature coming soon" matLine class="text-settings  isDisabled">
+            <span style="padding-right: 22px;" class="fas fa-award glow"></span>
+            IHL Points</a>
+        </mat-list-item> -->
+        <mat-list-item (click)="closeSideNav()">
+          <a matLine  [routerLink]="['/challenges']" class="text-settings">
+            <span style="padding-right: 15px;" class="fas fa-campground glow"></span>
+            Health Programs</a>
+        </mat-list-item>
+
+        <!-- <mat-list-item (click)="closeSideNav()">
+          <a matLine [routerLink]="['/our-blog']" class="text-settings">
+            <span style="padding-right: 20px;" class="fas fa-podcast back"></span>
+            Health Blogs</a>
+        </mat-list-item> -->
+
+
+
+        <!-- <mat-list-item>
+          <a title = "Challenges feature coming soon" matLine  class="text-settings isDisabled">
+            <span style="padding-right: 15px;" class="fas fa-campground glow"></span>
+            Challenges</a>
+        </mat-list-item> -->
+
+        <!--<mat-list-item (click)="closeSideNav()">
+          <a matLine (click) = "dt()" class="text-settings">
+            <span style="padding-right: 21px;" class="fas fa-user glow"></span>
+            Profile</a>
+        </mat-list-item>-->
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <mat-toolbar color="primary">
+        <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle(); ngOnInit();"
+          *ngIf="isHandset$ | async">
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <div class="logo-container"></div>
+        <div class="p-2 bd-highlight flex-fill" style="position: relative;">
+          <div style="font-size: 12px;font-weight:bold; text-align: center;">
+          </div>
+        </div>
+        <span (click)="logOut()" style="font-size: 25px;" class="fas fa-sign-out-alt"></span>
+      </mat-toolbar>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

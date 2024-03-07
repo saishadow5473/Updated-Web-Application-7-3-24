@@ -1,0 +1,191 @@
+.teleconsult-main-container{
+    margin-left: 72px;
+    margin-top: 80px;
+    padding: 28px 24px;
+    min-height: 540px;
+}
+
+tr, th, td {
+    padding: 5px;
+}
+
+.teleconsult-main-container h2{
+    font-weight: 500;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+@media (max-width: 500px){
+    .teleconsult-main-container{
+        margin-left: 1px;
+        margin-top: 0px;
+        padding: 28px 24px;
+    }
+}
+
+.teleconsult_card{
+    font-family: 'Quicksand', sans-serif;
+    padding: 5px 12px;
+    background: #fff;
+    color: #4885ed;
+    border-radius: 7px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+    transition: 0.2s;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: transparent;
+    margin-bottom: 15px;
+}
+
+
+.teleconsult_types_name{
+    margin-top: 2%;
+    margin-bottom: 3%;
+}
+
+.teleconsult_doctor_list_common_header {
+    padding-top: 12px;
+    padding-left: 12px;
+    font-size: 1.04rem;
+}
+
+.cardLable{
+    font-size: 14px; 
+    color: black;
+    /* color:rgba(0, 0, 0, 0.73) */
+}
+
+.cardInputValue{
+    color: black; text-transform: capitalize;font-size: 14px;
+    font-weight: 500;
+    /* color:rgba(0, 0, 0, 0.73) */
+}
+.consulantCard{
+    border-collapse:separate !important; 
+    border-spacing: 5px !important;
+    width: 100%;
+}
+.reasonForVisitCard{
+    height: 135px;
+}
+
+.reasonForVisitCardTxt{
+    color: black;
+    font-weight: 500;
+    /* color: rgba(0, 0, 0, 0.73);  */
+}
+
+
+.teleconsult_details_scroll{
+    overflow-y: unset;
+    max-height: 190px;
+    min-height: 225px;
+    overflow-x: hidden;
+    margin-top: 0px;
+    color: black;
+    font-size: 14px;
+    font-weight: 500;
+    /* color: rgba(0, 0, 0, 0.73);  */
+}
+
+.teleconsult_prescription_scroll{
+    overflow-y: scroll;
+    max-height: 190px;
+    min-height: 204px;
+    overflow-x: hidden;
+    margin-top: 0px;
+    color: rgba(0, 0, 0, 0.73); 
+    font-size: 14px;
+}
+
+*::-webkit-scrollbar {
+    width: 5px;
+  }
+
+*::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 20px;
+  background: #d7d7d7;  
+}
+
+/* Works on Firefox */
+*{
+    scrollbar-width: thin;
+    scrollbar-color:  #d7d7d7 transparent;
+}
+
+#print-content {
+    display: none;
+}
+
+@media print {
+    #not-print {
+        display: none;
+    }
+    app-side-navigation-bar,
+    app-sidebar,
+    app-headbar,
+    app-footer {
+        display: none;
+    }
+    #print-content {
+        display: block;
+        /*-webkit-print-color-adjust: exact;*/
+        font-size: 25px !important;
+        /*font-weight:700 !important;*/
+        font-family: sans-serif !important;
+    }
+}
+
+.genix-logo{
+    margin-top: 2px;
+    position: fixed;
+    width: 100%;
+    text-align: right!important;
+}
+
+.horizantal-line-break{
+    border-width: 0;
+    border: 1px solid black !important;
+}
+
+.genix-header{
+    padding: 2px;
+    background-color: rgb(195, 199, 199)!important;
+    /* font-weight: bold!important; */
+}
+
+.medicine-advise-table{
+    border: 1px solid black;
+    width: 100%;
+}
+
+.content-table{
+    align-items: stretch;
+    width: 50%;
+}
+
+.genixDoctorSignature{
+    text-align: right;
+}
+
+/* .genix-diagnosis-name-table{
+    width: 60%!important;
+}
+.genix-remarks-table{
+    width: 40%!important;
+} */
+
+.genix-footer{
+    position: fixed;
+    text-align: center!important;
+    width: 100%;
+    /* align-items: center!important; */
+    bottom: 0;
+    margin-top: 2px;
+    padding-bottom: 2px;
+}

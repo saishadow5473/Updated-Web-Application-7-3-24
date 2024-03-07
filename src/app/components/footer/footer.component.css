@@ -1,0 +1,74 @@
+#lab_social_icon_footer {
+    padding: 15px 0;
+    background-color: #2e3134;
+    margin: 0px 0px;
+  }
+  
+  #lab_social_icon_footer a {
+    color: #c3c3c3;
+    font-size: 14px;
+  }  
+  
+  #lab_social_icon_footer a:hover {
+    color: #4885ed;
+  }
+  
+
+  #lab_social_icon_footer #social-fb:hover {
+    color: #3B5998;
+  }
+  
+  #lab_social_icon_footer #social-tw:hover {
+    color: #4099FF;
+  }
+  
+  #lab_social_icon_footer #social-insta:hover {
+    color: #ea4c89;
+  }
+  
+  #lab_social_icon_footer #social-youtube:hover {
+    color: #e52d27;
+  }
+
+  #lab_social_icon_footer #social-linkedin:hover {
+    color: #0976b4;
+  }
+
+  .copyright-info{
+      margin-top: 15px;
+      color: #c3c3c3;
+      font-size: 14px;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.list-inline {
+  margin-left: -5px;
+}
+.list-inline, .list-unstyled {
+  padding-left: 0;
+  list-style: none;
+  padding-top: 15px;
+}
+.list-inline>li {
+  display: inline-block;
+  padding-left: 5px;
+  padding-right: 5px;
+  cursor: pointer;
+}
+.list-inline>li>a {
+  text-decoration: none;
+}

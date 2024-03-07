@@ -1,0 +1,36 @@
+<div [style.color] = "color" (click)="formatECGData()" class="stats-container mat-elevation-z4"
+matRipple
+[matRippleCentered]="centered"
+[matRippleDisabled]="disabled"
+[matRippleUnbounded]="unbounded"
+>
+    <div [ngClass]="{'ic-small-text':smallText}" class="stats-container-value-{{name}}">{{value}}&nbsp;<span style="font-size: 15px;">{{unit}}</span></div>
+      <p (click)="performAnimations()" class="stats-container-desc-{{name}}">{{title}}</p>
+
+      <div class="stats-container-graph-div-{{name}} d-flex align-items-center">
+        <div *ngIf="graphView">
+          <ngx-charts-line-chart
+                [view]="view"
+                [scheme]="colorScheme"
+                [results]="single"
+                [xAxis]="showXAxis"
+                [yAxis]="showYAxis"
+                [legend]="showLegend"
+                [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel"
+                >
+            </ngx-charts-line-chart>
+
+          </div>
+      </div>
+
+              <span class="stats-container-icon-{{name}} fas" [ngClass]="icon" [class.bounce]="bounce"></span>
+<!--
+              <i matTooltip="Your {{title}} looks high" *ngIf="(title == 'Fat Ratio' || title == 'BMI' || title == 'WEIGHT' || title == 'PULSE' || title == 'Blood Pressure' || title == 'TEMPERATURE') && color == '#f44336'" class="fas fa-lg fa-info-circle" style="float: right;margin-top: 7px;opacity: 0.65;position: relative;z-index: 1000;" (click) = "riskInfoAlert(title)"></i>
+
+              <i matTooltip="Your {{title}} looks low" *ngIf="title == 'SpO2' && color == '#f44336'" class="fas fa-lg fa-info-circle" style="float: right;margin-top: 7px;opacity: 0.65;position: relative;z-index: 1000;" (click) = "riskInfoAlert(title)"></i>
+
+              <i matTooltip="Your {{title}} looks critical" *ngIf="title == 'ECG' && color == '#f44336'" class="fas fa-lg fa-info-circle" style="float: right;margin-top: 7px;opacity: 0.65;position: relative;z-index: 1000;" (click) = "riskInfoAlert(title)"></i> -->
+    </div>

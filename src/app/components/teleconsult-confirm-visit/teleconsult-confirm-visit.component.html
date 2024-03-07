@@ -1,0 +1,523 @@
+<app-side-navigation-bar></app-side-navigation-bar>
+<app-sidebar></app-sidebar>
+<app-headbar></app-headbar>
+
+<!-- --------------------------------------------Phase 1 Design--------------------------------- -->
+<!-- ----------------Contain blocks -> Contact Details, Reason to visit, Health vitals to share -->
+<!-- -------------------------------Phase 2 Desgin commented below this  code ------- -->
+<div class="teleconsult-main-container" >
+ 
+  <h3 class="mb-4">Confirm Visit</h3>
+  <div id="back" class="fa fa-reply element tele-back-btn" (click)="showTeleDoctorList()" *ngIf="!isLoading">
+      <div style="font-size: 12px;
+      padding-top: 2px;">Back</div>
+  </div>
+
+  
+  <div *ngIf="isLoading" class="loading-screen"><i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></div>
+
+  <div class="row" *ngIf="!isLoading">
+    
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+      
+      <div class="teleconsult_main_card mb-4">
+        <div style="padding: 10px;height: 414px;overflow: scroll;">
+          
+          Contact & Address Details<span style="color: red">*</span>
+          <p style="color:red; font-size: 12px;"> Required for invoice and prescription</p>
+          <div class="" style="font-size: 12px;margin-top:15px;">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label style="text-transform: capitalize;">Email Address</mat-label>
+              <input matInput [value]="contactDetailsEmail" [disabled]="true" style="color:black"/>   
+            </mat-form-field>
+          </div>
+          <div style="font-size: 13px;">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label style="text-transform: capitalize;">Mobile Number</mat-label>
+              <input matInput type="number" [(ngModel)]="contactDetailsMobileNumber" style="color:black" />   
+            </mat-form-field>
+          </div>
+          <div style="font-size: 12px">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label style="text-transform: capitalize;">Height(In Cms)</mat-label>
+              <input matInput [value]="contactDetailsHeight" [disabled]="true" style="color:black"/>   
+            </mat-form-field>
+          </div>
+          <div style="font-size: 12px">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label>Date of Birth(mm/dd/yyyy)</mat-label>
+              <input matInput [matDatepicker]="ContactDetailsDatepicker" [value]="contactDetailsDateOfBirth" [disabled]="true" style="color:black">
+              <!-- <mat-datepicker-toggle matSuffix [for]="ContactDetailsDatepicker"></mat-datepicker-toggle> -->
+              <!-- <mat-datepicker #ContactDetailsDatepicker></mat-datepicker> -->
+            </mat-form-field>
+          </div>
+          <!-- <div style="font-size: 13px">
+            <mat-form-field appearance="outline" class="w-100 mt-1">
+              <mat-label style="text-transform: capitalize;">Food or Medicine alergies if any</mat-label>
+              <mat-select style="color:black" (selectionChange)="changeAllergy($event)">
+                <mat-option *ngFor="let alergy of alergies" [value]="alergy" #allergyValue>
+                  {{alergy}}
+                </mat-option>
+              </mat-select>  
+            </mat-form-field>
+          </div> -->
+          <div style="font-size: 13px">
+            <mat-form-field appearance="outline" class="w-100 mt-1">
+              <mat-label>Food or Medicine alergies if any</mat-label>
+              <mat-select style="color:black" [formControl]="allergyValue" multiple>
+                <mat-select-trigger>
+                  {{allergyValue.value?.[0] || ''}}
+                  <span *ngIf="(allergyValue.value?.length || 0) > 1" class="example-additional-selection">
+                    (+{{(allergyValue.value?.length || 0) - 1}} {{allergyValue.value?.length === 2 ? 'other' : 'others'}})
+                  </span>
+                </mat-select-trigger>
+                <mat-option *ngFor="let alergy of alergies" [value]="alergy">{{alergy}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div style="font-size: 12px">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label style="text-transform: capitalize;"> Pincode </mat-label>
+              <input matInput type="number" [(ngModel)]="contactDetailsPincode" style="color:black" (input)="hasAddressError($event.target.value, 'pincode')" />   
+              <mat-hint style="color: red;" *ngIf="pincodeError">*Invalid pincode</mat-hint>
+            </mat-form-field>
+          </div> 
+          <div class="" style="font-size: 12px;">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label style="text-transform: capitalize;"> Address</mat-label>
+              <input matInput [(ngModel)]="contactDetailsAddress" style="color:black" (input)="hasAddressError($event.target.value, 'address')" />   
+              <mat-hint style="color: red;" *ngIf="addressError">*Required min. 6 letters</mat-hint>
+            </mat-form-field>
+          </div>
+          <div style="font-size: 13px;">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label style="text-transform: capitalize;"> Area </mat-label>
+              <input matInput [(ngModel)]="contactDetailsArea" style="color:black" (input)="hasAddressError($event.target.value, 'area')" />  
+              <mat-hint style="color: red;" *ngIf="areaError">*Required min. 3 letters</mat-hint> 
+            </mat-form-field>
+          </div>
+          <div style="font-size: 12px">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label style="text-transform: capitalize;">City </mat-label>
+              <input matInput [(ngModel)]="contactDetailsCity" style="color:black" (input)="hasAddressError($event.target.value, 'city')" />   
+              <mat-hint style="color: red;" *ngIf="cityError">*Required min. 3 letters</mat-hint>
+            </mat-form-field>
+          </div>
+          <!-- <div style="font-size: 12px">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label style="text-transform: capitalize;"> State </mat-label>
+              <input matInput [(ngModel)]="contactDetailsState" style="color:black" (input)="hasAddressError($event.target.value, 'state')" />   
+              <mat-hint style="color: red;" *ngIf="stateError">*Required min. 3 letters</mat-hint>
+            </mat-form-field>
+          </div> -->
+
+          <div style="font-size: 13px">
+            <mat-form-field appearance="outline" class="w-100 mt-1">
+              <mat-label style="text-transform: capitalize;">State</mat-label>
+              <mat-select matInput [(ngModel)]="contactDetailsState" style="color:black" (selectionChange)="changeAllergy($event)">
+                <mat-option *ngFor="let state of states" [value]="state">
+                  {{state}}
+                </mat-option>
+              </mat-select>  
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+      <app-medical></app-medical>
+    </div>
+    <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+      <app-medical-doc></app-medical-doc>
+    </div> -->
+    <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+      <div class="teleconsult_main_card mb-4">
+        <div style="padding: 10px;height: 414px;">
+          
+          Address Details<span style="color: red">*</span> 
+          <p style="color:red; font-size: 12px;"> Required for invoice and prescription</p>
+          
+          <div class="" style="font-size: 12px;margin-top:15px;">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label style="text-transform: capitalize;"> Address</mat-label>
+              <input matInput [(ngModel)]="contactDetailsAddress" style="color:black" (input)="hasAddressError($event.target.value, 'address')" />   
+              <mat-hint style="color: red;" *ngIf="addressError">*Required min. 6 letters</mat-hint>
+            </mat-form-field>
+          </div>
+          <div style="font-size: 13px;">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label style="text-transform: capitalize;"> Area </mat-label>
+              <input matInput [(ngModel)]="contactDetailsArea" style="color:black" (input)="hasAddressError($event.target.value, 'area')" />  
+              <mat-hint style="color: red;" *ngIf="areaError">*Required min. 3 letters</mat-hint> 
+            </mat-form-field>
+          </div>
+          <div style="font-size: 12px">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label style="text-transform: capitalize;">City </mat-label>
+              <input matInput [(ngModel)]="contactDetailsCity" style="color:black" (input)="hasAddressError($event.target.value, 'city')" />   
+              <mat-hint style="color: red;" *ngIf="cityError">*Required min. 3 letters</mat-hint>
+            </mat-form-field>
+          </div>
+          <div style="font-size: 12px">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label style="text-transform: capitalize;"> State </mat-label>
+              <input matInput [(ngModel)]="contactDetailsState" style="color:black" (input)="hasAddressError($event.target.value, 'state')" />   
+              <mat-hint style="color: red;" *ngIf="stateError">*Required min. 3 letters</mat-hint>
+            </mat-form-field>
+          </div>
+          <div style="font-size: 12px">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label style="text-transform: capitalize;"> Pincode </mat-label>
+              <input matInput type="number" [(ngModel)]="contactDetailsPincode" style="color:black" (input)="hasAddressError($event.target.value, 'pincode')" />   
+              <mat-hint style="color: red;" *ngIf="pincodeError">*Invalid pincode</mat-hint>
+            </mat-form-field>
+          </div>          
+        </div>
+      </div>
+    </div> -->
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+      
+      <div class="teleconsult_main_card mb-4">
+        <div class="" style="padding:10px;height:145px;box-sizing:border-box; ">
+          Reason for Visit<span style="color: red">*</span>
+          <br>
+          <mat-form-field class="w-100" style="color:black;">
+            <input matInput  [(ngModel)]="reasonForVisit" style="color:black;  height: 45px !important;" placeholder="{{reasonForVisitPlaceholder}}" (input)="reasonForVisitError($event.target.value)">
+            <mat-hint style="color: red;" *ngIf="reasonForVisitErr">*Required min. 3 letters</mat-hint> 
+          </mat-form-field>
+          <!-- <input placeholder="Example Fever, Cold Cough"  [(ngModel)]="reasonForVisit"  class="  py-2 my-3"style="border:1px solid lightgrey"> -->
+        </div>
+      </div>
+
+      <div class="teleconsult_main_card mb-4">
+        <div class="" style="padding: 10px;height: 100%;">
+          Health vitals to share
+          <div class="p-1 my-4 text-wrap">
+            <!-- <div class="text-dark text-wrap">
+              <mat-checkbox [disabled]="past1WeekKioskData.length == 0" #kioskVitalsCheckBox><span  style="white-space: normal;">Past 1 week kiosk data</span></mat-checkbox>
+            </div>
+            <div class="text-dark text-wrap">
+              <mat-checkbox [disabled]="past3MonthsKioskData.length == 0" #kioskVitalsCheckBox2><span  style="white-space: normal;">Past 3 months kiosk vitals</span></mat-checkbox>
+            </div>
+            <div class="text-dark text-wrap">
+              <mat-checkbox [disabled]="healthAssesmentSurveyData.length == 0"><span  style="white-space: normal;">Health Assesment Survey</span></mat-checkbox>
+            </div> -->
+            <div class="text-dark text-wrap">
+              <mat-checkbox [disabled]="isLastcheckinDisabled == true" #kioskVitalsCheckBox><span  style="white-space: normal;">Last checkin data</span></mat-checkbox>
+            </div>
+            <div class="text-dark text-wrap">
+              <mat-checkbox [disabled]="true"><span  style="white-space: normal;">Google fit data</span></mat-checkbox>
+            </div>
+            <div class="text-dark">
+              <mat-checkbox [disabled]="true"><span  style="white-space: normal;">My Excercise and walking history</span></mat-checkbox>
+            </div>
+          </div>
+          <div class="text-right">
+            <button class="btn btn-primary px-4 text-light" style="border-radius: 30px;background-color: #4885ed" (click)="choosePayment()">Confirm</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- <div style="position: relative; left: 90%;">
+        <button (click)="demoPurpose()"> Demo </button>
+    </div> -->
+
+  </div>
+</div>
+
+<!-- -----------------------------------Phase 2 Page design------------------------------------- -->
+<!-- --------------Includes Phase 1 design and also Upload files and files to share blocks ------------>
+
+<!-- 
+<div class="teleconsult-main-container">
+ 
+  <h3 class="mb-4">Confirm Visit</h3>
+
+  <div class="row">
+    
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+      
+      <div class="teleconsult_main_card mb-4">
+        <div style="padding: 10px;height: 457px;">
+          
+          
+          Contact Details
+          <div class="" style="font-size: 12px">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label style="text-transform: capitalize;">Email Address</mat-label>
+              <input matInput [value]="contactDetailsEmail" [disabled]="true"/>   
+            </mat-form-field>
+          </div>
+          <div style="font-size: 12px">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label style="text-transform: capitalize;">Mobile Number</mat-label>
+              <input matInput type="number" [(ngModel)]="contactDetailsMobileNumber"/>   
+            </mat-form-field>
+          </div>
+          <div style="font-size: 12px">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label style="text-transform: capitalize;">Height(In Cms)</mat-label>
+              <input matInput [value]="contactDetailsHeight" [disabled]="true"/>   
+            </mat-form-field>
+          </div>
+          <div style="font-size: 12px">
+            <mat-form-field appearance="outline" class="w-100 mt-1" >
+              <mat-label style="">Date of Birth(mm/dd/yyyy)</mat-label>
+              <input matInput [matDatepicker]="ContactDetailsDatepicker" [value]="contactDetailsDateOfBirth" [disabled]="true">
+            </mat-form-field>
+          </div>
+          <div style="font-size: 12px">
+            <mat-form-field appearance="outline" class="w-100 mt-1" style="height:50px">
+              <input matInput  style="height:50px" placeholder="Food or Medicine alergies if any" />   
+            </mat-form-field>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+      
+      <div class="teleconsult_main_card mb-4">
+        <div class="" style="padding:10px;height:125px;box-sizing:border-box; ">
+          Reason for Visit<span style="color: red">*</span>
+          <br>
+          <input placeholder="Example Fever, Cold Cough" class="border form-control py-2 my-3"style="">
+        </div>
+      </div>
+
+
+      <div class="teleconsult_main_card mb-4">
+        <div class="" style="padding: 10px;height: 300px">
+          Select the files to share
+          <div class="p-1 my-4 " style="height: 28vh;overflow-y: auto;">
+              
+            <div class="row m-0 mb-1 p-2" style="border-bottom: 1px solid lightgrey">
+              <div class="col-2">
+                <i class="fa fa-file align-middle" style="font-size:30px;"></i>
+              </div>
+              <div class="col-8 text-dark">
+                My Scan Report.pdf
+                <br>
+                <span class="" style="color:grey">1.2MB</span>
+              </div>
+              <div class="col-2" style=""><mat-checkbox color="primary"></mat-checkbox></div>
+            </div>
+              
+            <div class="row m-0 mb-1 p-2" style="border-bottom: 1px solid lightgrey">
+              <div class="col-2">
+                <i class="fa fa-file align-middle" style="font-size:30px;"></i>
+              </div>
+              <div class="col-8 text-dark">
+                My Blood Report.pdf
+                <br>
+                <span class="" style="color:grey">1.2MB</span>
+              </div>
+              <div class="col-2" style=""><mat-checkbox color="primary"></mat-checkbox></div>
+            </div>
+              
+            <div class="row m-0 mb-1 p-2" style="border-bottom: 1px solid lightgrey">
+              <div class="col-2">
+                <i class="fa fa-file align-middle" style="font-size:30px;"></i>
+              </div>
+              <div class="col-8 text-dark">
+                My Xray Report.pdf
+                <br>
+                <span class="" style="color:grey">1.2MB</span>
+              </div>
+              <div class="col-2" style=""><mat-checkbox color="primary"></mat-checkbox></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+      
+      <div class="teleconsult_main_card mb-4">
+        <div class="" style="padding: 10px;height:125px;">
+          Upload if any files to share
+          <div>
+            <label class="d-block text-center my-2 " for="uploadFile" style="color:grey;cursor: pointer;font-size: 14px;">
+              <i class="fa fa-upload w-100 my-2" style="font-size: 40px"></i>
+              Drag and Drop a file here or click
+            </label>
+            <input type="file" id="uploadFile" style="display: none">
+          </div>
+        </div>
+      </div>
+
+
+      <div class="teleconsult_main_card mb-4">
+        <div class="" style="padding: 10px;height: 100%">
+          Health vitals to share
+          <div class="p-1 my-4 text-wrap">
+            <div class="text-dark text-wrap">
+              <mat-checkbox [disabled]="past1WeekKioskData.length == 0"><span  style="white-space: normal;">Past 1 week kiosk data</span></mat-checkbox>
+            </div>
+            <div class="text-dark text-wrap">
+              <mat-checkbox [disabled]="past3MonthsKioskData.length == 0"><span  style="white-space: normal;">Past 3 months kiosk vitals</span></mat-checkbox>
+            </div>
+            <div class="text-dark text-wrap">
+              <mat-checkbox [disabled]="healthAssesmentSurveyData.length == 0"><span  style="white-space: normal;">Health Assesment Survey</span></mat-checkbox>
+            </div>
+            <div class="text-dark text-wrap">
+              <mat-checkbox [disabled]="true"><span  style="white-space: normal;">Google fit data</span></mat-checkbox>
+            </div>
+            <div class="text-dark text-wrap">
+              <mat-checkbox [disabled]="true"><span  style="white-space: normal;">My Excercise and walking history</span></mat-checkbox>
+            </div>
+          </div>
+          <div class="text-right">
+            <button class="btn btn-primary px-4" style="border-radius: 30px;background-color: #4885ed">Confirm</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div> -->
+
+<!-- DOWNLOAD INVOICE -->
+<div class="text-dark" id="invoicePdf" #invoicePdf [ngStyle]="{'display': showInvoice ? 'block' : 'none'}">
+  <div class="row">
+    <div class="col-2 text-right">
+      <img src="./assets/img/ihl-plus.png" class="h-100">
+    </div>
+    <div class="col-3" style="border-left:1px solid lightgrey">
+      <span style="color:rgb(40, 149, 240);">INDIA</span>
+      <br>
+      <span style="color:gray;">HEALTH</span>
+      <br>
+      <span style="color:rgb(40, 149, 240);">LINK</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12" >
+      <span style="float: right;">
+        Contact : +91 80-47485152
+        <br>
+        Email : info@indiahealthlink.com
+        <br>
+        Web : indiahealthlink.com
+        <br>
+        Address : SCO #394, New Gain Market
+        <br>
+        Haryana, India.
+      </span>
+    </div>
+  </div>
+
+  <div class="row my-2">
+    <div class="col-4"></div>
+    <div class="col-4 text-center" style="font-weight: bold;">Payment Receipt</div>
+  </div>
+  <hr>
+  <div class="row my-30">
+    <div class="col-6">
+      <span>
+        <b>Name:</b> {{userName}}
+        <br>
+        <b>Phone Number:</b> {{userMobNumber}}
+        <br>
+        <b>Email:</b> {{userMail}}
+        <br>
+        <b>Address: </b> <span [innerHTML]="userAddress"></span>
+      </span>
+    </div>
+    <div  class="col-6" style="float:right;">
+      <span>
+        <b>Date:</b> {{appoinmentDate}}
+        <br>
+        <b>GST Number:</b> {{'06AADCI2816A1Z7'}}
+        <br>
+        <b>Invoice Number:</b> {{printInvoiceNumber}}
+        <br>
+        <b>Doctor Name:</b> {{doctorName}}
+      </span>
+    </div>
+  </div>
+  <hr>
+  <div  class="row">
+    <span class="col-6"><b>Item Description</b></span>
+    <span class="col-3"><b>Payment Method</b></span>
+    <span class="col-3"><b>Amount (Rs)</b></span>
+  </div>
+  <hr>
+  <div *ngIf="this.couponDiscountAmount > 0" class="row">
+    <span class="col-6">
+      {{' '}}
+    </span>
+    <span class="col-3">Doctor Fees</span>
+    <!-- <span class="col-3"><img src="./assets/img/Indian_Rupee_symbol.png" style="width:10px; height: 10px;"> {{consultationFees}}</span> -->
+    <div class="col-3" style="text-align: right; right: 100px"> {{consultationFees}} </div>
+  </div>
+  <div *ngIf="this.couponDiscountAmount > 0" class="row">
+    <span class="col-6">
+      {{' '}}
+    </span>
+    <span class="col-3">Coupon</span>
+    <!-- <span class="col-3"> - <img src="./assets/img/Indian_Rupee_symbol.png" style="width:10px; height: 10px;"> {{this.couponDiscountAmount}}</span> -->
+    <div class="col-3" style="text-align: right; right: 100px"> {{this.couponDiscountAmount}} </div>
+  </div>
+  <div  class="row">
+    <span class="col-6">
+      Video Consultation Fees 
+      <br>
+      Appointment on {{ appoinmentDate +', '+ appointmentOn}}
+    </span>
+    <span class="col-3">Net Amount</span>
+    <!-- <span class="col-3"><img src="./assets/img/Indian_Rupee_symbol.png" style="width:10px; height: 10px;"> {{deductedIgstAmt}}</span> -->
+    <div class="col-3" style="text-align: right; right: 100px"> {{deductedIgstAmt}} </div>
+  <!-- <hr class="col-12"> -->
+  </div>
+  <div  class="row" *ngIf="state != 'haryana'">
+    <span class="col-6">
+      {{' '}}
+    </span>
+    <span class="col-3">Tax: IGST@ 18%</span>
+    <!-- <span class="col-3"><img src="./assets/img/Indian_Rupee_symbol.png" style="width:10px; height: 10px;"> {{igstAmt}}</span> -->
+    <div class="col-3" style="text-align: right; right: 100px"> {{igstAmt}} </div>
+  <!-- <hr class="col-12"> -->
+  </div>
+  <div  class="row" *ngIf="state == 'haryana'">
+    <span class="col-6">
+      {{' '}}
+    </span>
+    <span class="col-3">Tax: SGST@ 9%</span>
+    <!-- <span class="col-3"><img src="./assets/img/Indian_Rupee_symbol.png" style="width:10px; height: 10px;"> {{sgstAmt}}</span> -->
+    <div class="col-3" style="text-align: right; right: 100px"> {{sgstAmt}} </div>
+  <!-- <hr class="col-12"> -->
+  </div>
+  <div  class="row" *ngIf="state == 'haryana'">
+    <span class="col-6">
+      {{' '}}
+    </span>
+    <span class="col-3">Tax: CGST@ 9%</span>
+    <!-- <span class="col-3"><img src="./assets/img/Indian_Rupee_symbol.png" style="width:10px; height: 10px;"> {{sgstAmt}}</span> -->
+    <div class="col-3" style="text-align: right; right: 100px"> {{sgstAmt}} </div>
+  <!-- <hr class="col-12"> -->
+  </div>
+  <div  class="row">
+    <span class="col-6">
+      {{' '}}
+    </span>
+    <span class="col-3">Total (Incl. of all taxes)</span>
+    <!-- <span class="col-3"><img src="./assets/img/Indian_Rupee_symbol.png" style="width:10px; height: 10px;"> {{totalAmount}}</span> -->
+    <div class="col-3" style="text-align: right; right: 100px"> {{totalAmount}} </div>
+  </div>
+  <hr>
+  <div  class="row">
+    <span class="col-12">
+      Note- This is an electronic receipt (Rupees in INR)
+    </span>
+  </div>
+</div>
+<app-footer></app-footer>

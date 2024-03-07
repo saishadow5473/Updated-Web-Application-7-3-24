@@ -1,0 +1,2863 @@
+<div *ngIf = "_constant.openModal">
+  <div class="chooseprogram">
+    Do you wish to choose this program?
+  </div>
+  <div class="wrapper">
+    <button class="button programconfirmes with-margin" (click)="onYesClick()">Yes</button>
+    <button class="button programdeclines with-margin" (click)="onNoClick()">No</button>
+    <!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Yes</button> -->
+  </div>
+</div>
+
+<div *ngIf="_constant.showAffDeleteModal" style="text-align: center !important; margin: auto;">
+<div mat-dialog-content>
+  <p>Are you sure want to delete the {{_constant.affilate_company_name}} affiliation?</p>
+</div>
+<div>
+  <button style="margin: 5px 15px;" mat-raised-button (click)="closeDeleteAffModal()">No</button>
+  <button style="margin: 5px 15px;" mat-raised-button color="warn" (click)="deleteAffiliation()">Yes</button>
+</div>
+</div>
+
+<div *ngIf="_constant.initUITour" style="width: 300px; height: auto; overflow-y: auto; text-align: center;">
+  <div class="close_icon_div">
+    <mat-icon class="close_icon" (click)="closeWindow()">cancel</mat-icon>
+  </div>
+  <div style="padding: 2px;">
+    <img src="./assets/img/ihl-plus.png" width="30px" height="30px"><b style="color: #4885ed;"> India Health
+      Link</b><br><br>Welcome!<br>Here you can access your vital data and many more additional features. Click the start
+    guide button to explore the portal.
+  </div><br>
+  <button mat-raised-button tourAnchor="start.tour" (click)="initUITourGuide()"
+    style="outline:none;background-color:#4885ed;color:#ffffff;letter-spacing:1px;">Start Guide</button>
+</div>
+
+<div *ngIf="_constant.challenge_welcomeWindow" style="max-width: 300px; height: auto; text-align: center;">
+  <div style="padding: 2px;">
+    <mat-icon style="color: #4885ed;">thumb_up</mat-icon><br>
+    <span>All the best for the {{_constant.challenge_numberOfDays}} Days {{_constant.challenge_programName}}
+      Program.</span>
+  </div><br>
+  <div>
+    <!-- <div id="disclaimer">Disclaimer<mat-icon style="position: absolute;">error</mat-icon></div> -->
+    <div style="color: #4885ed;" id="disclaimer">User Consent</div>
+    <div style="text-align: justify; height: 250px; overflow-y: scroll;">
+      <p>1. I, the undersigned, have gone through and understood the terms and conditions and give my consent for the
+        {{_constant.challenge_programName}} program and do hereby confirm to adhere to the terms and conditions in
+        addition to this consent.</p>
+      <p>2. I understand that these programs is for individual fitness and is not a substitute for medical attention,
+        examination, diagnosis, or treatment and if required I should consult a physician prior to beginning any
+        activity program.</p>
+      <p>3. I recognize that it is general diet and fitness plan which is provided in this program and it will be my
+        responsibility if I am allergic to any kind of food which is listed in Diet Plans or not able to perform any
+        fitness activities advised as part of the program.</p>
+      <p>4. I declare I am of 18+ years of age, if below 18 years we assume your parent consent is provided for
+        enrolling to this program and you are under your parental guidance.</p>
+      <p>5. I accept that IHL or its agents is not liable for any adverse effect as result of this program.</p>
+    </div><br>
+    <button mat-raised-button (click)="closeWindow()"
+      style="outline:none;background-color:#4885ed;color:#ffffff;letter-spacing:1px;">Continue</button>
+  </div>
+</div>
+
+<div *ngIf="_constant.refundInfo">
+  <div>
+    <ng-container *ngIf="_constant.showConsultantRefundInfo">
+      <div style="overflow-y: auto;">
+        <table mat-table [dataSource]="_constant.refundConsultantInfoArr">
+          <ng-container matColumnDef="cancellation_time">
+            <th mat-header-cell *matHeaderCellDef> Cancellation Time </th>
+            <td mat-cell *matCellDef="let element"> {{element.cancellation_time}} </td>
+          </ng-container>
+          <ng-container matColumnDef="cancellation_refund">
+            <th mat-header-cell *matHeaderCellDef> Refund </th>
+            <td mat-cell *matCellDef="let element"> {{element.cancellation_refund}} </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="refundInfoTableHeader"></tr>
+          <tr mat-row *matRowDef="let row; columns: refundInfoTableHeader;"></tr>
+        </table>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="_constant.showClassRefundInfo">
+      <div style="overflow-y: auto;">
+        <table mat-table [dataSource]="_constant.refundClassInfoArr">
+          <ng-container matColumnDef="cancellation_time">
+            <th mat-header-cell *matHeaderCellDef> Cancellation Time </th>
+            <td mat-cell *matCellDef="let element"> {{element.cancellation_time}} </td>
+          </ng-container>
+          <ng-container matColumnDef="cancellation_refund">
+            <th mat-header-cell *matHeaderCellDef> Refund </th>
+            <td mat-cell *matCellDef="let element"> {{element.cancellation_refund}} </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="refundInfoTableHeader"></tr>
+          <tr mat-row *matRowDef="let row; columns: refundInfoTableHeader;"></tr>
+        </table>
+      </div>
+    </ng-container>
+    <br>
+    <div style="text-align: center;">
+      <button mat-raised-button (click)="closeRefundInfo()"
+        style="outline:none; background-color:#4885ed; color:#ffffff; letter-spacing:1px;">OK</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="_constant.processingContent">
+  <!-- <img [ngClass]="success ? 'imageclasssuccess' : 'imageclassprocess'" [src]='imageUrl' alt="image"> -->
+  <mat-spinner class="custom-spinner-color" [diameter]="70" [strokeWidth]="5" style="margin:0 auto;"
+    mode="indeterminate"></mat-spinner>
+  <div class="processprogram">
+    Processing please wait...
+  </div>
+</div>
+
+<div *ngIf="_constant.wrongInformation">
+  <i class="fas fa-5x fa-times" style="color: #dc3545;margin-left: 42%;"></i>
+  <div class="processprogram">
+    You are already in the same program...
+  </div>
+</div>
+
+<div *ngIf="_constant.programIsWaiting">
+  <mat-spinner class="custom-spinner-color" [diameter]="70" style="margin:0 auto;" mode="indeterminate"></mat-spinner>
+  <div class="processprogram">
+    Your Request is not yet approved...
+  </div>
+</div>
+
+<div *ngIf="_constant.programIsCancelled">
+  <i class="fas fa-5x fa-times" style="color: #dc3545;margin-left: 42%;"></i>
+  <div class="processprogram">
+    Sorry...Your request has been rejected...
+  </div>
+</div>
+
+<div *ngIf="loading">
+  <!-- <img [ngClass]="success ? 'imageclasssuccess' : 'imageclassprocess'" [src]='imageUrl' alt="image"> -->
+  <mat-spinner class="custom-spinner-color" [diameter]="70" [strokeWidth]="5" style="margin:0 auto;"
+    mode="indeterminate"></mat-spinner>
+  <div class="processprogram">
+    You are redirecting...please wait...
+  </div>
+</div>
+
+
+<div *ngIf="_constant.bookAppointmentProcess">
+  <div style="text-align: center;">
+    <img width="25px" src="assets/img/ihl-plus.png" /> <span class=processprogram> Tele Consultation </span>
+  </div>
+  <hr>
+  <mat-spinner class="custom-spinner-color" [diameter]="45" [strokeWidth]="3" style="margin:0 auto;"
+    mode="indeterminate"></mat-spinner>
+  <div class="processprogram">
+    <p> Please wait... Your appointment is booking</p>
+  </div>
+</div>
+
+<div *ngIf="_constant.createSubscriptionProcess">
+  <div style="text-align: center;">
+    <img width="25px" src="assets/img/ihl-plus.png" /> <span class=processprogram> Wellness Care E-Marketplace </span>
+  </div>
+  <hr>
+  <mat-spinner class="custom-spinner-color" [diameter]="45" [strokeWidth]="3" style="margin:0 auto;"
+    mode="indeterminate"></mat-spinner>
+  <div class="processprogram">
+    <p> Please wait... Your subscribing the class</p>
+  </div>
+</div>
+
+<div *ngIf="_constant.liveAppointmentProcess">
+  <div style="text-align: center;">
+    <img width="25px" src="assets/img/ihl-plus.png" /> <span class=processprogram> Tele Consultation </span>
+  </div>
+  <hr>
+  <mat-spinner class="custom-spinner-color" [diameter]="45" [strokeWidth]="3" style="margin:0 auto;"
+    mode="indeterminate"></mat-spinner>
+  <div class="processprogram">
+    <p> Please wait... Connecting to the consultant</p>
+  </div>
+</div>
+
+<div *ngIf="_constant.cancelAndRefundAppointment">
+  <div style="text-align: center;">
+    <img width="25px" src="assets/img/ihl-plus.png" /> <span class=processprogram>
+      {{_constant.cancelAppointmentModelBoxTitle}} </span>
+  </div>
+  <hr>
+  <div class="processprogram" style="font-size: 16px !important;text-align: unset !important;">
+    <ul style="width: 70%;margin: auto;">
+      <li>Your service has been succesfully cancelled.</li>
+      <li>It will be credited to your payment account.</li>
+      <li>Your payments will be refunded as per the refund policy of the service.</li>
+    </ul>
+  </div>
+</div>
+
+<div *ngIf="_constant.riskInfoAlerts">
+  <div class="chooseprogram" style="height: unset;padding-bottom: 50px;">
+    {{_constant.riskInfoTitle}}<br>
+    <small>{{_constant.riskInfoSubTitle}}</small>
+  </div>
+  <div class="wrapper">
+    <button style="color: white;background-color: #2475B0;border-radius: 3px;padding: 10px;"
+      class="button programconfirmes with-margin" (click)="onRiskYesClick()">Yes</button>
+    <button style="color: #7B8788; margin-right: 15px; background-color: #DAE0E2;border-radius: 3px;padding: 10px;"
+      class="button programdeclines with-margin" (click)="onRiskNoClick()">No</button>
+    <!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Yes</button> -->
+  </div>
+</div>
+
+<div *ngIf="_constant.prescriptionPreparation">
+  <div class="review_loading">
+    <!-- <p>consultant is preparing your report</p>
+    <mat-spinner class="custom-spinner-color mb-3" [diameter]="60" [strokeWidth]="5" style="margin:0 auto;" mode="indeterminate"></mat-spinner>
+    <p class = "review_words">Meanwhile</p> -->
+    <p>Rate your experience of the call</p>
+  </div>
+  <h5 class="ratings_header">Your Ratings</h5>
+
+  <div class="star_uncheck mb-1">
+    <i class="fa fa-star" [ngClass]="{'stars_color' : rateArray[0] == 0, 'selectedLiveStar' : rateArray[0] == 1}"
+      (click)="countStars(1)"></i>
+    <i class="fa fa-star" [ngClass]="{'stars_color' : rateArray[1] == 0, 'selectedLiveStar' : rateArray[1] == 1}"
+      (click)="countStars(2)"></i>
+    <i class="fa fa-star" [ngClass]="{'stars_color' : rateArray[2] == 0, 'selectedLiveStar' : rateArray[2] == 1}"
+      (click)="countStars(3)"></i>
+    <i class="fa fa-star" [ngClass]="{'stars_color' : rateArray[3] == 0, 'selectedLiveStar' : rateArray[3] == 1}"
+      (click)="countStars(4)"></i>
+    <i class="fa fa-star" [ngClass]="{'stars_color': rateArray[4] == 0, 'selectedLiveStar' : rateArray[4] == 1}"
+      (click)="countStars(5)"></i>
+  </div>
+
+  <div class="ratings_div" class="mb-1">
+    <mat-form-field appearance="outline" class="ratings_inp">
+      <input matInput class="ratings_letters" placeholder="Your review" #reviewField>
+      <mat-icon matSuffix class="ratings_icon" *ngIf="!sendReview" style="cursor: pointer;" (click)="feedBack()">send
+      </mat-icon>
+      <mat-spinner matSuffix [diameter]="30" *ngIf="sendReview"></mat-spinner>
+    </mat-form-field>
+  </div>
+  <p class="" style="text-align:center; color: red" *ngIf="feedBackInfoTxt"> Please rate your experience </p>
+  <p class="review_skip" (click)="closeReview()">Skip/close</p>
+</div>
+
+<div *ngIf="_constant.isOnlineClassEnded">
+  <div class="review_loading">
+    <!-- <p>consultant is preparing your report</p>
+    <mat-spinner class="custom-spinner-color mb-3" [diameter]="60" [strokeWidth]="5" style="margin:0 auto;" mode="indeterminate"></mat-spinner>
+    <p class = "review_words">Meanwhile</p> -->
+    <p>Rate your experience of the class</p>
+  </div>
+  <h5 class="ratings_header">Your Ratings</h5>
+
+  <div class="star_uncheck mb-1">
+    <i class="fa fa-star" [ngClass]="{'stars_color' : rateArray[0] == 0, 'selectedLiveStar' : rateArray[0] == 1}"
+      (click)="countStars(1)"></i>
+    <i class="fa fa-star" [ngClass]="{'stars_color' : rateArray[1] == 0, 'selectedLiveStar' : rateArray[1] == 1}"
+      (click)="countStars(2)"></i>
+    <i class="fa fa-star" [ngClass]="{'stars_color' : rateArray[2] == 0, 'selectedLiveStar' : rateArray[2] == 1}"
+      (click)="countStars(3)"></i>
+    <i class="fa fa-star" [ngClass]="{'stars_color' : rateArray[3] == 0, 'selectedLiveStar' : rateArray[3] == 1}"
+      (click)="countStars(4)"></i>
+    <i class="fa fa-star" [ngClass]="{'stars_color': rateArray[4] == 0, 'selectedLiveStar' : rateArray[4] == 1}"
+      (click)="countStars(5)"></i>
+  </div>
+
+  <div class="ratings_div" class="mb-1">
+    <mat-form-field appearance="outline" class="ratings_inp">
+      <input matInput class="ratings_letters" placeholder="Your review" #courseReviewField>
+      <mat-icon matSuffix class="ratings_icon" *ngIf="!sendReview" style="cursor: pointer;"
+        (click)="submitCourseReview()">send</mat-icon>
+      <mat-spinner matSuffix [diameter]="30" *ngIf="sendReview"></mat-spinner>
+    </mat-form-field>
+  </div>
+  <p class="" style="text-align:center; color: red" *ngIf="feedBackInfoTxt"> Please rate your experience </p>
+  <p class="review_skip" (click)="closeReview()">Skip/close</p>
+</div>
+
+<div *ngIf="_constant.buyMedicineOnline">
+  <ng-container *ngIf="purshaseMedicineContainer">
+    <h4 class="purchase_header mb-3">Purchase Medicine</h4>
+    <div class="purchase_image">
+      <p class="purchase_cont1">Get your medicine</p>
+      <p class="mb-3">delivered at your door step</p>
+      <img src="{{_constant.medicationPartnerDetails.logo}}" class="purchase_img mb-3" />
+      <p class="purchase_cont1">You will get a call from {{_constant.medicationPartnerDetails.name}}</p>
+      <p class="mb-3">to process your prescription</p>
+      <span style="display: inline-flex">
+        <mat-checkbox [(ngModel)]="prescriptionTermsConditions" class="mb-2" name="terms-accept"
+          style="top: 2px;position: relative;right: 2px;"></mat-checkbox>
+        <label for="terms-accept"> I agree to <a style="color: #2895F0;text-decoration: underline; cursor: pointer;"
+            (click)="showPurshaseMedicineContainer()">terms & conditions</a> for the service</label>
+      </span>
+    </div>
+
+    <div class="wrappers">
+      <button *ngIf="_isVisibleShareMedicine" [disabled]="!prescriptionTermsConditions"
+        class="buttons share_pres with-margins"
+        [ngClass]="{'enable_pres_button': prescriptionTermsConditions, 'disable_pres_button': !prescriptionTermsConditions }"
+        (click)="purchaseMedicine()">Yes Share<br /><small>My Prescription</small></button>
+      <mat-spinner *ngIf="!_isVisibleShareMedicine" class="custom-spinner-color" [diameter]="30" [strokeWidth]="2"
+        style="margin:0 auto;position: relative;top: -5px;" mode="indeterminate"></mat-spinner>
+      <p class="review_skip" (click)="closePrescriptionSharing()" style="padding-top: 10px;">Skip/close</p>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!purshaseMedicineContainer">
+    <span class="mb-3">
+      <h4 class="purchase_header ">Terms & Conditions
+        <button type="button" (click)="showPurshaseMedicineContainer()"
+          style="border: none;outline: none;background: transparent;float: right;right: 25px;position: relative;color: #9e9e9e;">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+      </h4>
+    </span>
+
+    <div [innerHTML]="termsContent"></div>
+  </ng-container>
+</div>
+
+<div *ngIf="_constant.getLabOrder">
+  <ng-container *ngIf="purchaseLabOrderReportContainer">
+    <h4 class="purchase_header mb-3">Get Your Lab Reports</h4>
+    <div class="purchase_image">
+      <p class="purchase_cont1">Get Your Lab Reports</p>
+      <p class="mb-3">delivered at your door step</p>
+      <img src="{{_constant.labPartnerDetails.logo}}" class="purchase_img mb-3" />
+      <p class="purchase_cont1">You will get a call from {{_constant.labPartnerDetails.name}}</p>
+      <p class="mb-3">to process your lab reports</p>
+      <span style="display: inline-flex">
+        <mat-checkbox [(ngModel)]="labOrderTermsConditions" class="mb-2" name="terms-accept"
+          style="top: 2px;position: relative;right: 2px;"></mat-checkbox>
+        <label for="terms-accept"> I agree to <a style="color: #2895F0;text-decoration: underline; cursor: pointer;"
+            (click)="showPurchaseLabOrderReportContainer()">terms & conditions</a> for the service</label>
+      </span>
+    </div>
+
+    <div class="wrappers">
+      <button *ngIf="_isVisibleShareLabOrder" [disabled]="!labOrderTermsConditions"
+        class="buttons share_pres with-margins"
+        [ngClass]="{'enable_pres_button': labOrderTermsConditions, 'disable_pres_button': !labOrderTermsConditions }"
+        (click)="purchaseLabOrder()">Yes Share<br /><small>My lab details</small></button>
+      <mat-spinner *ngIf="!_isVisibleShareLabOrder" class="custom-spinner-color" [diameter]="30" [strokeWidth]="2"
+        style="margin:0 auto;position: relative;top: -5px;" mode="indeterminate"></mat-spinner>
+      <p class="review_skip" (click)="closeLabOrderReportSharing()" style="padding-top: 10px;">Skip/close</p>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!purchaseLabOrderReportContainer">
+    <span class="mb-3">
+      <h4 class="purchase_header ">Terms & Conditions
+        <button type="button" (click)="showPurchaseLabOrderReportContainer()"
+          style="border: none;outline: none;background: transparent;float: right;right: 25px;position: relative;color: #9e9e9e;">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+      </h4>
+    </span>
+
+    <div [innerHTML]="termsContentLabOrder"></div>
+  </ng-container>
+</div>
+
+<div class="generateCouponCodeDiv" *ngIf="_constant.generateCouponCode">
+  <h4 class="purchase_header mb-3"> Generate Coupon Code </h4>
+  <div class="purchase_image">
+    <!-- <p class = "purchase_cont1">Get your medicine</p>
+    <p class = "mb-3">delivered at your door step</p> -->
+    <img src="assets/img/1mg-logo-large.png" class="purchase_img mb-3" />
+    <p class="purchase_cont1">You can use this coupon code </p>
+    <p class="mb-3">to purchase the medicine on 1mg.com</p>
+  </div>
+  <div class="wrappers">
+    <button class="buttons share_pres with-margins generateCouponBtnPos" *ngIf="generateCouponCodeBtn"
+      (click)="generateCouponCode1mg()">Generate Coupon Code </button>
+    <mat-form-field appearance="outline" class="w-100 mt-1" *ngIf="!generateCouponCodeBtn">
+      <mat-label style="text-transform: capitalize;"> Your coupon code</mat-label>
+      <input #couponCode1mgInput matInput type="text" [(ngModel)]="couponCode1mg" style="color:black" readonly />
+      <i class="fas  fa-copy" style="cursor:pointer; margin-left: -15px; color: #2895f0;"
+        (click)="copyCouponCode(couponCode1mgInput)" alt="Copy Coupon Code"> </i>
+    </mat-form-field>
+  </div> <br>
+  <p class="review_skip" (click)="closeGenerateCoupon()">Skip</p>
+</div>
+
+<div *ngIf="_constant.noDoctorIsAvailable">
+  <h1 mat-dialog-title>No Consultant is Available</h1>
+  <div mat-dialog-content>No Consultant is available right now, sorry for the inconvenience.</div>
+  <div mat-dialog-actions>
+    <button class="noDialogBtn" mat-stroked-button mat-dialog-close
+      on-click="closeConsultantAvailabilityPopup()">OK</button>
+  </div>
+</div>
+
+<div *ngIf="_constant.noCourseIsAvailable">
+  <h1 mat-dialog-title>No Course is Available</h1>
+  <div mat-dialog-content>No Course is available right now, sorry for the inconvenience.</div>
+  <div mat-dialog-actions>
+    <button class="noDialogBtn" mat-stroked-button mat-dialog-close
+      on-click="closeConsultantAvailabilityPopup()">OK</button>
+  </div>
+</div>
+
+<div *ngIf="_constant.teleconsultMobileValidate" class="modal_mobile_number">
+  <mat-dialog-content class="modal_contents">
+    <p> Mobile number is require.Do you wish to add now? </p>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button style="background-color: #3f51b5;" mat-raised-button class="modal_buttons" (click)="addMobileNumber('add')">
+      <span style="color: white;">Add</span>
+    </button>
+    <button mat-dialog-close mat-raised-button class="modal_buttons" (click)="addMobileNumber('skip')">
+      <span style="color: #4d4d4d;;">Skip</span>
+    </button>
+  </mat-dialog-actions>
+</div>
+
+<div *ngIf="_constant.teleconsultMyAppointmentCancelButton">
+  <h1 mat-dialog-title>Please provide the reason for cancellation</h1>
+  <hr>
+  <div mat-dialog-content>
+    <!-- <div class="small" *ngIf="_constant.cancelAndRefundModelBoxInput">
+        <mat-checkbox [(ngModel)]="teleconsultationMyAppointmentsCancel.doctor_not_join_call">
+          <span>Doctor not joined call</span>
+        </mat-checkbox>
+    </div>
+    <div class="small" *ngIf="_constant.cancelAndRefundModelBoxInput">
+      <mat-checkbox [(ngModel)]="teleconsultationMyAppointmentsCancel.technical_issue_in_user_side">
+        <span>You are facing some technical issues</span>
+      </mat-checkbox>
+    </div> -->
+    <div class="small" *ngIf="_constant.cancelAndRefundModelBoxInput">
+      <mat-radio-group aria-labelledby="Select your reason" class="example-radio-group" [(ngModel)]="userReason">
+        <mat-radio-button class="example-radio-button" value="Doctor not joined call">Consultant/Doctor not joined call
+        </mat-radio-button>
+        <mat-radio-button class="example-radio-button" value="You are facing some technical issues">You are facing some
+          technical issues</mat-radio-button>
+        <mat-radio-button class="example-radio-button" value="You are not joined call">You are not joined call
+        </mat-radio-button>
+        <mat-radio-button class="example-radio-button" value="Doctor facing some technical issues">Consultant/Doctor
+          facing some technical issues</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div>
+      <mat-form-field appearance="outline" class="w-100 mt-1">
+        <mat-label>Specify your reason</mat-label>
+        <!-- <input matInput [(ngModel)]="teleconsultationMyAppointmentsCancel.reason" > -->
+        <input matInput [formControl]="teleconsultationMyAppointmentsCancel.reason">
+        <mat-error *ngIf="teleconsultationMyAppointmentsCancel.reason.invalid">This is required</mat-error>
+        <mat-hint *ngIf="isUserReasonEmpty" style="color: red;">Please select or specify your reason</mat-hint>
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions style="display: flex; justify-content: space-between;">
+    <button class="noDialogBtn" mat-raised-button (click)="teleconsultationMyAppointmentsCancel.cancel_appointment(false)" style="color:#673ab7; border: 1px solid #673ab7;">Go Back</button>
+    <button mat-raised-button color="primary" *ngIf="_constant.cancelAndRefundModelBoxBtn" (click)="teleconsultationMyAppointmentsCancel.cancel_appointment(true)">Cancel Appointment</button>
+    <button mat-raised-button color="primary" *ngIf="!_constant.cancelAndRefundModelBoxBtn" (click)="teleconsultationMyAppointmentsCancel.cancel_appointment(true)"> Initiate Refund </button>
+  </div>
+  <!-- <p style="padding-top: 10px; text-align: center; color: #673ab7; margin-top: 40px;">
+    <a style="border-bottom: 1px solid; text-decoration: none; cursor: pointer;" (click)="refundInfo('bookAppoinment')">
+    <mat-icon style="position: absolute; margin-left: -25px;">error</mat-icon>Click to read the terms & conditions</a>
+  </p> -->
+</div>
+
+<div *ngIf="_constant.teleconsultMySubscriptionCancelButton">
+  <h3 mat-dialog-title style="font-weight: 500;">Please provide the reason for cancellation</h3>
+  <hr>
+  <form [formGroup]="subcriptionForm" style="margin-bottom: 26px;">
+    <mat-form-field appearance="outline" class="w-100 mt-1">
+      <mat-label>Specify your reason</mat-label>
+      <!-- <input matInput [(ngModel)]="teleconsultationMyAppointmentsCancel.reason" > -->
+      <input matInput type="text" placeholder="" formControlName="reason_for_cancel">
+      <mat-error *ngIf="hasErrors('reason_for_cancel', 'required')" style="display: inline-block;"> Field Must be filled
+      </mat-error>
+    </mat-form-field>
+    <div mat-dialog-actions style="justify-content: center;">
+      <button mat-raised-button style="background: #e9ecef;color: #6c757d;" (click)="closeModal()">Go Back</button>
+      <button mat-raised-button color="primary" class="create_class_submit"
+        (click)="subscriptionCancel()">Submit</button>
+    </div>
+  </form>
+  <!-- <p style="padding-top: 10px; text-align: center; color: #673ab7;">
+    <a style="border-bottom: 1px solid; text-decoration: none; cursor: pointer;" (click)="refundInfo('beforeSubscription')">
+    <mat-icon style="position: absolute; margin-left: -25px;">error</mat-icon>Click to read the terms & conditions</a>
+  </p> -->
+</div>
+
+<div *ngIf="_constant.teleconsultMySubscriptionRefundCancelButton">
+  <h3 mat-dialog-title style="font-weight: 500;">Please provide the reason for cancel</h3>
+  <hr>
+  <form [formGroup]="subcriptionRefundForm" style="margin-bottom: 26px;">
+    <!-- <mat-form-field appearance="outline" class="w-100 mt-1">
+          <mat-label>Select your reason</mat-label>
+          <mat-select formControlName="option_for_cancel" multiple>
+            <mat-option *ngFor="let opt of optionList" [value]="opt">{{opt}}</mat-option>
+          </mat-select>
+      </mat-form-field> -->
+    <mat-radio-group aria-labelledby="Select your reason" class="example-radio-group"
+      formControlName="option_for_cancel">
+      <mat-radio-button class="example-radio-button" value="You are not interested/satisfied" color="primary"
+        style="font-size: 12px;">You are not interested/satisfied</mat-radio-button>
+      <mat-radio-button class="example-radio-button" value="Trainer not interested/satisfied" color="primary"
+        style="font-size: 12px;">Trainer not interested/satisfied</mat-radio-button>
+    </mat-radio-group>
+    <mat-form-field appearance="outline" class="w-100 mt-1">
+      <mat-label>Other reason</mat-label>
+      <textarea matInput type="text" placeholder="" formControlName="other_reason"></textarea>
+      <mat-hint *ngIf="isUserReasonEmpties" style="color: red;">Please select/type your reason</mat-hint>
+    </mat-form-field>
+    <div mat-dialog-actions style="justify-content: center;">
+      <button mat-raised-button style="background: #e9ecef;color: #6c757d;" (click)="closeModal()">Go Back</button>
+      <button mat-raised-button color="primary" class="create_class_submit"
+        (click)="reasonForSubscriptionRefund()">Submit</button>
+    </div>
+  </form>
+  <!-- <p style="padding-top: 10px; text-align: center; color: #673ab7;">
+    <a style="border-bottom: 1px solid; text-decoration: none; cursor: pointer;" (click)="refundInfo('afterSubscription')">
+    <mat-icon style="position: absolute; margin-left: -25px;">error</mat-icon>Click to read the terms & conditions</a>
+  </p> -->
+</div>
+
+<div class="teleConsultaionAgreeDiv" *ngIf="_constant.teleConsultaionAgree" [hidden]="_hidetermsandcondition">
+
+  <button type="button" (click)="closeModaltc()"
+    style="border: none;outline: none;background: transparent;float: right;right: 25px;position: relative;color: #9e9e9e;">
+    <i class="fa fa-times" aria-hidden="true"></i>
+  </button>
+  <div>
+    <p class="tele-title">Terms & Conditions</p>
+  </div>
+  <div>
+    <div class="scrollbar" id="style-1" style="overflow-x: hidden;">
+      <div class="tele-conatiner">
+
+        <div class="para-txt">
+          <p> IHL Teleconsultation (services run by India Health Link Private Limited) is providing online consultations
+            through its digital platform provided by Genix Technologies Private Limited. IHL collaborates with clinical
+            experts of various specializations to provide health consultation via video conferencing
+            (“Tele-Consultation”) through its website and through health KIOSKs. The following terms and conditions
+            govern all the transactions with respect to tele-consultations including appointment booking, refund, and
+            all other transactions through the website or through its authorized third party websites. </p>
+
+          <p> The IHL service available on the Website do not in any way constitute an invitation or recommendation to 
+            avail the tele-consultation services. The services provided through the website or KIOSK are not intended in any 
+            manner to be a substitute in person consultation with a doctor or any healthcare professional. IHL advises the 
+            users to make independent assessment in respect of its accuracy or usefulness and suitability prior to making any 
+            decision in reliance hereof. Terms 'you' and 'your' hereafter refers to the user both registered and unregistered 
+            who is using/browsing through the IHL website (www.indiahealthlink.com) and/or using KIOSKs deployed at various 
+            facilities of our partners or clients </p>
+        </div>
+
+        <div class="point-container">
+
+          <p class="point-title">
+            1. &nbsp; Availability, Appointment, Rescheduling, Follow-up, and/or Cancellation :
+          </p>
+          <div class="point-txt">
+            <ol>
+              <li>Tele-consultation is available for only users living in India only as per the latest tele-consultation 
+                guideline released by Govt of India</li>
+              <li>Tele-consultations shall be available for any clinical consultations aligned to the tele-medicine 
+                notification by government of India on tele-medicine.</li>
+              <li>Tele-consultation from a specific doctor/physician shall be available subject to his/her availability
+                /willingness/discretion. Confirmation of your appointment with a specific doctor/physician,as per his/her 
+                availability, shall be sent to you via SMS and/or via email and/or via webportal. IHLreserves the right to 
+                reschedule or cancel an appointment without any prior notice though the company will communicate the 
+                cancellation or reschedule information via SMS and/or email and/or webportal.</li>
+              <li>The time provided for consultation to you is indicative. The actual consultation time may change
+                depending on the consulting Doctor's discretion.</li>
+              <li>Your consulting Physician reserves the right to provide post consultation follow-up at no additional
+                cost. </li>
+              <li>Consultations can be booked, rescheduled or canceled only within the stipulated time limits mentioned below:</li>
+              <li> Table: Cancellation & Rescheduling Deadlines </li>
+              <ul class="paragraph-of-table-content">
+                <li> Schedule an appointment <span style="font-style: italic;">(With in book next 1 hour to next 5 days)
+                  </span> : </li>
+                <ul>
+                  <li> 1 Hour before approved / confirmed appointment time where 70% of the total fee will be refunded
+                  </li>
+                  <li> Cancellation available only till 1 hour after the scheduled booking, otherwise it will be
+                    considered as no show case and there will be no refund in no show cases </li>
+                  <li> The rescheduling and cancellation will only be accepted through the website. </li>
+                </ul>
+                <li> Consult Now <span style="font-style: italic;">(With in next 15 to 45 Mins) </span> </li>
+                <ul>
+                  <li> 1 Hour before approved / confirmed appointment time where 70% of the total fee will be refunded
+                  </li>
+                  <li> There will be a 50% fee refund for any cancellation. </li>
+                  <li> 30 min after the scheduled appointment will be considered as no show case and no refund will be
+                    issued. </li>
+               </ul>
+              </ul>
+            </ol>
+          </div>
+          <div class="point-txt table-content">
+            <table style="border-collapse: collapse;">
+              <tr class="table-title">
+                <td> Category </td>
+                <td> Booking Deadline </td>
+                <td> Rescheduling / Cancellation Deadline </td>
+              </tr>
+              <tr>
+                <td> Schedule an appointment </td>
+                <td> You should book next 1 hour to next 5 days </td>
+                <td>
+                 <ul style="margin-left: 15px;">
+
+                    <li> 1 Hour before approved / confirmed appointment time where 70% of the total fee will be refunded
+                    </li>
+                    <li> Cancellation available only till 1 hour after the scheduled booking, otherwise it will be
+                      considered as no show case and there will be no refund in no show cases </li>
+                    <li> The rescheduling and cancellation will only be accepted through the website. </li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td> Consult Now</td>
+                <td> Next 15 to 45 Mins </td>
+                <td>
+                  <ul style="margin-left: 15px;">
+                    <li> 1 Hour before approved / confirmed appointment time where 70% of the total fee will be refunded
+                    </li>
+                    <li> There will be a 50% fee refund for any cancellation. </li>
+                    <li> 30 min after the scheduled appointment will be considered as no show case and no refund will be
+                      issued. </li>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="point-container">
+          <p class="point-title">
+            2. &nbsp; Listing of Doctor or Practitioner :
+          </p>
+          <div class="point-txt">
+            <ol>
+              <li> IHL provides value added “Telehealth Services' ' which connects users directly to the doctor and the 
+                information exchanged between the user and the practitioner is recorded, stored, and used in accordance 
+                with the relevant Privacy Policy. However, it is at the discretion of the user to avail the service. If 
+                a user has used the telehealth service, IHL reserves the right to share the contact details of the user 
+                with the concerned practitioner.</li>
+              <li> Without prejudice to the generality of the service, IHL has no role to play in determining the 
+                consultation fees of the doctors. The consultation fees are determined at the discretion of the doctors. 
+                IHL will charge the doctors consultation fee along with a convenience fee and taxes payable at the time 
+                of appointment with the patient.</li>
+              <li> Without any prejudice to the generality of the doctors rating and reviews, IHL has no role in 
+                increasing doctors rating or providing favorable or otherwise feedback against any doctor. IHL does not 
+                ensure or take liability of any relation between the rating feedback and the quality of the services 
+                provided by the doctors. Users are responsible to make their own judgment while selecting any doctor 
+                for theservices </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="point-container">
+
+          <p class="point-title">
+            3. &nbsp; Information and Documents required :
+          </p>
+          <div class="point-txt">
+            <ol>
+              <li> You are solely responsible for the medical, health and personal information you provide in India
+                Health Link health portal and during the consultation. The advice of the doctor will depend upon the
+                information you provide to the doctor.</li>
+              <li> User discretion is advised while submitting/uploading your required personal and clinical information
+                on the specified place and selecting the doctor for seeking appropriate advice related to the condition
+                of the patient. This information shall include patient’s details including contact details, medical
+                history, testing/investigations results/reports, prescriptions, card holder name and other relevant
+                details.</li>
+              <li> IHL tele-consultation services are available for use for children, but the registered member for all
+                patients under the age of 18 must be the patient’s parent or legal guardian. If you register as the
+                parent or legal guardian on behalf of a minor, you will be fully responsible for complying with these
+                Terms of Use. </li>
+              <li>If the information provided by you is false/deceptive/inaccurate or misleading, IHL reserves the right
+                to cancel your appointment without assuming any liability whatsoever. Hence, it’s advised to
+                submit/upload all relevant and accurate information on the portal or while sharing information during
+                the consultation. </li>
+              <li> The information provided by you may be used for the purpose of services including analysis, research,
+                training and disclosure (where required) to its affiliates, agents, others,and can be shared on demand
+                with government authorities on request or in emergency situations </li>
+              <li> The information provided by you can be kept with IHL indefinitely and can be used without revealing
+                your identity.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="point-container">
+
+          <p class="point-title">
+            4. &nbsp; Equipment and connectivity requirement :
+          </p>
+          <div class="point-txt">
+            <ol>
+              <li> The services available on the website shall be provided to you via audio/video consultation. Please
+                ensure that you are equipped with proper video conference equipment and internet connectivity as
+                mentioned or is relevant for the service you want to avail. In case of inadequate video conference
+                equipment, technical error or defective internet connectivity IHL reserves the right to reschedule or
+                cancel your appointment without any notice.</li>
+              <li> You understand and acknowledge that there will be no physical examination involved and the
+                consultation services shall be provided remotely. The opinion delivered by the doctor / physician shall
+                solely be based on the verbal communication between the concerned doctor or the physician and the
+                patient, and the test reports, and other information provided/uploaded by you on the website.</li>
+              <li> IHL or the consultingoctor/medical practitioner shall not be liable for misdiagnosis/faulty judgment/
+                interpretation error/perception error/adverse events/inefficacy of prescribed treatment or advice/validity 
+                provided by the consulting doctor in your country of residence/unavailability of the recommended or 
+                prescribed treatment or medication under any condition or circumstances. Users are advised to use their 
+                discretion for following the advice obtained post consultation from IHL. </li>
+              <li>IHL Services are not meant in any way for emergency and life-threatening conditions. It is advised to
+                take the patient to the nearest hospital in such cases. </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="point-container">
+          <p class="point-title">
+            5. &nbsp; Cookies :
+          </p>
+          <div class="point-txt">
+            <ol>
+              <li> IHL, like many other websites, uses “Cookies”. Cookies are small data files that a Website stores on 
+                your web browser. These are used for the purpose of storing your preferences, browsing activities, profiling 
+                and tracking behavior on this website. By visiting IHL website you acknowledge, accept, and expressly 
+                authorize IHL for the placement of Cookies on your web browser.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="point-container">
+          <p class="point-title">
+            6. &nbsp; Electronic Payments/ Refunds :
+          </p>
+          <div class="point-txt">
+            <ol>
+              <li> IHL offer’s online mode of payment. You may use internet banking or debit/credit card or specific
+                digital payment modes available for making payment for consultation charges. You shall be directed to
+                our trusted payment gateway partners once you proceed to make payment of service fee.</li>
+              <li> IHL shall not be liable in any manner whatsoever, if incorrect or inaccurate credit / debit card
+                details or digital payment details are provided by you for making the payment of consultation fee or you
+                use a credit/ debit card which is not lawfully owned by you or if you permit a third party to use your
+                password or other means to access your account. </li>
+              <li> IHL shall keep the aforesaid information confidential at all times and shall not utilize and share
+                the same with any of the third parties unless it is an authorized third party website and/or required by
+                law/regulation or court order. </li>
+              <li> Refunds may be made in case a request is raised by the user by clicking the cancel button in the user
+                dashboard on the IHL website within the stipulated deadline mentioned in the refund & cancellation table
+                above. </li>
+              <li> Refunds will only be made against genuine and trackable cancellation requests generated by you by
+                clicking on the cancellation button provided in the IHL user dashboard in your IHL account. Refund
+                request against delays, nature of advice obtained, efficacy of treatment, health outcomes of
+                consultation will not be entertained. </li>
+              <li> Refunds may be processed within 15 working days from the receipt of a request from you. All
+                communications with regards to refund should be sent to info@indiahealthlink.com. </li>
+              <li> You have the option to reschedule or cancel a booked appointment, strictly within the stipulated
+                deadlines as mentioned in the refunds and cancellations table above. </li>
+              <li> IHL reserves the right to modify/implement a new pricing structure at any time prior to billing you
+                for your initial payment or for future payments. </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="point-container">
+          <p class="point-title">
+            7. &nbsp; Use of Content & Copyright :
+          </p>
+          <div class="point-txt">
+            <ol>
+              <li> IHL owns the website as well the intellectual property contained thereon including all programs,
+                processes, designs, software, technologies, trademark, trade names, inventions and materials therein and
+                all the services offered by the doctors/physicians or others on the website.</li>
+              <li> You shall not use the content available on the website without the prior written permission of IHL.
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="point-container">
+          <p class="point-title">
+            8. &nbsp; Privacy and Security :
+          </p>
+          <div class="point-txt">
+            <ol>
+              <li> IHL uses secure encryption technology to keep your information safe and secure at all times. IHL is 
+                committed towards maintaining the privacy of the information uploaded by you on the website and complies
+                 with the industry standard security safeguards for the purpose of securing the website and the 
+                 information provided/uploaded by you. </li>
+              <li> IHL uses all reasonable endeavors to ensure the integrity of the online payment facility’s security.
+                Despite our endeavors, breaches of security and confidentiality could occur. You acknowledge that we are
+                not liable for any loss suffered by you as a result of any breaches in security. </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="point-container">
+          <p class="point-title">
+            9. &nbsp; Value added services from associated partners :
+          </p>
+          <div class="point-txt">
+            <ol>
+              <li> IHL engages various health care service providers to provide you additional convenience. You are free 
+                to select any product or services you need if that fits your needs. </li>
+              <li> During the course of any service if you may come across any promotional services and you will be
+                prompted to agree or disagree to avail the services supplied by the Associated Vendors by providing your
+                explicit consent. </li>
+              <li> Upon your acceptance and willingness to avail associated vendor services, IHL reserves the right to
+                share your entire prescription, personal details to the vendor to contact you for fulfillment of
+                services. And you agree to provide the rights to the associated service vendor to contact you on the
+                provided contact details mobile number or email address or both. </li>
+              <li> It must be noted that IHL is a mere facilitator to connect you to the goods or service fulfillment
+                partners and shall not be liable for any deficiency or defect in services supplied by the Associated
+                Vendors. The Services facilitated by the client shall be in accordance with the terms of use that you
+                agree with the vendor. </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="point-container">
+          <p class="point-title">
+            10. &nbsp; Indemnity :
+          </p>
+          <div class="point-txt">
+            <ol>
+              <li> You agree and undertake to indemnify and keep indemnified IHL , the concerned doctor/physician and 
+                IHL for any losses, costs, charges and expenses including reasonable attorney fees that the concerned 
+                doctor/physician and IHL may suffer on account of (a)misdiagnosis/faulty judgment/interpretation errors/
+                perception error arising from (i)your failure to provide correct and/or complete clinical information/history 
+                about the patient in timely and clinically appropriate manner; or (ii)suppression of material facts; or 
+                your failure to provide relevant clinical information about the patient; or (iv)misinterpretation of the 
+                advice/prescription/diagnosis by you; or (v)failure to follow doctor’s advice/prescription by you; or 
+                (b)incorrect or inaccurate credit/debit card details provided by you; or (c)using a credit / debit card 
+                which is not lawfully owned by you; or (d)if you permit a third party to use your password or other means 
+                to access your account. </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="point-container">
+          <p class="point-title">
+            11. &nbsp; Disclaimer :
+          </p>
+          <div class="point-txt">
+            <ol>
+              <li> IHL provides the services on “as is” basis and expressly disclaims all representations, warranties or
+                conditions of any kind, either expressed or implied, as to the operations of the website, the
+                information, content, service provided through or in connection with the website. </li>
+              <li> In no event shall IHL be responsible for any third party misuse for the data and for any acts, deeds
+                and circumstances beyond the control of the management of IHL.</li>
+              <li> You agree and acknowledge that you are solely responsible for your conduct. </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="point-container">
+          <p class="point-title">
+            12. &nbsp; Limitations of liability :
+          </p>
+          <div class="point-txt">
+            <ol>
+              <li> In no event shall IHL be liable for any direct, indirect, punitive, incidental, special or
+                consequential damages or any damages whatsoever including without limitations, damages for loss of use,
+                data or profits, arising out of or in any way connected with the use of IHL services. </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="point-container">
+          <p class="point-title">
+            13. &nbsp; Termination :
+          </p>
+          <div class="point-txt">
+            <ol>
+              <li> This arrangement may be terminated by either party at any time, with or without cause. </li>
+              <li> IHL reserves the right to refuse the use of services immediately in case your conduct is deemed by
+                IHL to be in contravention of applicable acts, laws, rules, and regulations or considered to be
+                unethical/immoral. </li>
+              <li> IHL reserves the right to take down your profile as well as the right to access your profile in case 
+                IHL finds feedback from doctors of any unlawful conducts, abusive languages, and misconduct during the 
+                consultation process display, with or without notice to the concerned practitioner. </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="point-container">
+          <p class="point-title">
+            14. &nbsp; Modification of Terms and Conditions of Service :
+          </p>
+          <div class="point-txt">
+            <ol>
+              <li> IHL may at any time, without any prior notification to you, modify these terms of conditions. </li>
+              <li> Please review the latest version of the terms and conditions before proceeding to avail the service.
+              </li>
+              <li> If you continue to use the service, it shall be deemed that you agree and abide by the modified terms
+                and conditions. </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="point-container">
+          <p class="point-title">
+            15. &nbsp; General Terms and Conditions :
+          </p>
+          <div class="point-txt">
+            <ol>
+              <li> This agreement shall be governed by the laws of India and shall be subject to the exclusive
+                jurisdiction of the courts at New Delhi and </li>
+              <li> IHL makes no representation that the services are appropriate for patients in any other location
+                except India as IHL operates and controls these websites from India. </li>
+              <li> If any part of the agreement is determined to be invalid or unenforceable pursuant to applicable law
+                then the said provision will be superseded by a valid, enforceable provision and the remainder of the
+                agreement shall continue in effect. </li>
+              <li> You acknowledge that the relationship created through your use of this website shall be of principal
+                to principal. You shall not represent yourself as a representative agent or employee of IHL. </li>
+              <li> You represent and warrant that you’re not a minor (i.e., you are above 18 years of age) and that you
+                are competent and eligible to enter into a legally binding agreement. </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="para-txt">
+          <p> The terms and conditions herein form an agreement. Please read this agreement carefully and if you are not
+            agreeable to any terms and conditions please do not proceed further. </p>
+
+          <p> By clicking on “I Agree” and proceeding further you signify that you read through, understood and accepted
+            aforementioned terms and conditions of use of service. You must agree to the above terms and conditions in
+            order to avail the services through the website. If you have any queries or need any clarification or
+            assistance please contact us at <b> info@indiahealthlink.com </b> </p>
+        </div>
+      </div>
+
+
+      <div class="para-txt-warning">
+          <p>" <b> Confidentiality Notice: </b> This document is confidential and contains proprietary information and
+          intellectual property of India Health Link Pvt Ltd. This document is only meant to be referred by specific
+          users to whom it is shared by India Health Link Pvt Ltd. Neither this document nor any of the information
+          contained herein may be reproduced or disclosed under any circumstances without the express written permission
+          of India Health Link Pvt Ltd. Please be aware that disclosure, copying, distribution or use of this document
+          and the information contained therein is strictly prohibited."‌ </p>
+      </div>
+    </div>
+
+    <div class="teleConsultaionAgreeBtn" style="border: none;" style="border-bottom:none; margin-top: 15px;"
+      [hidden]="_disableacceptdeny">
+      <button data-dismiss="modal"
+        style="color: #7B8788; margin-right: 15px; background-color: #DAE0E2;padding: 10px;width: 100px;border: none;"
+        (click)="termsAccepted('false')">Deny</button>
+      <button
+        style="color: white; margin-right: 15px; background-color: #2475B0;padding: 10px;width: 100px;border: none;"
+        (click)="termsAccepted('true')">Accept</button>
+    </div>
+  </div>
+</div>
+
+<div class="teleConsultaionAgreeDiv" *ngIf="_constant.orgUserConsentForm">
+
+  <button type="button" (click)="closeModalcf()"
+    style="border: none;outline: none;background: transparent;float: right;right: 25px;position: relative;color: #9e9e9e;">
+    <i class="fa fa-times" aria-hidden="true"></i>
+  </button>
+  <div>
+    <p class="tele-title"> Consent Form</p>
+  </div>
+
+  <div>
+    <div class="" id="consetFormStyle" style="overflow-x: hidden; font-size: 16px;">
+      <div class="tele-conatiner">
+        <mat-label style="font-size:18px;">Do you want to share the vital data from India Health Link to other organization?</mat-label><br><br>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="orgUserShard">
+          <mat-radio-button style="margin: 5px 10px;" name="orgUserShard" (click)="selectedOrg(orgUserJson['orgCode'])" value="{{orgUserJson['orgCode']}}" class="questionRadioBtn">{{orgUserJson['orgName']}} </mat-radio-button>
+          <mat-radio-button style="margin: 5px 10px;" name="orgUserShard" (click)="selectedOrg('all')" value="all" class="questionRadioBtn">All organization </mat-radio-button>
+        </mat-radio-group>
+        <div *ngIf="selectedOrgIsValid==true" style="color: red;"> Please selct any one of the above option </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+  <div class="teleConsultaionAgreeBtn" style="border: none;" style="border-bottom:none; margin-top: 15px; float:right"    [hidden]="_disableacceptdeny">
+    <button data-dismiss="modal"
+      style="color: #7B8788; margin-right: 15px; background-color: #DAE0E2;padding: 10px;width: 100px;border: none;"
+      (click)="consentFormAccepted('false')"> Not Now </button>
+    <button
+      style="color: white; margin-right: 15px; background-color: #2475B0;padding: 10px;width: 100px;border: none;"
+      (click)="consentFormAccepted('true')"> Yes </button>
+  </div>
+</div>
+
+<ng-container *ngIf="_constant.affiliatedFirstLoginModelBox" #firstloginmodelbox>
+  <div style="text-align: center; font-weight: bold;" id="firstloginmodelbox">
+    <div style="margin-bottom: 40px;">Download IHL Care mobile application from play store</div>
+    <div style="display: flex;justify-content: space-evenly;width: 75%;margin: auto;">
+      <button mat-raised-button class="btn btn-primary" style="background: #4885ed;color: #fff;letter-spacing: 1px;"
+        (click)="installMobileApp()">
+        <i class="fab fa-google-play"></i> Install
+      </button>
+      <button mat-raised-button class="btn" style="border: 2px solid #4885ed;color: #4885ed;letter-spacing: 1px;"
+        (click)="closeInstallAppWindow()">Cancel</button>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="_constant.buyMedicineOnline && !purshaseMedicineContainer" #termsServiceContent>
+  <div class="scrollbar" id="style-2" style="overflow-x: hidden;"
+    *ngIf="_constant.buyMedicineOnline && !purshaseMedicineContainer">
+    <div class="tele-conatiner">
+
+      <div class="para-txt">
+        <p> IHL Teleconsultation (services run by India Health Link Private Limited) is providing online consultations
+          through its digital platform provided by Genix Technologies Private Limited. IHL collaborates with clinical
+          experts of various specializations to provide health consultation via video conferencing (“Tele-Consultation”)
+          through its website and through health KIOSKs. The following terms and conditions govern all the transactions
+          with respect to tele-consultations including appointment booking, refund, and all other transactions through
+          the website or through its authorized third party websites. </p>
+
+        <p> The IHL service available on the Website do not in any way constitute an invitation or recommendation to avail 
+          the tele-consultation services. The services provided through the website or KIOSK are not intended in any manner 
+          to be a substitute in person consultation with a doctor or any healthcare professional. IHL advises the users to 
+          make independent assessment in respect of its accuracy or usefulness and suitability prior to making any decision 
+          in reliance hereof. Terms 'you' and 'your' hereafter refers to the user both registered and unregistered who is 
+          using/browsing through the IHL website (www.indiahealthlink.com) and/or using KIOSKs deployed at various facilities 
+          of our partners or clients </p>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          1. &nbsp; Availability, Appointment, Rescheduling, Follow-up, and/or Cancellation :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li>Tele-consultation is available for only users living in India only as per the latest tele-consultation 
+              guideline released by Govt of India</li>
+            <li>Tele-consultations shall be available for any clinical consultations aligned to the tele-medicine notification
+               by government of India on tele-medicine.</li>
+            <li>Tele-consultation from a specific doctor/physician shall be available subject to his/her availability/
+              willingness/discretion. Confirmation of your appointment with a specific doctor/physician,as per his/her availability, 
+              shall be sent to you via SMS and/or via email and/or via webportal. IHLreserves the right to reschedule or cancel
+               an appointment without any prior notice though the company will communicate the cancellation or reschedule 
+               information via SMS and/or email and/or webportal.</li>
+            <li>The time provided for consultation to you is indicative. The actual consultation time may change
+              depending on the consulting Doctor's discretion.</li>
+            <li>Your consulting Physician reserves the right to provide post consultation follow-up at no additional
+              cost. </li>
+            <li>Consultations can be booked, rescheduled or canceled only within the stipulated time limits mentioned below:</li>
+            <li> Table: Cancellation & Rescheduling Deadlines </li>
+            <ul class="paragraph-of-table-content">
+              <li> Schedule an appointment <span style="font-style: italic;">(With in book next 1 hour to next 5 days)
+                </span> : </li>
+              <ul>
+                <li> 1 Hour before approved / confirmed appointment time where 70% of the total fee will be refunded
+                </li>
+                <li> Cancellation available only till 1 hour after the scheduled booking, otherwise it will be
+                  considered as no show case and there will be no refund in no show cases </li>
+                <li> The rescheduling and cancellation will only be accepted through the website. </li>
+              </ul>
+              <li> Consult Now <span style="font-style: italic;">(With in next 15 to 45 Mins) </span> </li>
+              <ul>
+                <li> 1 Hour before approved / confirmed appointment time where 70% of the total fee will be refunded
+                </li>
+                <li> There will be a 50% fee refund for any cancellation. </li>
+                <li> 30 min after the scheduled appointment will be considered as no show case and no refund will be
+                  issued. </li>
+              </ul>
+            </ul>
+          </ol>
+        </div>
+        <div class="point-txt table-content">
+          <table style="border-collapse: collapse;">
+            <tr class="table-title">
+              <td> Category </td>
+              <td> Booking Deadline </td>
+              <td> Rescheduling / Cancellation Deadline </td>
+            </tr>
+            <tr>
+              <td> Schedule an appointment </td>
+              <td> You should book next 1 hour to next 5 days </td>
+              <td>
+                <ul style="margin-left: 15px;">
+                  <li> 1 Hour before approved / confirmed appointment time where 70% of the total fee will be refunded
+                  </li>
+                  <li> Cancellation available only till 1 hour after the scheduled booking, otherwise it will be
+                    considered as no show case and there will be no refund in no show cases </li>
+                  <li> The rescheduling and cancellation will only be accepted through the website. </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td> Consult Now</td>
+              <td> Next 15 to 45 Mins </td>
+              <td>
+                <ul style="margin-left: 15px;">
+                  <li> 1 Hour before approved / confirmed appointment time where 70% of the total fee will be refunded
+                  </li>
+                  <li> There will be a 50% fee refund for any cancellation. </li>
+                  <li> 30 min after the scheduled appointment will be considered as no show case and no refund will be
+                    issued. </li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          2. &nbsp; Listing of Doctor or Practitioner :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> IHL provides value added “Telehealth Services' ' which connects users directly to the doctor and 
+              the information exchanged between the user and the practitioner is recorded, stored, and used in 
+              accordance with the relevant Privacy Policy. However, it is at the discretion of the user to avail the service. 
+              If a user has used the telehealth service, IHL reserves the right to share the contact details of the user 
+              with the concerned practitioner.</li>
+            <li> Without prejudice to the generality of the service, IHL has no role to play in determining the 
+              consultation fees of the doctors. The consultation fees are determined at the discretion of the doctors. 
+              IHL will charge the doctors consultation fee along with a convenience fee and taxes payable at the time of 
+              appointment with the patient.</li>
+            <li> Without any prejudice to the generality of the doctors rating and reviews, IHL has no role in increasing
+               doctors rating or providing favorable or otherwise feedback against any doctor. IHL does not ensure or take
+                liability of any relation between the rating feedback and the quality of the services provided by the 
+                doctors. Users are responsible to make their own judgment while selecting any doctor for theservices </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          3. &nbsp; Information and Documents required :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> You are solely responsible for the medical, health and personal information you provide in India Health
+              Link health portal and during the consultation. The advice of the doctor will depend upon the information
+              you provide to the doctor.</li>
+            <li> User discretion is advised while submitting/uploading your required personal and clinical information
+              on the specified place and selecting the doctor for seeking appropriate advice related to the condition of
+              the patient. This information shall include patient’s details including contact details, medical history,
+              testing/investigations results/reports, prescriptions, card holder name and other relevant details.</li>
+            <li> IHL tele-consultation services are available for use for children, but the registered member for all
+              patients under the age of 18 must be the patient’s parent or legal guardian. If you register as the parent
+              or legal guardian on behalf of a minor, you will be fully responsible for complying with these Terms of
+              Use. </li>
+            <li>If the information provided by you is false/deceptive/inaccurate or misleading, IHL reserves the right
+              to cancel your appointment without assuming any liability whatsoever. Hence, it’s advised to submit/upload
+              all relevant and accurate information on the portal or while sharing information during the consultation.
+            </li>
+            <li> The information provided by you may be used for the purpose of services including analysis, research,
+              training and disclosure (where required) to its affiliates, agents, others,and can be shared on demand
+              with government authorities on request or in emergency situations </li>
+            <li> The information provided by you can be kept with IHL indefinitely and can be used without revealing
+              your identity.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          4. &nbsp; Equipment and connectivity requirement :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> The services available on the website shall be provided to you via audio/video consultation. Please
+              ensure that you are equipped with proper video conference equipment and internet connectivity as mentioned
+              or is relevant for the service you want to avail. In case of inadequate video conference equipment,
+              technical error or defective internet connectivity IHL reserves the right to reschedule or cancel your
+              appointment without any notice.</li>
+            <li> You understand and acknowledge that there will be no physical examination involved and the consultation
+              services shall be provided remotely. The opinion delivered by the doctor / physician shall solely be based
+              on the verbal communication between the concerned doctor or the physician and the patient, and the test
+              reports, and other information provided/uploaded by you on the website.</li>
+            <li> IHL or the consultingoctor/medical practitioner shall not be liable for misdiagnosis/faulty 
+              judgment/interpretation error/perception error/adverse events/inefficacy of prescribed treatment or advice/validity 
+              provided by the consulting doctor in your country of residence/unavailability of the recommended or prescribed treatment 
+              or medication under any condition or circumstances. Users are advised to use their discretion for following the 
+              advice obtained post consultation from IHL. </li>
+            <li>IHL Services are not meant in any way for emergency and life-threatening conditions. It is advised to
+              take the patient to the nearest hospital in such cases. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          5. &nbsp; Cookies :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> IHL, like many other websites, uses “Cookies”. Cookies are small data files that a Website stores on your 
+              web browser. These are used for the purpose of storing your preferences, browsing activities, profiling and 
+              tracking behavior on this website. By visiting IHL website you acknowledge, accept, and expressly authorize IHL 
+              for the placement of Cookies on your web browser.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          6. &nbsp; Electronic Payments/ Refunds :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> IHL offer’s online mode of payment. You may use internet banking or debit/credit card or specific
+              digital payment modes available for making payment for consultation charges. You shall be directed to our
+              trusted payment gateway partners once you proceed to make payment of service fee.</li>
+            <li> IHL shall not be liable in any manner whatsoever, if incorrect or inaccurate credit / debit card
+              details or digital payment details are provided by you for making the payment of consultation fee or you
+              use a credit/ debit card which is not lawfully owned by you or if you permit a third party to use your
+              password or other means to access your account. </li>
+            <li> IHL shall keep the aforesaid information confidential at all times and shall not utilize and share the
+              same with any of the third parties unless it is an authorized third party website and/or required by
+              law/regulation or court order. </li>
+            <li> Refunds may be made in case a request is raised by the user by clicking the cancel button in the user
+              dashboard on the IHL website within the stipulated deadline mentioned in the refund & cancellation table
+              above. </li>
+            <li> Refunds will only be made against genuine and trackable cancellation requests generated by you by
+              clicking on the cancellation button provided in the IHL user dashboard in your IHL account. Refund request
+              against delays, nature of advice obtained, efficacy of treatment, health outcomes of consultation will not
+              be entertained. </li>
+            <li> Refunds may be processed within 15 working days from the receipt of a request from you. All
+              communications with regards to refund should be sent to info@indiahealthlink.com. </li>
+            <li> You have the option to reschedule or cancel a booked appointment, strictly within the stipulated
+              deadlines as mentioned in the refunds and cancellations table above. </li>
+            <li> IHL reserves the right to modify/implement a new pricing structure at any time prior to billing you for
+              your initial payment or for future payments. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          7. &nbsp; Use of Content & Copyright :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> IHL owns the website as well the intellectual property contained thereon including all programs,
+              processes, designs, software, technologies, trademark, trade names, inventions and materials therein and
+              all the services offered by the doctors/physicians or others on the website.</li>
+            <li> You shall not use the content available on the website without the prior written permission of IHL.
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          8. &nbsp; Privacy and Security :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> IHL uses secure encryption technology to keep your information safe and secure at all times. IHL is committed 
+              towards maintaining the privacy of the information uploaded by you on the website and complies with the industry 
+              standard security safeguards for the purpose of securing the website and the information provided/uploaded 
+              by you. </li>
+            <li> IHL uses all reasonable endeavors to ensure the integrity of the online payment facility’s security.
+              Despite our endeavors, breaches of security and confidentiality could occur. You acknowledge that we are
+              not liable for any loss suffered by you as a result of any breaches in security. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          9. &nbsp; Value added services from associated partners :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> IHL engages various health care service providers to provide you additional convenience. You are free to 
+              select any product or services you need if that fits your needs. </li>
+            <li> During the course of any service if you may come across any promotional services and you will be
+              prompted to agree or disagree to avail the services supplied by the Associated Vendors by providing your
+              explicit consent. </li>
+            <li> Upon your acceptance and willingness to avail associated vendor services, IHL reserves the right to
+              share your entire prescription, personal details to the vendor to contact you for fulfillment of services.
+              And you agree to provide the rights to the associated service vendor to contact you on the provided
+              contact details mobile number or email address or both. </li>
+            <li> It must be noted that IHL is a mere facilitator to connect you to the goods or service fulfillment
+              partners and shall not be liable for any deficiency or defect in services supplied by the Associated
+              Vendors. The Services facilitated by the client shall be in accordance with the terms of use that you
+              agree with the vendor. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          10. &nbsp; Indemnity :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> You agree and undertake to indemnify and keep indemnified IHL , the concerned doctor/physician and IHL 
+              for any losses, costs, charges and expenses including reasonable attorney fees that the concerned doctor/physician 
+              and IHL may suffer on account of (a)misdiagnosis/faulty judgment/interpretation errors/perception error arising 
+              from (i)your failure to provide correct and/or complete clinical information/history about the patient in timely 
+              and clinically appropriate manner; or (ii)suppression of material facts; or your failure to provide relevant 
+              clinical information about the patient; or (iv)misinterpretation of the advice/prescription/diagnosis by you; 
+              or (v)failure to follow doctor’s advice/prescription by you; or (b)incorrect or inaccurate credit/debit card 
+              details provided by you; or (c)using a credit / debit card which is not lawfully owned by you; or (d)if you 
+              permit a third party to use your password or other means to access your account. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          11. &nbsp; Disclaimer :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> IHL provides the services on “as is” basis and expressly disclaims all representations, warranties or
+              conditions of any kind, either expressed or implied, as to the operations of the website, the information,
+              content, service provided through or in connection with the website. </li>
+            <li> In no event shall IHL be responsible for any third party misuse for the data and for any acts, deeds
+              and circumstances beyond the control of the management of IHL.</li>
+            <li> You agree and acknowledge that you are solely responsible for your conduct. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          12. &nbsp; Limitations of liability :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> In no event shall IHL be liable for any direct, indirect, punitive, incidental, special or
+              consequential damages or any damages whatsoever including without limitations, damages for loss of use,
+              data or profits, arising out of or in any way connected with the use of IHL services. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          13. &nbsp; Termination :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> This arrangement may be terminated by either party at any time, with or without cause. </li>
+            <li> IHL reserves the right to refuse the use of services immediately in case your conduct is deemed by IHL
+              to be in contravention of applicable acts, laws, rules, and regulations or considered to be
+              unethical/immoral. </li>
+            <li> IHL reserves the right to take down your profile as well as the right to access your profile in case IHL 
+              finds feedback from doctors of any unlawful conducts, abusive languages, and misconduct during the consultation 
+              process display, with or without notice to the concerned practitioner. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          14. &nbsp; Modification of Terms and Conditions of Service :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> IHL may at any time, without any prior notification to you, modify these terms of conditions. </li>
+            <li> Please review the latest version of the terms and conditions before proceeding to avail the service.
+            </li>
+            <li> If you continue to use the service, it shall be deemed that you agree and abide by the modified terms
+              and conditions. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          15. &nbsp; General Terms and Conditions :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> This agreement shall be governed by the laws of India and shall be subject to the exclusive
+              jurisdiction of the courts at New Delhi and </li>
+            <li> IHL makes no representation that the services are appropriate for patients in any other location except
+              India as IHL operates and controls these websites from India. </li>
+            <li> If any part of the agreement is determined to be invalid or unenforceable pursuant to applicable law
+              then the said provision will be superseded by a valid, enforceable provision and the remainder of the
+              agreement shall continue in effect. </li>
+            <li> You acknowledge that the relationship created through your use of this website shall be of principal to
+              principal. You shall not represent yourself as a representative agent or employee of IHL. </li>
+            <li> You represent and warrant that you’re not a minor (i.e., you are above 18 years of age) and that you
+              are competent and eligible to enter into a legally binding agreement. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="para-txt">
+        <p> The terms and conditions herein form an agreement. Please read this agreement carefully and if you are not
+          agreeable to any terms and conditions please do not proceed further. </p>
+
+        <p> By clicking on “I Agree” and proceeding further you signify that you read through, understood and accepted
+          aforementioned terms and conditions of use of service. You must agree to the above terms and conditions in
+          order to avail the services through the website. If you have any queries or need any clarification or
+          assistance please contact us at <b> info@indiahealthlink.com </b> </p>
+      </div>
+    </div>
+
+
+    <div class="para-txt-warning">
+      <p>" <b> Confidentiality Notice: </b> This document is confidential and contains proprietary information and
+        intellectual property of India Health Link Pvt Ltd. This document is only meant to be referred by specific users
+        to whom it is shared by India Health Link Pvt Ltd. Neither this document nor any of the information contained
+        herein may be reproduced or disclosed under any circumstances without the express written permission of India
+        Health Link Pvt Ltd. Please be aware that disclosure, copying, distribution or use of this document and the
+        information contained therein is strictly prohibited."‌ </p>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="_constant.getLabOrder && !purchaseLabOrderReportContainer" #termsServiceContentLabOrder>
+  <div class="scrollbar" id="style-2" style="overflow-x: hidden;"
+    *ngIf="_constant.getLabOrder && !purchaseLabOrderReportContainer">
+    <div class="tele-conatiner">
+
+      <div class="para-txt">
+        <p> IHL Teleconsultation (services run by India Health Link Private Limited) is providing online consultations
+          through its digital platform provided by Genix Technologies Private Limited. IHL collaborates with clinical
+          experts of various specializations to provide health consultation via video conferencing (“Tele-Consultation”)
+          through its website and through health KIOSKs. The following terms and conditions govern all the transactions
+          with respect to tele-consultations including appointment booking, refund, and all other transactions through
+          the website or through its authorized third party websites. </p>
+
+        <p> The IHL service available on the Website do not in any way constitute an invitation or recommendation to 
+          avail the tele-consultation services. The services provided through the website or KIOSK are not intended in 
+          any manner to be a substitute in person consultation with a doctor or any healthcare professional. IHL advises 
+          the users to make independent assessment in respect of its accuracy or usefulness and suitability prior to making 
+          any decision in reliance hereof. Terms 'you' and 'your' hereafter refers to the user both registered and 
+          unregistered who is using/browsing through the IHL website (www.indiahealthlink.com) and/or using KIOSKs deployed 
+          at various facilities of our partners or clients </p>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          1. &nbsp; Availability, Appointment, Rescheduling, Follow-up, and/or Cancellation :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li>Tele-consultation is available for only users living in India only as per the latest tele-consultation 
+              guideline released by Govt of India</li>
+            <li>Tele-consultations shall be available for any clinical consultations aligned to the tele-medicine notification 
+              by government of India on tele-medicine.</li>
+            <li>Tele-consultation from a specific doctor/physician shall be available subject to his/her availability/willingness/discretion. 
+              Confirmation of your appointment with a specific doctor/physician,as per his/her availability, shall be sent 
+              to you via SMS and/or via email and/or via webportal. IHLreserves the right to reschedule or cancel an 
+              appointment without any prior notice though the company will communicate the cancellation or reschedule 
+              information via SMS and/or email and/or webportal.</li>
+            <li>The time provided for consultation to you is indicative. The actual consultation time may change
+              depending on the consulting Doctor's discretion.</li>
+            <li>Your consulting Physician reserves the right to provide post consultation follow-up at no additional
+              cost. </li>
+            <li>Consultations can be booked, rescheduled or canceled only within the stipulated time limits mentioned below:</li>
+            <li> Table: Cancellation & Rescheduling Deadlines </li>
+            <ul class="paragraph-of-table-content">
+              <li> Schedule an appointment <span style="font-style: italic;">(With in book next 1 hour to next 5 days)
+                </span> : </li>
+              <ul>
+               <li> 1 Hour before approved / confirmed appointment time where 70% of the total fee will be refunded
+               </li>
+               <li> Cancellation available only till 1 hour after the scheduled booking, otherwise it will be
+                  considered as no show case and there will be no refund in no show cases </li>
+               <li> The rescheduling and cancellation will only be accepted through the website. </li>
+              </ul>
+              <li> Consult Now <span style="font-style: italic;">(With in next 15 to 45 Mins) </span> </li>
+              <ul>
+                <li> 1 Hour before approved / confirmed appointment time where 70% of the total fee will be refunded
+                </li>
+                <li> There will be a 50% fee refund for any cancellation. </li>
+                <li> 30 min after the scheduled appointment will be considered as no show case and no refund will be
+                  issued. </li>
+              </ul>
+            </ul>
+          </ol>
+        </div>
+        <div class="point-txt table-content">
+          <table style="border-collapse: collapse;">
+            <tr class="table-title">
+              <td> Category </td>
+              <td> Booking Deadline </td>
+              <td> Rescheduling / Cancellation Deadline </td>
+            </tr>
+            <tr>
+              <td> Schedule an appointment </td>
+              <td> You should book next 1 hour to next 5 days </td>
+              <td>
+                <ul style="margin-left: 15px;">
+                  <li> 1 Hour before approved / confirmed appointment time where 70% of the total fee will be refunded
+                  </li>
+                  <li> Cancellation available only till 1 hour after the scheduled booking, otherwise it will be
+                    considered as no show case and there will be no refund in no show cases </li>
+                  <li> The rescheduling and cancellation will only be accepted through the website. </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td> Consult Now</td>
+              <td> Next 15 to 45 Mins </td>
+              <td>
+                <ul style="margin-left: 15px;">
+                  <li> 1 Hour before approved / confirmed appointment time where 70% of the total fee will be refunded
+                  </li>
+                  <li> There will be a 50% fee refund for any cancellation. </li>
+                  <li> 30 min after the scheduled appointment will be considered as no show case and no refund will be
+                    issued. </li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          2. &nbsp; Listing of Doctor or Practitioner :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> IHL provides value added “Telehealth Services' ' which connects users directly to the doctor 
+              and the information exchanged between the user and the practitioner is recorded, stored, and used in 
+              accordance with the relevant Privacy Policy. However, it is at the discretion of the user to avail the service. 
+              If a user has used the telehealth service, IHL reserves the right to share the contact details of the user with 
+              the concerned practitioner.</li>
+            <li> Without prejudice to the generality of the service, IHL has no role to play in determining the consultation 
+              fees of the doctors. The consultation fees are determined at the discretion of the doctors. IHL will charge the 
+              doctors consultation fee along with a convenience fee and taxes payable at the time of appointment with the 
+              patient.</li>
+            <li> Without any prejudice to the generality of the doctors rating and reviews, IHL has no role in increasing 
+              doctors rating or providing favorable or otherwise feedback against any doctor. IHL does not ensure or take 
+              liability of any relation between the rating feedback and the quality of the services provided by the doctors. 
+              Users are responsible to make their own judgment while selecting any doctor for theservices </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          3. &nbsp; Information and Documents required :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> You are solely responsible for the medical, health and personal information you provide in India Health
+              Link health portal and during the consultation. The advice of the doctor will depend upon the information
+              you provide to the doctor.</li>
+            <li> User discretion is advised while submitting/uploading your required personal and clinical information
+              on the specified place and selecting the doctor for seeking appropriate advice related to the condition of
+              the patient. This information shall include patient’s details including contact details, medical history,
+              testing/investigations results/reports, prescriptions, card holder name and other relevant details.</li>
+            <li> IHL tele-consultation services are available for use for children, but the registered member for all
+              patients under the age of 18 must be the patient’s parent or legal guardian. If you register as the parent
+              or legal guardian on behalf of a minor, you will be fully responsible for complying with these Terms of
+              Use. </li>
+            <li>If the information provided by you is false/deceptive/inaccurate or misleading, IHL reserves the right
+              to cancel your appointment without assuming any liability whatsoever. Hence, it’s advised to submit/upload
+              all relevant and accurate information on the portal or while sharing information during the consultation.
+            </li>
+            <li> The information provided by you may be used for the purpose of services including analysis, research,
+              training and disclosure (where required) to its affiliates, agents, others,and can be shared on demand
+              with government authorities on request or in emergency situations </li>
+            <li> The information provided by you can be kept with IHL indefinitely and can be used without revealing
+              your identity.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          4. &nbsp; Equipment and connectivity requirement :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> The services available on the website shall be provided to you via audio/video consultation. Please
+              ensure that you are equipped with proper video conference equipment and internet connectivity as mentioned
+              or is relevant for the service you want to avail. In case of inadequate video conference equipment,
+              technical error or defective internet connectivity IHL reserves the right to reschedule or cancel your
+              appointment without any notice.</li>
+            <li> You understand and acknowledge that there will be no physical examination involved and the consultation
+              services shall be provided remotely. The opinion delivered by the doctor / physician shall solely be based
+              on the verbal communication between the concerned doctor or the physician and the patient, and the test
+              reports, and other information provided/uploaded by you on the website.</li>
+            <li> IHL or the consultingoctor/medical practitioner shall not be liable for misdiagnosis/faulty 
+              judgment/interpretation error/perception error/adverse events/inefficacy of prescribed treatment or 
+              advice/validity provided by the consulting doctor in your country of residence/unavailability of the 
+              recommended or prescribed treatment or medication under any condition or circumstances. Users are advised to 
+              use their discretion for following the advice obtained post consultation from IHL. </li>
+            <li>IHL Services are not meant in any way for emergency and life-threatening conditions. It is advised to
+              take the patient to the nearest hospital in such cases. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          5. &nbsp; Cookies :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> IHL, like many other websites, uses “Cookies”. Cookies are small data files that a Website stores on 
+              your web browser. These are used for the purpose of storing your preferences, browsing activities, profiling 
+              and tracking behavior on this website. By visiting IHL website you acknowledge, accept, and expressly authorize 
+              IHL for the placement of Cookies on your web browser.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          6. &nbsp; Electronic Payments/ Refunds :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> IHL offer’s online mode of payment. You may use internet banking or debit/credit card or specific
+              digital payment modes available for making payment for consultation charges. You shall be directed to our
+              trusted payment gateway partners once you proceed to make payment of service fee.</li>
+            <li> IHL shall not be liable in any manner whatsoever, if incorrect or inaccurate credit / debit card
+              details or digital payment details are provided by you for making the payment of consultation fee or you
+              use a credit/ debit card which is not lawfully owned by you or if you permit a third party to use your
+              password or other means to access your account. </li>
+            <li> IHL shall keep the aforesaid information confidential at all times and shall not utilize and share the
+              same with any of the third parties unless it is an authorized third party website and/or required by
+              law/regulation or court order. </li>
+            <li> Refunds may be made in case a request is raised by the user by clicking the cancel button in the user
+              dashboard on the IHL website within the stipulated deadline mentioned in the refund & cancellation table
+              above. </li>
+            <li> Refunds will only be made against genuine and trackable cancellation requests generated by you by
+              clicking on the cancellation button provided in the IHL user dashboard in your IHL account. Refund request
+              against delays, nature of advice obtained, efficacy of treatment, health outcomes of consultation will not
+              be entertained. </li>
+            <li> Refunds may be processed within 15 working days from the receipt of a request from you. All
+              communications with regards to refund should be sent to info@indiahealthlink.com. </li>
+            <li> You have the option to reschedule or cancel a booked appointment, strictly within the stipulated
+              deadlines as mentioned in the refunds and cancellations table above. </li>
+            <li> IHL reserves the right to modify/implement a new pricing structure at any time prior to billing you for
+              your initial payment or for future payments. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          7. &nbsp; Use of Content & Copyright :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> IHL owns the website as well the intellectual property contained thereon including all programs,
+              processes, designs, software, technologies, trademark, trade names, inventions and materials therein and
+              all the services offered by the doctors/physicians or others on the website.</li>
+            <li> You shall not use the content available on the website without the prior written permission of IHL.
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          8. &nbsp; Privacy and Security :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> IHL uses secure encryption technology to keep your information safe and secure at all times. IHL is committed 
+              towards maintaining the privacy of the information uploaded by you on the website and complies with the industry 
+              standard security safeguards for the purpose of securing the website and the information provided/uploaded by you. 
+            </li>
+            <li> IHL uses all reasonable endeavors to ensure the integrity of the online payment facility’s security.
+              Despite our endeavors, breaches of security and confidentiality could occur. You acknowledge that we are
+              not liable for any loss suffered by you as a result of any breaches in security. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          9. &nbsp; Value added services from associated partners :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> IHL engages various health care service providers to provide you additional convenience. You are free to 
+              select any product or services you need if that fits your needs. </li>
+            <li> During the course of any service if you may come across any promotional services and you will be
+              prompted to agree or disagree to avail the services supplied by the Associated Vendors by providing your
+              explicit consent. </li>
+            <li> Upon your acceptance and willingness to avail associated vendor services, IHL reserves the right to
+              share your entire prescription, personal details to the vendor to contact you for fulfillment of services.
+              And you agree to provide the rights to the associated service vendor to contact you on the provided
+              contact details mobile number or email address or both. </li>
+            <li> It must be noted that IHL is a mere facilitator to connect you to the goods or service fulfillment
+              partners and shall not be liable for any deficiency or defect in services supplied by the Associated
+              Vendors. The Services facilitated by the client shall be in accordance with the terms of use that you
+              agree with the vendor. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          10. &nbsp; Indemnity :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> You agree and undertake to indemnify and keep indemnified IHL , the concerned doctor/physician and IHL for any 
+              losses, costs, charges and expenses including reasonable attorney fees that the concerned doctor/physician and IHL 
+              may suffer on account of (a)misdiagnosis/faulty judgment/interpretation errors/perception error arising from (i)your 
+              failure to provide correct and/or complete clinical information/history about the patient in timely and clinically 
+              appropriate manner; or (ii)suppression of material facts; or your failure to provide relevant clinical information 
+              about the patient; or (iv)misinterpretation of the advice/prescription/diagnosis by you; or (v)failure to follow doctor’s 
+              advice/prescription by you; or (b)incorrect or inaccurate credit/debit card details provided by you; or (c)using a credit 
+              / debit card which is not lawfully owned by you; or (d)if you permit a third party to use your password or other means 
+              to access your account. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+       <p class="point-title">
+          11. &nbsp; Disclaimer :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> IHL provides the services on “as is” basis and expressly disclaims all representations, warranties or
+              conditions of any kind, either expressed or implied, as to the operations of the website, the information,
+              content, service provided through or in connection with the website. </li>
+            <li> In no event shall IHL be responsible for any third party misuse for the data and for any acts, deeds
+              and circumstances beyond the control of the management of IHL.</li>
+            <li> You agree and acknowledge that you are solely responsible for your conduct. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          12. &nbsp; Limitations of liability :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> In no event shall IHL be liable for any direct, indirect, punitive, incidental, special or
+              consequential damages or any damages whatsoever including without limitations, damages for loss of use,
+              data or profits, arising out of or in any way connected with the use of IHL services. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          13. &nbsp; Termination :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> This arrangement may be terminated by either party at any time, with or without cause. </li>
+            <li> IHL reserves the right to refuse the use of services immediately in case your conduct is deemed by IHL
+              to be in contravention of applicable acts, laws, rules, and regulations or considered to be
+              unethical/immoral. </li>
+            <li> IHL reserves the right to take down your profile as well as the right to access your profile in case IHL finds 
+              feedback from doctors of any unlawful conducts, abusive languages, and misconduct during the consultation process display, 
+              with or without notice to the concerned practitioner. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          14. &nbsp; Modification of Terms and Conditions of Service :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> IHL may at any time, without any prior notification to you, modify these terms of conditions. </li>
+            <li> Please review the latest version of the terms and conditions before proceeding to avail the service.
+            </li>
+            <li> If you continue to use the service, it shall be deemed that you agree and abide by the modified terms
+              and conditions. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="point-container">
+        <p class="point-title">
+          15. &nbsp; General Terms and Conditions :
+        </p>
+        <div class="point-txt">
+          <ol>
+            <li> This agreement shall be governed by the laws of India and shall be subject to the exclusive
+              jurisdiction of the courts at New Delhi and </li>
+            <li> IHL makes no representation that the services are appropriate for patients in any other location except
+              India as IHL operates and controls these websites from India. </li>
+            <li> If any part of the agreement is determined to be invalid or unenforceable pursuant to applicable law
+              then the said provision will be superseded by a valid, enforceable provision and the remainder of the
+              agreement shall continue in effect. </li>
+            <li> You acknowledge that the relationship created through your use of this website shall be of principal to
+              principal. You shall not represent yourself as a representative agent or employee of IHL. </li>
+            <li> You represent and warrant that you’re not a minor (i.e., you are above 18 years of age) and that you
+              are competent and eligible to enter into a legally binding agreement. </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="para-txt">
+        <p> The terms and conditions herein form an agreement. Please read this agreement carefully and if you are not
+          agreeable to any terms and conditions please do not proceed further. </p>
+
+        <p> By clicking on “I Agree” and proceeding further you signify that you read through, understood and accepted
+          aforementioned terms and conditions of use of service. You must agree to the above terms and conditions in
+          order to avail the services through the website. If you have any queries or need any clarification or
+          assistance please contact us at <b> info@indiahealthlink.com </b> </p>
+      </div>
+    </div>
+
+
+    <div class="para-txt-warning">
+      <p>" <b> Confidentiality Notice: </b> This document is confidential and contains proprietary information and
+        intellectual property of India Health Link Pvt Ltd. This document is only meant to be referred by specific users
+        to whom it is shared by India Health Link Pvt Ltd. Neither this document nor any of the information contained
+        herein may be reproduced or disclosed under any circumstances without the express written permission of India
+        Health Link Pvt Ltd. Please be aware that disclosure, copying, distribution or use of this document and the
+        information contained therein is strictly prohibited."‌ </p>
+    </div>
+  </div>
+</ng-container>
+
+<div *ngIf="_constant.jointAccountTermsAndConditions" class="scrollbar" id="style-2" style="overflow-x: hidden;">
+
+  <div class="mb-3 terms_header">
+    <h4 class="purchase_header" style="font-size: 1.4em;padding-bottom: 10px;">Terms & Conditions
+      <button type="button" (click)="closeJointAccountTermsAndConditions()"
+        style="border: none;outline: none;background: transparent;float: right;right: 25px;position: relative;color: #9e9e9e;">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </h4>
+  </div>
+  <div class="tele-conatiner">
+
+    <div class="para-txt">
+      <p> IHL Teleconsultation (services run by India Health Link Private Limited) is providing online consultations
+        through its digital platform provided by Genix Technologies Private Limited. IHL collaborates with clinical
+        experts of various specializations to provide health consultation via video conferencing (“Tele-Consultation”)
+        through its website and through health KIOSKs. The following terms and conditions govern all the transactions
+        with respect to tele-consultations including appointment booking, refund, and all other transactions through the
+        website or through its authorized third party websites. </p>
+
+      <p> The IHL service available on the Website do not in any way constitute an invitation or recommendation to avail the 
+        tele-consultation services. The services provided through the website or KIOSK are not intended in any manner to be a 
+        substitute in person consultation with a doctor or any healthcare professional. IHL advises the users to make independent 
+        assessment in respect of its accuracy or usefulness and suitability prior to making any decision in reliance hereof. Terms 
+        'you' and 'your' hereafter refers to the user both registered and unregistered who is using/browsing through the IHL website 
+        (www.indiahealthlink.com) and/or using KIOSKs deployed at various facilities of our partners or clients </p>
+    </div>
+
+    <div class="point-container">
+      <p class="point-title">
+        1. &nbsp; Availability, Appointment, Rescheduling, Follow-up, and/or Cancellation :
+      </p>
+      <div class="point-txt">
+        <ol>
+          <li>Tele-consultation is available for only users living in India only as per the latest tele-consultation guideline 
+            released by Govt of India</li>
+          <li>Tele-consultations shall be available for any clinical consultations aligned to the tele-medicine notification 
+            by government of India on tele-medicine.</li>
+          <li>Tele-consultation from a specific doctor/physician shall be available subject to his/her 
+            availability/willingness/discretion. Confirmation of your appointment with a specific doctor/physician,as per 
+            his/her availability, shall be sent to you via SMS and/or via email and/or via webportal. IHLreserves the right 
+            to reschedule or cancel an appointment without any prior notice though the company will communicate the cancellation 
+            or reschedule information via SMS and/or email and/or webportal.
+          </li>
+          <li>The time provided for consultation to you is indicative. The actual consultation time may change depending
+            on the consulting Doctor's discretion.</li>
+          <li>Your consulting Physician reserves the right to provide post consultation follow-up at no additional cost.
+          </li>
+          <li>Consultations can be booked, rescheduled or canceled only within the stipulated time limits mentioned below:</li>
+          <li> Table: Cancellation & Rescheduling Deadlines </li>
+          <ul class="paragraph-of-table-content">
+            <li> Schedule an appointment <span style="font-style: italic;">(With in book next 1 hour to next 5 days)
+              </span> : </li>
+            <ul>
+              <li> 1 Hour before approved / confirmed appointment time where 70% of the total fee will be refunded</li>
+              <li> Cancellation available only till 1 hour after the scheduled booking, otherwise it will be considered
+                as no show case and there will be no refund in no show cases </li>
+              <li> The rescheduling and cancellation will only be accepted through the website. </li>
+            </ul>
+            <li> Consult Now <span style="font-style: italic;">(With in next 15 to 45 Mins) </span> </li>
+            <ul>
+              <li> 1 Hour before approved / confirmed appointment time where 70% of the total fee will be refunded</li>
+              <li> There will be a 50% fee refund for any cancellation. </li>
+              <li> 30 min after the scheduled appointment will be considered as no show case and no refund will be
+                issued. </li>
+            </ul>
+          </ul>
+        </ol>
+      </div>
+      <div class="point-txt table-content">
+        <table style="border-collapse: collapse;">
+          <tr class="table-title">
+            <td> Category </td>
+            <td> Booking Deadline </td>
+            <td> Rescheduling / Cancellation Deadline </td>
+          </tr>
+          <tr>
+            <td> Schedule an appointment </td>
+            <td> You should book next 1 hour to next 5 days </td>
+            <td>
+              <ul style="margin-left: 15px;">
+                <li> 1 Hour before approved / confirmed appointment time where 70% of the total fee will be refunded
+                </li>
+                <li> Cancellation available only till 1 hour after the scheduled booking, otherwise it will be
+                  considered as no show case and there will be no refund in no show cases </li>
+                <li> The rescheduling and cancellation will only be accepted through the website. </li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td> Consult Now</td>
+            <td> Next 15 to 45 Mins </td>
+            <td>
+              <ul style="margin-left: 15px;">
+                <li> 1 Hour before approved / confirmed appointment time where 70% of the total fee will be refunded
+                </li>
+                <li> There will be a 50% fee refund for any cancellation. </li>
+                <li> 30 min after the scheduled appointment will be considered as no show case and no refund will be
+                  issued. </li>
+              </ul>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="point-container">
+      <p class="point-title">
+        2. &nbsp; Listing of Doctor or Practitioner :
+      </p>
+      <div class="point-txt">
+        <ol>
+          <li> IHL provides value added “Telehealth Services' ' which connects users directly to the doctor and the information 
+            exchanged between the user and the practitioner is recorded, stored, and used in accordance with the relevant 
+            Privacy Policy. However, it is at the discretion of the user to avail the service. If a user has used the telehealth 
+            service, IHL reserves the right to share the contact details of the user with the concerned practitioner.</li>
+          <li> Without prejudice to the generality of the service, IHL has no role to play in determining the consultation fees 
+            of the doctors. The consultation fees are determined at the discretion of the doctors. IHL will charge the doctors 
+            consultation fee along with a convenience fee and taxes payable at the time of appointment with the patient.</li>
+          <li> Without any prejudice to the generality of the doctors rating and reviews, IHL has no role in increasing doctors 
+            rating or providing favorable or otherwise feedback against any doctor. IHL does not ensure or take liability of any 
+            relation between the rating feedback and the quality of the services provided by the doctors. Users are responsible 
+            to make their own judgment while selecting any doctor for theservices </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="point-container">
+      <p class="point-title">
+        3. &nbsp; Information and Documents required :
+      </p>
+      <div class="point-txt">
+        <ol>
+          <li> You are solely responsible for the medical, health and personal information you provide in India Health
+            Link health portal and during the consultation. The advice of the doctor will depend upon the information
+            you provide to the doctor.</li>
+          <li> User discretion is advised while submitting/uploading your required personal and clinical information on
+            the specified place and selecting the doctor for seeking appropriate advice related to the condition of the
+            patient. This information shall include patient’s details including contact details, medical history,
+            testing/investigations results/reports, prescriptions, card holder name and other relevant details.</li>
+          <li> IHL tele-consultation services are available for use for children, but the registered member for all
+            patients under the age of 18 must be the patient’s parent or legal guardian. If you register as the parent
+            or legal guardian on behalf of a minor, you will be fully responsible for complying with these Terms of Use.
+          </li>
+          <li>If the information provided by you is false/deceptive/inaccurate or misleading, IHL reserves the right to
+            cancel your appointment without assuming any liability whatsoever. Hence, it’s advised to submit/upload all
+            relevant and accurate information on the portal or while sharing information during the consultation. </li>
+          <li> The information provided by you may be used for the purpose of services including analysis, research,
+            training and disclosure (where required) to its affiliates, agents, others,and can be shared on demand with
+            government authorities on request or in emergency situations </li>
+          <li> The information provided by you can be kept with IHL indefinitely and can be used without revealing your
+            identity.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="point-container">
+      <p class="point-title">
+        4. &nbsp; Equipment and connectivity requirement :
+      </p>
+      <div class="point-txt">
+        <ol>
+          <li> The services available on the website shall be provided to you via audio/video consultation. Please
+            ensure that you are equipped with proper video conference equipment and internet connectivity as mentioned
+            or is relevant for the service you want to avail. In case of inadequate video conference equipment,
+            technical error or defective internet connectivity IHL reserves the right to reschedule or cancel your
+            appointment without any notice.</li>
+          <li> You understand and acknowledge that there will be no physical examination involved and the consultation
+            services shall be provided remotely. The opinion delivered by the doctor / physician shall solely be based
+            on the verbal communication between the concerned doctor or the physician and the patient, and the test
+            reports, and other information provided/uploaded by you on the website.</li>
+          <li> IHL or the consultingoctor/medical practitioner shall not be liable for misdiagnosis/faulty judgment/interpretation 
+            error/perception error/adverse events/inefficacy of prescribed treatment or advice/validity provided by the consulting 
+            doctor in your country of residence/unavailability of the recommended or prescribed treatment or medication under any 
+            condition or circumstances. Users are advised to use their discretion for following the advice obtained post consultation 
+            from IHL. </li>
+          <li>IHL Services are not meant in any way for emergency and life-threatening conditions. It is advised to take
+            the patient to the nearest hospital in such cases. </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="point-container">
+      <p class="point-title">
+        5. &nbsp; Cookies :
+      </p>
+      <div class="point-txt">
+        <ol>
+          <li> IHL, like many other websites, uses “Cookies”. Cookies are small data files that a Website stores on your web browser. 
+            These are used for the purpose of storing your preferences, browsing activities, profiling and tracking behavior on this 
+            website. By visiting IHL website you acknowledge, accept, and expressly authorize IHL for the placement of Cookies on your 
+            web browser.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="point-container">
+      <p class="point-title">
+        6. &nbsp; Electronic Payments/ Refunds :
+      </p>
+      <div class="point-txt">
+        <ol>
+          <li> IHL offer’s online mode of payment. You may use internet banking or debit/credit card or specific digital
+            payment modes available for making payment for consultation charges. You shall be directed to our trusted
+            payment gateway partners once you proceed to make payment of service fee.</li>
+          <li> IHL shall not be liable in any manner whatsoever, if incorrect or inaccurate credit / debit card details
+            or digital payment details are provided by you for making the payment of consultation fee or you use a
+            credit/ debit card which is not lawfully owned by you or if you permit a third party to use your password or
+            other means to access your account. </li>
+          <li> IHL shall keep the aforesaid information confidential at all times and shall not utilize and share the
+            same with any of the third parties unless it is an authorized third party website and/or required by
+            law/regulation or court order. </li>
+          <li> Refunds may be made in case a request is raised by the user by clicking the cancel button in the user
+            dashboard on the IHL website within the stipulated deadline mentioned in the refund & cancellation table
+            above. </li>
+          <li> Refunds will only be made against genuine and trackable cancellation requests generated by you by
+            clicking on the cancellation button provided in the IHL user dashboard in your IHL account. Refund request
+            against delays, nature of advice obtained, efficacy of treatment, health outcomes of consultation will not
+            be entertained. </li>
+          <li> Refunds may be processed within 15 working days from the receipt of a request from you. All
+            communications with regards to refund should be sent to info@indiahealthlink.com. </li>
+          <li> You have the option to reschedule or cancel a booked appointment, strictly within the stipulated
+            deadlines as mentioned in the refunds and cancellations table above. </li>
+          <li> IHL reserves the right to modify/implement a new pricing structure at any time prior to billing you for
+            your initial payment or for future payments. </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="point-container">
+      <p class="point-title">
+        7. &nbsp; Use of Content & Copyright :
+      </p>
+      <div class="point-txt">
+        <ol>
+          <li> IHL owns the website as well the intellectual property contained thereon including all programs,
+            processes, designs, software, technologies, trademark, trade names, inventions and materials therein and all
+            the services offered by the doctors/physicians or others on the website.</li>
+          <li> You shall not use the content available on the website without the prior written permission of IHL. </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="point-container">
+      <p class="point-title">
+        8. &nbsp; Privacy and Security :
+      </p>
+      <div class="point-txt">
+        <ol>
+          <li> IHL uses secure encryption technology to keep your information safe and secure at all times. IHL is committed 
+            towards maintaining the privacy of the information uploaded by you on the website and complies with the industry 
+            standard security safeguards for the purpose of securing the website and the information provided/uploaded by you. 
+          </li>
+          <li> IHL uses all reasonable endeavors to ensure the integrity of the online payment facility’s security.
+            Despite our endeavors, breaches of security and confidentiality could occur. You acknowledge that we are not
+            liable for any loss suffered by you as a result of any breaches in security. </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="point-container">
+      <p class="point-title">
+        9. &nbsp; Value added services from associated partners :
+      </p>
+      <div class="point-txt">
+        <ol>
+          <li> IHL engages various health care service providers to provide you additional convenience. You are free to select
+             any product or services you need if that fits your needs. </li>
+          <li> During the course of any service if you may come across any promotional services and you will be prompted
+            to agree or disagree to avail the services supplied by the Associated Vendors by providing your explicit
+            consent. </li>
+          <li> Upon your acceptance and willingness to avail associated vendor services, IHL reserves the right to share
+            your entire prescription, personal details to the vendor to contact you for fulfillment of services. And you
+            agree to provide the rights to the associated service vendor to contact you on the provided contact details
+            mobile number or email address or both. </li>
+          <li> It must be noted that IHL is a mere facilitator to connect you to the goods or service fulfillment
+            partners and shall not be liable for any deficiency or defect in services supplied by the Associated
+            Vendors. The Services facilitated by the client shall be in accordance with the terms of use that you agree
+            with the vendor. </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="point-container">
+      <p class="point-title">
+        10. &nbsp; Indemnity :
+      </p>
+      <div class="point-txt">
+        <ol>
+          <li> You agree and undertake to indemnify and keep indemnified IHL , the concerned doctor/physician and IHL for any 
+            losses, costs, charges and expenses including reasonable attorney fees that the concerned doctor/physician and IHL 
+            may suffer on account of (a)misdiagnosis/faulty judgment/interpretation errors/perception error arising from (i)your 
+            failure to provide correct and/or complete clinical information/history about the patient in timely and clinically 
+            appropriate manner; or (ii)suppression of material facts; or your failure to provide relevant clinical information 
+            about the patient; or (iv)misinterpretation of the advice/prescription/diagnosis by you; or (v)failure to follow 
+            doctor’s advice/prescription by you; or (b)incorrect or inaccurate credit/debit card details provided by you; or 
+            (c)using a credit / debit card which is not lawfully owned by you; or (d)if you permit a third party to use your 
+            password or other means to access your account. </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="point-container">
+      <p class="point-title">
+        11. &nbsp; Disclaimer :
+      </p>
+      <div class="point-txt">
+        <ol>
+          <li> IHL provides the services on “as is” basis and expressly disclaims all representations, warranties or
+            conditions of any kind, either expressed or implied, as to the operations of the website, the information,
+            content, service provided through or in connection with the website. </li>
+          <li> In no event shall IHL be responsible for any third party misuse for the data and for any acts, deeds and
+            circumstances beyond the control of the management of IHL.</li>
+          <li> You agree and acknowledge that you are solely responsible for your conduct. </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="point-container">
+      <p class="point-title">
+        12. &nbsp; Limitations of liability :
+      </p>
+      <div class="point-txt">
+        <ol>
+          <li> In no event shall IHL be liable for any direct, indirect, punitive, incidental, special or consequential
+            damages or any damages whatsoever including without limitations, damages for loss of use, data or profits,
+            arising out of or in any way connected with the use of IHL services. </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="point-container">
+      <p class="point-title">
+        13. &nbsp; Termination :
+      </p>
+      <div class="point-txt">
+        <ol>
+          <li> This arrangement may be terminated by either party at any time, with or without cause. </li>
+          <li> IHL reserves the right to refuse the use of services immediately in case your conduct is deemed by IHL to
+            be in contravention of applicable acts, laws, rules, and regulations or considered to be unethical/immoral.
+          </li>
+          <li> IHL reserves the right to take down your profile as well as the right to access your profile in case IHL finds 
+            feedback from doctors of any unlawful conducts, abusive languages, and misconduct during the consultation process 
+            display, with or without notice to the concerned practitioner. </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="point-container">
+      <p class="point-title">
+        14. &nbsp; Modification of Terms and Conditions of Service :
+      </p>
+      <div class="point-txt">
+        <ol>
+          <li> IHL may at any time, without any prior notification to you, modify these terms of conditions. </li>
+          <li> Please review the latest version of the terms and conditions before proceeding to avail the service.
+          </li>
+          <li> If you continue to use the service, it shall be deemed that you agree and abide by the modified terms and
+            conditions. </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="point-container">
+      <p class="point-title">
+        15. &nbsp; General Terms and Conditions :
+      </p>
+      <div class="point-txt">
+        <ol>
+          <li> This agreement shall be governed by the laws of India and shall be subject to the exclusive jurisdiction
+            of the courts at New Delhi and </li>
+          <li> IHL makes no representation that the services are appropriate for patients in any other location except
+            India as IHL operates and controls these websites from India. </li>
+          <li> If any part of the agreement is determined to be invalid or unenforceable pursuant to applicable law then
+            the said provision will be superseded by a valid, enforceable provision and the remainder of the agreement
+            shall continue in effect. </li>
+          <li> You acknowledge that the relationship created through your use of this website shall be of principal to
+            principal. You shall not represent yourself as a representative agent or employee of IHL. </li>
+          <li> You represent and warrant that you’re not a minor (i.e., you are above 18 years of age) and that you are
+            competent and eligible to enter into a legally binding agreement. </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="para-txt">
+      <p> The terms and conditions herein form an agreement. Please read this agreement carefully and if you are not
+        agreeable to any terms and conditions please do not proceed further. </p>
+
+      <p> By clicking on “I Agree” and proceeding further you signify that you read through, understood and accepted
+        aforementioned terms and conditions of use of service. You must agree to the above terms and conditions in order
+        to avail the services through the website. If you have any queries or need any clarification or assistance
+        please contact us at <b> info@indiahealthlink.com </b> </p>
+    </div>
+  </div>
+
+
+  <div class="para-txt-warning">
+    <p>" <b> Confidentiality Notice: </b> This document is confidential and contains proprietary information and
+      intellectual property of India Health Link Pvt Ltd. This document is only meant to be referred by specific users
+      to whom it is shared by India Health Link Pvt Ltd. Neither this document nor any of the information contained
+      herein may be reproduced or disclosed under any circumstances without the express written permission of India
+      Health Link Pvt Ltd. Please be aware that disclosure, copying, distribution or use of this document and the
+      information contained therein is strictly prohibited."‌ </p>
+  </div>
+</div>
+
+<div *ngIf="_constant.jointUserTermsConditionsPopUp" class="modal_mobile_number">
+  <div class="mb-3 terms_header">
+    <div>
+      <button type="button" (click)="closeModal()"
+        style="border: none;outline: none;background: transparent;float: right;right: 25px;position: relative;color: #9e9e9e;">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <br>
+    <div>
+      <h4 style="font-size: 1.4em;padding: 2px;">
+        <img width="30px" height="30px" src="assets/img/ihl-plus.png" /> <span class=processprogram> Tele Consultation </span>
+      </h4>
+    </div>
+  </div>
+
+
+  <hr class="mb-0">
+  <section>
+    <ng-container *ngIf="!_constant.jointuserSelectothers; else listUsers">
+      <mat-dialog-content class="modal_contents_popup">
+        <p> Please do select for Yourself or Others </p>
+      </mat-dialog-content>
+      <button style="background-color: #3f51b5;margin-right: 50px;" mat-raised-button class="modal_buttons"
+        (click)="jointuserSelectMyself()">
+        <span style="color: white;">For Myself</span>
+      </button>
+      <button mat-raised-button class="modal_buttons" (click)="jointuserSelectOthers()">
+        <span style="color: #4d4d4d;;">For Others</span>
+      </button>
+    </ng-container>
+  </section>
+  <ng-template #listUsers>
+    <form #validation="ngForm">
+     <section class="mb-3">
+        <div class="modal_contents_popup">
+          <p><b>Please select the user to switch</b></p>
+          <div class="modal_contents_joint_user_list">
+            <div class="joint_user_list_maincontainer"
+              *ngFor="let detail of jointUserList | keyvalue; let i = index; let isLast = last;trackBy: trackByFn;">
+              <input type="radio" #joint_users id="joint_users" value="joint_users" name="joint_users"
+                joint_users="ngModel" required class="radio" (click)="listusers(detail)" [checked]="[i] == _ischecked">
+                {{detail.value.ihl_user_name | titlecase}}
+               <br>
+               <span *ngIf="joint_users.invalid">
+                 <p *ngIf="isLast" style="color: red;font-size: small;text-align: center">
+                    Please select the user account
+                 </p>
+               </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-3">
+        <div class="joint-user-add-new-user" [ngClass]="{'disable-joint-acc':_isDisableJointAccountOption()}"
+          [routerLink]="['/export/linkAccount']" (click)="addlinkanotheracc()">
+          <mat-icon class="text-dark">person_add</mat-icon>
+          <div class="joint-user-list-sub-container">
+            <p class="joint-user-name">Add/Link another account</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="m-1">
+        <div class="checkbox">
+          <input style="width: 25px;height: 25px;" type="checkbox" name="termsaccept" ngModel #termsaccept="ngModel" required>
+          I agree to the <span style="color: blue;" (click)="EnableCheckboxTermsAndCondition()">terms and
+            conditions</span>
+          <br>
+          <span *ngIf="termsaccept.invalid" style="color: red;font-size: small;text-align: center;">Please accept
+             Terms and Condition </span>
+        </div>
+      </section>
+
+      <hr class="mb-3">
+      <section class="mb-3">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+          <button class="btn btn-primary btns mx-2" type="button" [disabled]="!validation.valid"
+            (click)="switchUser()">Switch</button>
+        </div>
+      </section>
+    </form>
+  </ng-template>
+</div>
+
+<div *ngIf="_constant.requestedjoinuser">
+  <div class="mb-3 terms_header">
+    <div>
+      <button type="button" (click)="closerequsers()"
+        style="border: none;outline: none;background: transparent;float: right;right: 10px;position: relative;color: #9e9e9e;">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <br>
+
+    <div>
+      <h4 style="text-align: center; font-size: 1.4em;">
+        <img width="30px" src="assets/img/ihl-plus.png" /> <span class=processprogram> Tele Consultation </span>
+      </h4>
+    </div>
+  </div>
+
+  <hr class="mb-0">
+
+  <section>
+    <ng-container *ngIf="!_constant.requestacceptance; else caretakerdetaillist ">
+      <mat-dialog-content class="modal_contents_popup">
+        <div class="modal_contents_popup" [hidden]="_hideuserrequestlist">
+          <p><b>Requested user account</b></p>
+          <div class="modal_contents_joint_user_list">
+            <div class="joint_user_list_maincontainer"
+              *ngFor="let detail of jointuserrequest | keyvalue; let i = index;trackBy: trackByFn;">
+              {{detail.value.ihl_user_name | titlecase}}
+              <button style="background-color: #3f51b5;margin-right: 15px;height: auto;" mat-raised-button
+                class="modal_buttons" (click)="openReqConfirmationDialog(detail,i)">
+                <span style="color: white;">Cancel request</span>
+              </button>
+              <br><br>
+            </div>
+          </div>
+        </div>
+      </mat-dialog-content>
+    </ng-container>
+  </section>
+
+  <section>
+    <div *ngIf="_constant.unsendJointUserrequestconfirmation" class="modal_mobile_number" style="margin: 30px;">
+      <mat-dialog-content class="modal_contents">
+        <p> Are you sure want to unsend your request? </p>
+      </mat-dialog-content>
+      <mat-dialog-actions class="d-grid gap-2 d-md-flex justify-content-md-center">
+        <button style="background-color: #3f51b5;margin-right: 50px;" mat-raised-button class="modal_buttons"
+          (click)="unsenduserrequest()">
+          <span style="color: white;">Unsend</span>
+        </button>
+
+        <button mat-dialog-close mat-raised-button class="modal_buttons" (click)="nounsenduserrequest()">
+          <span style="color: #4d4d4d;;">Cancel</span>
+        </button>
+
+      </mat-dialog-actions>
+    </div>
+  </section>
+<!--
+  <ng-template #caretakerdetaillist>
+    <section>
+      <div *ngIf="_constant.caretakeracceptance">
+        <mat-dialog-content class="modal_contents_popup">
+          <div class="modal_contents_popup" [hidden]="_hideuserrequestlist">
+            <p><b>Caretaker user account</b></p>
+            <div class="modal_contents_joint_user_list">
+              <div class="joint_user_list_maincontainer"
+                *ngFor="let detail of jointuserrequest | keyvalue; let i = index;trackBy: trackByFn;">
+
+                {{detail.fullName|titlecase}}
+
+                <button style="background-color: #3f51b5;margin-right: 15px;height: auto;" mat-raised-button
+                  class="modal_buttons" (click)="opencaretakerConfirmationDialog(detail,i)">
+
+                  <span style="color: white;">Cancel request</span>
+                </button>
+                <br><br>
+
+              </div>
+            </div>
+          </div>
+        </mat-dialog-content>
+
+      </div>
+    </section>
+
+    <section>
+      <div *ngIf="_constant.unsendCareUserrequestconfirmation " class="modal_mobile_number" style="margin: 30px;">
+        <mat-dialog-content class="modal_contents">
+          <p> Are you sure want to unsend your request? </p>
+        </mat-dialog-content>
+        <mat-dialog-actions class="d-grid gap-2 d-md-flex justify-content-md-center">
+          <button style="background-color: #3f51b5;margin-right: 50px;" mat-raised-button class="modal_buttons"
+            (click)="unsendcareuserrequest()">
+            <span style="color: white;">Unsend</span>
+          </button>
+
+          <button mat-dialog-close mat-raised-button class="modal_buttons" (click)="nounsenduserrequest()">
+            <span style="color: #4d4d4d;;">Cancel</span>
+          </button>
+
+        </mat-dialog-actions>
+      </div>
+    </section>
+
+  </ng-template>
+-->
+</div>
+
+<div *ngIf = "_constant.unlinkJointAccountPopUp" style="margin: 30px;">
+  <ng-container *ngIf="showJointUserList">
+    <div class="close_icon_div"><mat-icon class="close_icon" (click)="unlinkJointAccountPopUpClose()">cancel</mat-icon></div>
+    <mat-dialog-content class="modal_contents">
+      <p>Click Un-Link button to unlink the joint user</p>
+    </mat-dialog-content>
+    <mat-dialog-content *ngIf="_LinkedJointAccounts()"
+      [ngClass]="{'disableUserList': _isDisabledUserDetailBtn}">
+      <mat-accordion multi>
+        <ng-container
+          *ngFor="let detail of (userData?.joint_user_detail_list) | keyvalue; let i = index; trackBy: trackByFn"
+          (click)="$event.stopPropagation();">
+          <section class="row" *ngIf="detail.value.status == 'active'"
+            style="background: transparent;box-shadow: none !important;margin: 10px 0px 10px !important">
+            <div class="col-4 col-md-2 joint-user-list-main-container">
+              <p class="joint-user-initial" [style.backgroundColor]="initialBackground()">{{detail.value.ihl_user_name |
+                slice:0:1 |
+                titlecase}}</p>
+            </div>
+            <div class="col-8 col-md-6">
+              <p class="joint-user-name">{{detail.value.ihl_user_name | titlecase}}</p>
+              <p class="joint-user-email">{{(detail.value.ihl_user_email &&
+                detail.value.ihl_user_email.toString().trim().length > 0)? detail.value.ihl_user_email :
+                (detail.value.ihl_user_mobileNumber &&
+                detail.value.ihl_user_mobileNumber.toString().trim().length ==10) ? detail.value.ihl_user_mobileNumber :
+                'Dependent/Joint User'}}
+              </p>
+            </div>
+            <div class="col-6 col-md-4">
+              <button class="btn btn-light btns border border-secondary" type="button"
+                style="background-color: #3f51b5;" mat-raised-button
+                [disabled]="_isDisabledUserDetailBtn"
+                (click)="openJointConfirmationDialog(detail, i, detail.value.ihl_user_name); $event.stopPropagation();"
+              >
+                <span style="color: white;">Un-Link</span>
+              </button>
+            </div>
+          </section>
+        </ng-container>
+      </mat-accordion>
+    </mat-dialog-content>
+
+  </ng-container>
+  <ng-container *ngIf="!showJointUserList">
+    <div class="modal_mobile_number" style="margin: 30px;">
+      <mat-dialog-content class="modal_contents">
+        <p> Are you sure want to unlink {{unlinkUserName}} user? </p>
+      </mat-dialog-content>
+      <mat-dialog-actions class="gx-4 justify-content-md-between">
+        <div class="p-2">
+          <button style="background-color: #3f51b5;" mat-raised-button class="modal_buttons" *ngIf="!_UnLinkButtonClicked" (click)="unLinkJointUserAccount('yes')">
+            <span style="color: white;">Un-Link</span>
+          </button>
+          <mat-spinner matSuffix [diameter]="30" *ngIf="_UnLinkButtonClicked"></mat-spinner>
+        </div>
+        <div class="p-2">
+          <button mat-raised-button class="modal_buttons" *ngIf="!_UnLinkButtonClicked"
+            (click)="unLinkJointUserAccount('no')">
+            <span style="color: #4d4d4d;;">Cancel</span>
+          </button>
+        </div>
+      </mat-dialog-actions>
+    </div>
+  </ng-container>
+</div>
+
+<div *ngIf="_constant.renameFilePopUp" style="margin: 40px;">
+  <div>
+    <h4 style="text-align: center; font-size: 1.4em;">
+      <img width="30px" src="assets/img/ihl-plus.png" /> <span class=processprogram> Tele Consultation </span>
+    </h4>
+  </div>
+
+  <hr class="mb-0">
+
+  <form #newFileNameForm="ngForm" (ngSubmit)="onSubmit(newFileNameForm)">
+    <mat-dialog-actions>
+      <h4>Do you like to change the name?</h4>
+      <mat-form-field appearance="outline">
+        <mat-label>File Name</mat-label>
+        <input matInput #newFileName required type="text" autocomplete="off" name="newFileName" [(ngModel)]="uploadedFileName" (ngModelChange)="changeFileName(newFileName)"  minlength="1"/>
+        <mat-hint *ngIf="newFileName.exist" style=" color:red;font-size: 13px;">{{ errorHintMedFile }}</mat-hint>
+      </mat-form-field>
+    </mat-dialog-actions>
+
+    <mat-dialog-actions class="gx-4 justify-content-md-between" style="padding-top: 25px;">
+      <div class="p-2">
+        <button *ngIf="_constant.saveFile" [disabled]="!newFileNameForm.valid || newFileName.exist" style="background-color: #3f51b5;" type="submit" mat-raised-button class="modal_buttons" >
+          <span style="color: white;">Yes</span>
+        </button>
+      </div>
+      <div class="p-2">
+        <button mat-raised-button class="modal_buttons" (click)="renameFilePopUpClose()" >
+          <span style="color: #4d4d4d;">No</span>
+        </button>
+      </div>
+    </mat-dialog-actions>
+  </form>
+</div>
+
+<div *ngIf="_constant.affiliatedUser">
+  <div class="affiliate_popup_content" id='affiliated-info' *ngIf="affiliatedUserModal">
+    <h3>Welcome, {{_constant.affiliatedData.first_name}}</h3>
+    <span class="affiliate_popup_closeBtn" (click)="showDeclinedAffWindow()">
+      <i class="fas fa-times-circle"></i>
+    </span>
+    <table>
+        <tr>
+          <th>Full Name:</th>
+          <td>{{_constant.affiliatedData.first_name}} {{_constant.affiliatedData.last_name}}</td>
+        </tr>
+        <tr>
+          <th>Email:</th>
+          <td>{{_constant.affiliatedData.email}}</td>
+        </tr>
+        <tr>
+          <th>Mobile Number:</th>
+          <td>{{_constant.affiliatedData.mobile}}</td>
+        </tr>
+        <tr>
+          <th>Affiliated Company:</th>
+          <td>{{_constant.affiliatedData.affilate_name}}</td>
+        </tr>
+    </table>
+    <h4 style="margin-left: 90px;">Is this you?</h4>
+    <div class="affiliate_popup_button row">
+      <button (click)="showDeclinedAffWindow()">No. It's Not Me</button>
+      <button (click)="sendOtpViaSmsAndEmail()">Yeah. It's Me</button>
+    </div>
+  </div>
+
+  <div class="affiliate_popup_content" id='affiliated-info' *ngIf="affiliatedUserOtpModal">
+    <span *ngIf="OTPMsg == ''">Loading Please Wait!</span>
+    <div class="content" *ngIf="OTPMsg != ''">
+      <div class="o-c">
+        <div class="card1">
+          <p class="a-o-i">Enter verification code</p>
+          <ng-otp-input #ngOtpInput (onInputChange)="onOtpChange($event)" *ngIf="showOtpComponent" [config]="config"></ng-otp-input>
+          <span  class="o-t-p" style="color:red;">
+            <ng-container *ngIf="otp != -1 && !otpSubmit">
+              Invalid OTP
+            </ng-container>
+          </span>
+        </div>
+        <div class="otpMsg" style="margin: 10px 131px 10px 0px;">
+          <span>{{OTPMsg}}</span>
+        </div>
+        <div mat-dialog-actions style="justify-content: center;">
+          <button mat-raised-button style="background: #e9ecef;color: #6c757d;" (click)="showAuthenticateModal()" [disabled]="!otpSubmit">Submit</button>
+          <button mat-raised-button color="primary" class="create_class_submit"
+            (click)="resendOTP()" *ngIf="resendOTPButton">Resend OTP</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="affiliate_popup_content" id='affiliated-info' *ngIf="affiliatedRegisterModal">
+    <div class="affiliate_popup_button row">
+      <button (click)="showRegisterPage()">Register</button>
+      <button (click)="resendOTP()">Sign In</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="_constant.showLiveCallModal">
+  <div style="text-align: center;">
+    <img width="25px" src="assets/img/ihl-plus.png" /> <span class=processprogram> Tele Consultation </span>
+  </div>
+  <hr>
+  <div mat-dialog-content>Live Call appointment succesfully! Join the call and Please be patient till Doctor joins the call.</div>
+  <div mat-dialog-actions style="float: right;">
+    <button class="noDialogBtn" mat-stroked-button mat-dialog-close
+      on-click="joinCall()" style="color: #fff; background-color: green;">Join Call</button>
+    <button class="noDialogBtn" mat-stroked-button mat-dialog-close
+      on-click="downloadInvoice()" style="color: #fff; background-color: green;">Download Invoice</button>
+  </div>
+</div>
+
+<div *ngIf="_constant.showAppointmentModal">
+  <div style="text-align: center;">
+    <img width="25px" src="assets/img/ihl-plus.png" /> <span class=processprogram> Tele Consultation </span>
+  </div>
+  <hr>
+  <div mat-dialog-content>Your Appointment Booked Succesfully!</div>
+  <div mat-dialog-actions style="float: right;">
+    <button class="noDialogBtn" mat-stroked-button mat-dialog-close
+      on-click="viewMyAppointments()" style="color: #fff; background-color: green;">View My Appointments</button>
+    <button class="noDialogBtn" mat-stroked-button mat-dialog-close
+      on-click="downloadInvoice()" style="color: #fff; background-color: green;">Download Invoice</button>
+  </div>
+</div>
+
+<div *ngIf="_constant.showPaymentSelect" class="payment_method_dialog">
+
+  <div>
+    <h4 style="text-align: center; font-size: 1.4em;">
+      <img width="30px" src="assets/img/ihl-plus.png" /> <span class=processprogram> India Health Link </span>
+      <button type="button" (click)="closePaymentSelectMethod()"
+        style="border: none;outline: none;background: transparent;float: right;right: -8px;position: relative;color: #9e9e9e;">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </h4>
+  </div>
+
+  <hr>
+
+  <div id="paymentSelect" class="mt-2">
+
+    <div class="payment_type">
+      <div class="payment_name" (click)="selectedPaymentMethod('coupon')">
+        <i class="fas fa-gift"></i>
+        Apply Coupon
+      </div>
+      <div *ngIf="!paymentSelectShow" class="coupon_text mt-2">
+        <div class="input-group mb-2">
+          <input type="text" [disabled]="isCouponCodeValidated" class="form-control" placeholder="Coupon code" (change)="collectCoupon($event.target)">
+          <div class="input-group-append">
+            <button *ngIf="!isCouponCodeValidated" class="btn btn-outline-secondary" type="button" id="" (click)="checkCoupon()">
+              <!-- <i class="fas fa-arrow-right" aria-hidden="true"></i> -->
+              Apply
+            </button>
+            <button *ngIf="isCouponCodeValidated" class="btn btn-outline-secondary" type="button" id="" (click)="clearCoupon()">
+              <!-- <i class="fas fa-times" aria-hidden="true"></i> -->
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="discountAmountCalShow">
+    <table>
+      <tr>  
+        <td style="width: 150px;word-break: break-word;">
+          <div class="teleconsult_meh_title_color">Actual Amount</div>
+          <div class="teleconsult_li_color">Coupon Discount</div>
+          <div class="teleconsult_li_color">Payable Amount</div>
+        </td>
+
+        <td style="white-space: nowrap;">
+          <div class="teleconsult_meh_title_color">
+            &#8377; {{ _constant.consultationFee/100 }}
+          </div>
+          <div class="teleconsult_li_color">
+            &#8377; {{ discountAmount }}
+          </div>
+          <div class="teleconsult_li_color">
+            &#8377; {{ payableAmount }}
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <hr style="position: absolute; bottom: 30px; width: 100%; left: 0;">
+
+  <div style="position: absolute; bottom: 0; right: 0;">
+    <button mat-raised-button class="payment_proceed_button" (click)="proceedTopay()">Pay &#8377; {{ payableAmount != -1 ? payableAmount: _constant.consultationFee/100 }}</button>
+    <!-- <button mat-raised-button class="payment_proceed_button" (click)="checkCoupon()">Proceed to pay</button> -->
+  </div>
+</div>
+
+<div *ngIf="_constant.showSubscriptionModal">
+  <div style="text-align: center;">
+    <img width="25px" src="assets/img/ihl-plus.png" /> <span class=processprogram> Tele Consultation </span>
+  </div>
+  <hr>
+  <div mat-dialog-content>Your Subscription Added Successfully!</div>
+  <div mat-dialog-actions style="float: right;">
+    <button class="noDialogBtn" mat-stroked-button mat-dialog-close
+      on-click="viewMySubscriptions()" style="color: #fff; background-color: green;">View My Subscriptions</button>
+    <button *ngIf="_constant.showSubscriptionDownloadInvoice" class="noDialogBtn" mat-stroked-button mat-dialog-close
+      on-click="downloadInvoice()" style="color: #fff; background-color: green;">Download Invoice</button>
+  </div>
+</div>
+
+<div *ngIf = "_constant.ihlAccountExistModal">
+  <div mat-dialog-content>
+    <p class="ihlAccountExistMsg">You already have an IHL account with this email ID. Would you like to convert this account to SSO?.</p>
+  </div>
+  <div class="ihlAccountExistModalBtn">
+    <button class="button programconfirmes with-margin" (click)="convertToSSOYes()">Yes</button>
+    <button class="button programdeclines with-margin" (click)="convertToSSONo()">No</button>
+  </div>
+</div>
+
+<div *ngIf = "_constant.ihlAccountErrModal">
+  <div mat-dialog-content>
+    <p class="ihlAccountExistMsg">Are you still in the same organization? If yes, please contact your admin. If not, enter your alternative email ID.</p>
+  </div>
+  <div class="ihlAccountExistModalBtn">
+    <button class="button programconfirmes with-margin" (click)="convertSSOToIHLYes()">Yes</button>
+    <button class="button programdeclines with-margin" (click)="convertSSOToIHLNo()">No</button>
+  </div>
+</div>
+
+<div *ngIf = "_constant.isConvertSSoToIHLSuccessModal">
+  <div mat-dialog-content>
+    <p class="ihlAccountExistMsg">Your IHL account switch over successfully.Please login to continue..</p>
+  </div>
+  <div class="ihlAccountExistModalBtn">
+    <button class="button programconfirmes with-margin" (click)="navigateToLogin()">Ok</button>
+  </div>
+</div>
+
+<div *ngIf = "_constant.ihlAccountNotExistModal">
+  <div mat-dialog-content>
+    <p class="ihlAccountExistMsg">Your email does not exist with our IHL account.</p>
+  </div>
+  <div class="ihlAccountExistModalBtn">
+    <button class="button programconfirmes with-margin" (click)="closeIhlAccountNotExistModal()">Ok</button>
+  </div>
+</div>
+
+<div *ngIf="_constant.changePasswordModel">
+  <h4 class="purchase_header mb-3"> Please reset your password</h4>
+  <mat-form-field appearance="outline" class="w-100 mt-1">
+    <mat-label style="text-transform: capitalize;"> Your New Password</mat-label>
+    <input #newPwd matInput type="password" disallow-spaces (change)="changeNP(newPwd)" ngModel/>
+    <mat-hint *ngIf="newPwd.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Your Password format is invalid</mat-hint>
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="w-100 mt-1" [class.text-danger]="hasError">
+    <mat-label style="text-transform: capitalize;"> Confirm Password</mat-label>
+    <input #confPwd matInput type="password" disallow-spaces (change)="changeCP(confPwd)" ngModel/>
+    <mat-hint *ngIf="confPwd.required" style=" color:red;font-size: 13px;white-space: nowrap;">*Password mismatched</mat-hint>
+  </mat-form-field>
+  <p style="color: gray;font-size: 12px;margin-left: 26px;">
+    *Password must contain 8 characters, atleast 1 uppercase letter, <br> 1 lowercase letter, 1 number and 1 special character
+  </p>
+  <div *ngIf="nt_loading" style="margin-left: 18px; float: right;">
+    <button mat-raised-button #metbutton class="Password_input_button" (click)="onClickPasswordChange(newPwd,confPwd)">Save</button>
+  </div>
+
+  <div *ngIf="isloading">
+  <mat-spinner class="custom-spinner-color" style="display: block; float: none;margin-top: 15px; text-align: center;color: dodgerblue;" [diameter]="45" [strokeWidth]="5" style="margin:0 auto;"
+  mode="indeterminate"></mat-spinner>
+    <!-- <progress style="display: block; float: none;margin-top: 15px; text-align: center;color: dodgerblue;" id="message_submit_progress" class="pure-material-progress-circular" ></progress> -->
+  </div>
+</div>
+
+<div *ngIf="_constant.otpValidReg" style="min-width: 270px; height: auto;">
+  <!-- <div style="float: right;right: 25px;position: relative;">
+    <button type="button" (click)="closeWindow()" style="border: none;outline: none;background: transparent;color: #9e9e9e;">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </button>
+  </div> -->
+  <div>
+    <button type="button" (click)="closeModalOTP()"
+    style="border: none;outline: none;background: transparent;float: right;right: 25px;position: relative;color: #9e9e9e;">
+    <i class="fa fa-times" aria-hidden="true"></i>
+    </button>
+    <h4 style="text-align: center; font-size: 1.4em;">
+      <img width="30px" src="assets/img/ihl-plus.png" /> <span class=processprogram> OTP Validation </span>
+    </h4>
+  </div>
+
+  <hr class="mb-0">
+
+  <ng-container>
+    <mat-horizontal-stepper #stepper>
+      <mat-step state="mail">
+        <form>
+          <ng-template matStepLabel>E-Mail</ng-template>
+          <span style="color:#696969;"> Please enter your 6 digit E-Mail OTP </span>
+          <ng-otp-input  (onInputChange)="onEmailOtpChange($event)" [config]="config"></ng-otp-input>
+          <span [hidden]="otpMissing" style="color:red;">
+            <ng-container >
+              Fill both the OTP & Submit.
+            </ng-container>
+          </span>
+          <div class="p-4" style="text-align: right;">
+            <button class="" mat-raised-button matStepperNext style="background-color : #4885ed !important;" (click)="goForward($event)" color="primary">Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step state="phone">
+        <form>
+          <ng-template matStepLabel>Mobile</ng-template>
+          <span style="color:#696969;"> Please enter your 6 digit Mobile OTP </span>
+          <ng-otp-input  (onInputChange)="onMobileOtpChange($event)" [config]="config"></ng-otp-input>
+          <span [hidden]="otpMissing" style="color:red;">
+            <ng-container >
+              Fill both the OTP & Submit.
+            </ng-container>
+          </span>
+          <div class="p-4" style="text-align: right;">
+            <!-- <button mat-raised-button matStepperPrevious color="primary">Back</button> -->
+            <button mat-raised-button type="button" style="background-color : #4885ed !important;" (click)="sendOTP($event)" color="primary">Submit</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <ng-template matStepperIcon="phone">
+        <mat-icon>call_end</mat-icon>
+      </ng-template>
+      <ng-template matStepperIcon="mail">
+        <mat-icon>forum</mat-icon>
+      </ng-template>
+    </mat-horizontal-stepper>
+  </ng-container>
+</div>
+
+<div *ngIf="_constant.otpValidProfile" style="min-width: 270px; height: auto;">
+  <div>
+    <button type="button" (click)="closeModalMobileOTP()"
+    style="border: none;outline: none;background: transparent;float: right;right: 25px;position: relative;color: #9e9e9e;">
+    <i class="fa fa-times" aria-hidden="true"></i>
+    </button>
+    <h4 style="text-align: center; font-size: 1.4em;">
+      <img width="30px" src="assets/img/ihl-plus.png" /> <span class=processprogram> OTP Validation </span>
+    </h4>
+  </div>
+
+  <hr class="mb-0">
+
+  <ng-container>
+    <form>
+      <ng-template matStepLabel>Mobile</ng-template>
+      <span style="color:#696969;"> Please enter your 6 digit Mobile OTP </span>
+      <ng-otp-input  (onInputChange)="onMobileOtpChange($event)" [config]="config"></ng-otp-input>
+      <span [hidden]="mobOtpMissing" style="color:red;">
+        <ng-container >
+          Fill the OTP & Confirm.
+        </ng-container>
+      </span>
+      <div class="p-4" style="text-align: right;">
+        <button mat-raised-button type="submit" style="background-color : #4885ed !important;" (click)="sendMobOTP($event)" color="primary">Confirm</button>
+      </div>
+    </form>
+  </ng-container>
+</div>
+
+<div *ngIf="_constant.sessionActiveLogout">
+  <div>
+    <h4 style="text-align: center; font-size: 1.4em;">
+      <img width="30px" src="assets/img/ihl-plus.png" /> <span class=processprogram> Notification </span>
+    </h4>
+  </div>
+
+  <hr class="mb-0">
+
+  <ng-container>
+    <mat-dialog-content class="modal_contents_popup">
+      <p> Your already login with other device.. Please 'LOGOUT' & login again.. </p>
+    </mat-dialog-content>
+    <button class="modal_okay_buttons" (click)="reLoginRequest(null)">
+      LOGOUT
+    </button>
+  </ng-container>
+</div>

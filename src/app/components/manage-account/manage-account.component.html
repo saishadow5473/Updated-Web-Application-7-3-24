@@ -1,0 +1,67 @@
+<div>
+  <section class="text-center">
+    <img [src]="userProfileImage()" alt="Profile_img" class="profile-img" />
+    <p class="user-name">{{(userData && userData['firstName'])? (userData['firstName']+' '+userData['lastName']) : ''}}</p>
+    <p class="user-email">{{userEmailOrMobile()}}</p>
+    <a class="profile-settings" [routerLink]="['/export']">{{'Manage your IHL Account'}}</a>
+  </section>
+  <hr class="mb-0">
+  <section class="account-settings-body" *ngIf="_isEnableJointUserListSection()"
+    [ngClass]="{'disableUserList': _isDisabledUserDetailBtn}">
+    <mat-accordion multi>
+      <ng-container
+        *ngFor="let detail of (userData?.joint_user_detail_list) | keyvalue; let i = index; trackBy: trackByFn"
+        (click)="$event.stopPropagation();">
+        <mat-expansion-panel *ngIf="detail.value.status == 'active'" (opened)="panelOpenState = true"
+          (closed)="panelOpenState = false" (click)="$event.stopPropagation();"
+          style="background: transparent;box-shadow: none !important;margin: 10px 0px 10px !important">
+          <mat-expansion-panel-header class="joint-user-list-main-container">
+            <p class="joint-user-initial" [style.backgroundColor]="initialBackground()">{{detail.value.ihl_user_name |
+              slice:0:1 |
+              titlecase}}</p>
+            <div class="joint-user-list-sub-container">
+              <!-- <p class="joint-user-switch">{{'Logged Out'}}</p> -->
+              <p class="joint-user-name">{{detail.value.ihl_user_name | titlecase}}</p>
+              <p class="joint-user-email">{{(detail.value.ihl_user_email &&
+                detail.value.ihl_user_email.toString().trim().length > 0)? detail.value.ihl_user_email :
+                (detail.value.ihl_user_mobileNumber &&
+                detail.value.ihl_user_mobileNumber.toString().trim().length ==10) ? detail.value.ihl_user_mobileNumber :
+                'Dependent/Joint User'}}</p>
+            </div>
+          </mat-expansion-panel-header>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+            <button class="btn btn-primary btns mx-2" type="button" [disabled]="_isDisabledUserDetailBtn"
+              (click)="switchUser(detail); $event.stopPropagation();">Log In</button>
+            <!-- <button class="btn btn-light btns border border-secondary mx-2" type="button"
+              style="background-color: #f7f8f8;border: 1px solid #dadce0 !important;color: #3c4043;"
+              [disabled]="_isDisabledUserDetailBtn"
+              (click)="openConfirmationDialog(detail, i); $event.stopPropagation();">Un
+              Link</button> -->
+          </div>
+        </mat-expansion-panel>
+      </ng-container>
+    </mat-accordion>
+  </section>
+  <section class="m-1" *ngIf="!disableAddLinkBtn">
+    <div class="joint-user-add-new-user" [ngClass]="{'disable-joint-acc':_isDisableJointAccountOption()}"
+      [routerLink]="['/export/linkAccount']">
+      <mat-icon class="text-dark">person_add</mat-icon>
+      <div class="joint-user-list-sub-container">
+        <p class="joint-user-name">Add/Link another account</p>
+      </div>
+    </div>
+  </section>
+  <hr class="m-0">
+  <section class="text-center">
+    <a class="log-out" (click)="userLogout()">Log out</a>
+  </section>
+  <ng-container *ngIf="_constants._isDependentUserAccount">
+    <hr class="m-0">
+    <section class="text-center">
+      <a class="main-account" (click)="switchToMainUser()">Switch back to<p class="text-primary main-account-href">
+          <mat-icon class="main-account-icon">perm_identity</mat-icon> Main User
+        </p> Account</a>
+    </section>
+  </ng-container>
+  <mat-spinner *ngIf="_isDisabledUserDetailBtn" matSuffix [diameter]="30" class="spinner-position"></mat-spinner>
+</div>

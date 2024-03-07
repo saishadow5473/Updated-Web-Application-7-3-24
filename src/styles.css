@@ -1,0 +1,172 @@
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+html, body{
+    min-height: 100%;    
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px; /* Base Font Size */
+    background-color: #F7F7F7;
+    color: #4885ed;
+    text-rendering: optimizeLegibility;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.bb-main-container{
+    margin-left: 72px;
+    margin-top: 80px;
+    padding: 28px 24px;
+    min-height: 540px;
+}
+
+.bb-main-container h2{
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin-top: 10px;
+}
+
+.success {
+    background-color: green;
+}
+
+.error{
+    background-color: red;
+}
+
+.mat-form-field.mat-focused .mat-form-field-label {
+    color: #4885ed !important;
+}
+
+.oops_error{
+    background-color: red;
+}
+.mat-form-field.mat-focused .mat-form-field-outline {
+    color: #4885ed !important;
+}
+
+.errormessagehide{
+    font-size: 13px;
+    display: none;
+}
+
+.errormessageshow{
+    color:red;
+    font-size: 13px;
+    display: block;
+}
+
+.mat-grid-tile .mat-figure {
+    justify-content: flex-start !important ;
+    align-items: flex-start !important;
+ }
+ .mat-radio-label-content {
+    padding-left: 15px !important;
+}
+/*
+.mat-progress-bar{
+    height: 21px !important;
+    border-radius: 20px;
+    padding: 0px 0px;
+}
+.mat-progress-bar .mat-progress-bar-fill::after{
+    background-color: #4885EC !important;
+    height: 5px !important;
+    margin: 8px 0px;    
+    border-radius: 20px;
+} */
+.mat-progress-bar .mat-progress-bar-fill::after{
+    background-color: #4885EC !important;
+}
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
+    border-color: #4885ec !important;
+}
+.mat-radio-button.mat-accent .mat-radio-inner-circle, .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple), .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple, .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple{
+    background-color: #4885ec !important;
+}
+
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: #4885ec !important;
+}
+
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: #4885ec !important;
+}
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-ripple .mat-ripple-element {
+    background-color: #4885ec !important;
+}
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: #4885ec !important;
+}
+
+.showHeaderSideMenu { display: none; }
+.showSideNav { display: block; }
+@media (max-width: 500px){
+    .bb-main-container{
+        margin-left: 1px;
+        margin-top: 0px;
+        padding: 28px 24px;
+    }
+    .showHeaderSideMenu { display: block;}
+    .showSideNav { display: none; }
+}
+
+
+.mat-select-panel::-webkit-scrollbar {
+    width: 6px;  
+}
+
+.mat-select-panel::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 20px;
+    background: #d7d7d7;  
+} 
+
+
+.subsribe-online-classes-valid-date > .mat-calendar-body-cell-content{
+    background-color:#b7cff8;
+}
+
+#crisp-chatbox > div > div > div.cc-bdff > div > span.cc-1k9z > span.cc-cqnw > a{
+    display: none !important;
+}
+
+#crisp-chatbox > div > div > div.cc-qqzz > div > div.cc-19cg.cc-ve3u{
+    display: none !important;
+}
+
+.tele-back-btn{
+    position: absolute;
+    top: 84px;
+    font-size: 26px;
+    left: 93%;
+    padding: 1.5%;
+    margin: auto;
+  }
+.tele-back-btn:hover {
+    cursor: pointer;
+    background-color: lightgray;
+   }
+@media ( max-width: 510px) {
+    .tele-back-btn{
+      left: 88%;
+    }
+    .ul-settings{
+      font-size: 13px;
+    }
+    .tele-back-btn{
+      left: 88%;
+    }
+}
+
+.joyride-backdrop, .joyride-backdrop.backdrop-right, 
+.joyride-backdrop.backdrop-left, .joyride-backdrop.backdrop-top, 
+.joyride-backdrop.backdrop-bottom, .backdrop-container, .backdrop-content, 
+.bacdrop-middle-container, .backdrop-middle-content, .backdrop-top,
+.backdrop-left, .backdrop-right, .backdrop-bottom {
+    background-color: transparent !important;
+}

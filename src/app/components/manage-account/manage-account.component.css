@@ -1,0 +1,231 @@
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 20px;
+    background: #d7d7d7;  
+}
+
+/* Works on Firefox */
+*{
+    scrollbar-width: thin;
+    scrollbar-color:  #d7d7d7 transparent;
+}
+
+.profile-img{
+    border: none;
+    margin-right: 6px;
+    vertical-align: top;
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+}
+
+.user-name{
+    color: #202124;
+    font: 500 16px/22px Google Sans,Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    letter-spacing: 0.29px;
+    margin: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.user-email{
+    color: #5f6368;
+    font: 400 14px/19px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    letter-spacing: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 0;
+}
+
+.profile-settings{
+    background-color: #ffffff;
+    border: 1px solid #dadce0;
+    -webkit-border-radius: 100px;
+    border-radius: 100px;
+    color: #3c4043 !important;
+    display: inline-block;
+    font: 500 14px/16px Google Sans,Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    letter-spacing: 0.25px;
+    margin: 16px 0 0;
+    max-width: 254px;
+    outline: 0;
+    padding: 8px 16px;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.log-out{
+    color: #3c4043 !important;
+    background-color: #ffffff;
+    border: 1px solid #dadce0;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    font: 500 14px/16px Google Sans,Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    letter-spacing: .15px;
+    margin: 15px;
+    outline: 0;
+    padding: 10px 24px;
+    text-decoration: none;
+    white-space: normal;
+    cursor: pointer !important;
+}
+
+.account-settings-body{
+    /* height: 120px; */
+    min-height: 62px;
+    max-height: 122px;
+    overflow: auto;
+}
+
+.joint-user-list-main-container{
+    border: none;
+    cursor: pointer;
+    height: 62px;
+    outline: 0;
+    padding: 10px 25px 10px;
+    /* display: block; */
+    outline-offset: -2px;
+    position: relative;
+    white-space: nowrap;
+}
+
+.joint-user-initial{
+    font-size: 20px;
+    width: 35px;
+    height: 35px;
+    line-height: 34px;
+    text-align: center;
+    border-radius: 50%;
+    vertical-align: middle;
+    color: white;
+    margin: 0px;
+    display: inline-block;
+    position: relative;
+    /* top: -13px; */
+}
+
+.joint-user-list-sub-container{
+    width: 244px;
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 0 0 12px;
+}
+
+.joint-user-name{
+    color: #3c4043;
+    font: 500 14px/18px Google Sans,Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    letter-spacing: 0.25px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 0;
+}
+
+.joint-user-email{
+    color: #5f6368;
+    display: inline-block;
+    font: 400 12px / 16px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 224px;
+    margin: 0;
+}
+
+.joint-user-switch{
+    color: #5d6369;
+    display: block;
+    float: right;
+    font: italic 400 12px/14px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    padding: 3px 0 0 20px;
+    text-align: right;
+    visibility: visible;
+    position: relative;
+    right: -5px;
+    top: 10px;
+}
+
+.joint-user-add-new-user{
+    border: none;
+    cursor: pointer;
+    outline: 0;
+    padding: 5px 25px 5px;
+    height: 45px;
+    display: block;
+    outline-offset: -2px;
+    position: relative;
+    white-space: nowrap;
+}
+
+.disable-joint-acc{
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.joint-user-list-main-container:hover{
+    background-color: #DCDCDC;
+}
+
+.btns{
+    font-family: Google Sans,Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.25px !important;
+    line-height: 16px !important;
+    outline: none !important;
+    padding: 10px 24px !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    width: auto;
+    border: none;
+}
+
+.main-account {
+    color: #5f6368 !important;
+    font: 400 13px / 16px Roboto,RobotoDraft,Helvetica,Arial,sans-serif !important;
+    outline: 0 !important;
+    /* padding: 4px 8px !important; */
+    text-decoration: none !important;
+    text-align: center !important;
+    white-space: normal !important;
+    margin: 10px !important;
+    display: inline-block !important;
+}
+
+.main-account-href {
+    cursor: pointer !important;
+    display: inline !important;
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+.main-account-icon {
+    margin: 0px !important;
+    padding: 0px !important;
+    font-size: 16px !important;
+    display: inline !important;
+    text-decoration: none !important;
+    text-transform: none !important;
+    position: relative !important;
+    top: 3px !important;
+    left: 2px !important;
+}
+
+.disableUserList{
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.spinner-position{
+    display: block !important;
+    position: fixed !important;
+    z-index: 1031 !important;
+    top: 50% !important;
+    right: 50% !important;
+}
